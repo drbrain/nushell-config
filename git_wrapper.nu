@@ -5,22 +5,21 @@ module git_wrapper {
   #
   # This does not parse the `<X><score>` field containing the rename/copy similarity status
   def parse_line [line: string] {
-    let record = {}
     let line = ( $line | split row " " )
     let status = $line.0
 
-    let record = if $status == "?" {
-      ( $record
+    if $status == "?" {
+      ( {}
       | insert name $line.1
       | insert status "untracked"
       )
     } else if $status == "!" {
-      ( $record
+      ( {}
       | insert name $line.1
       | insert status "ignored"
       )
     } else if $status == "1" {
-      ( $record
+      ( {}
       | insert name $line.8
       | insert status "changed"
       | merge { parse_states $line.1 }
@@ -32,7 +31,7 @@ module git_wrapper {
       )
     } else if $status == "2" {
       let paths = parse_rename_path $line.9
-      ( $record
+      ( {}
       | insert status "renamed"
       | insert name $paths.0
       | merge { parse_states $line.1 }
@@ -44,7 +43,7 @@ module git_wrapper {
       | insert original_name $paths.1
       )
     } else if $status == "u" {
-      ( $record
+      ( {}
       | insert status "unmerged"
       | insert name $line.10
       | merge { parse_states $line.1 }
@@ -57,8 +56,6 @@ module git_wrapper {
       | insert name_stage_3 $line.9
       )
     }
-
-    $record
   }
 
   # Paths for a rename record are separated by a tab character
