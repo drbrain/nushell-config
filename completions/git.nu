@@ -29,7 +29,7 @@ module completions_git {
     ["merge", "diff3", "zdiff3"]
   }
 
-  export def status [] {
+  def status [] {
     ( git_wrapper status false
     | get name )
   }
