@@ -30,7 +30,7 @@ module completions_git {
   }
 
   export def status [] {
-    ( git_wrapper status
+    ( git_wrapper status false
     | get name )
   }
 
@@ -792,8 +792,8 @@ module completions_git {
   #  --help                        # Show help
   #]
 
-  export def "git status" () {
-    git_wrapper status | select name status staged unstaged --ignore-errors
+  export def "git status" (--ignored) {
+    git_wrapper status $ignored | select name status staged unstaged --ignore-errors
   }
 
   def submodules [] {

@@ -98,8 +98,15 @@ module git_wrapper {
     { staged: $staged, unstaged: $unstaged }
   }
 
-  export def status [] {
-    ( ^git status --porcelain=2
+  export def status [ignored: bool] {
+    let args = ["status", "--porcelain=2"]
+    let args = if $ignored {
+      ($args | append "--ignored")
+    } else {
+      $args
+    }
+
+    ( run-external --redirect-stdout "git" $args
     | lines
     | each { |line| parse_line $line }
     )
