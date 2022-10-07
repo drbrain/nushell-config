@@ -63,7 +63,7 @@ module completions_git {
   ]
 
   export extern "git add" [
-    ...pathspecs: glob
+    ...pathspecs: string@status
     --all(-A)                  # Update the index where the working tree has a matching file or index entry
     --chmod: string            # Override the executable bit of added files
     --dry-run(-n)              # Don't add files, just show if the exist or will be ignored
