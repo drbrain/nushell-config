@@ -1,0 +1,194 @@
+module completions-ag {
+  export extern "ag" [
+    pattern: string                # Search pattern
+    files?: path                   # Search path
+    --ackmate                      # Print results in AckMate-parseable format
+    --after(-A): number            # Print lines after match (Default: 2)
+    --before(-B): number           # Print lines before match (Default: 2)
+    --break                        # Print newlines between matches in different files
+    --no-break                     # Omit newlines between matches in different files
+    --count(-c)                    # Only print the number of matches in each file.
+    --color                        # Print color codes in results (Default)
+    --no-color                     # Omit color codes in results
+    --color-line-number            # Color codes for line numbers (Default: 1;33)
+    --color-match                  # Color codes for result match numbers (Default: 30;43)
+    --color-path                   # Color codes for path names (Default: 1;32)
+    --column                       # Print column numbers in results
+    --filename                     # Print file names (Enabled unless searching a single file)
+    --no-filename                  # Omit file names
+    --heading(-H)                  # Print file names before each file's matches
+    --no-heading                   # Omit file names before each file's matches
+    --context(-C): number          # Print lines before and after matches (Default: 2)
+    --group                        # Same as --break --heading
+    --no-group                     # Same as --no-break --no-heading
+    --filename-pattern(-g): string # Print filenames matching PATTERN
+    --files-with-matches(-l)       # Only print filenames that contain matches
+    --files-without-matches(-L)    # Only print filenames that don't contain matches
+    --print-all-files              # Print headings for all files searched, even those that don't contain matches
+    --numbers                      # Print line numbers. Default is to omit line numbers when searching streams
+    --no-numbers                   # Omit line numbers. Default is to omit line numbers when searching streams
+    --only-matching(-o)            # Prints only the matching part of the lines
+    --print-long-lines             # Print matches on very long lines (Default: >2k characters)
+    --passthrough                  # When searching a stream, print all lines even if they don't match
+    --silent                       # Suppress all log messages, including errors
+    --stats                        # Print stats (files scanned, time taken, etc.)
+    --stats-only                   # Print stats and nothing else.
+    --vimgrep                      # Print results like vim's :vimgrep /pattern/g would
+    --null(-0)                     # Separate filenames with null (for 'xargs -0')
+    --print0                       # Separate filenames with null (for 'xargs -0')
+    --all-types(-a)                # Search all files (doesn't include hidden files or patterns from ignore files)
+    --debug(-D)                    # Ridiculous debugging (probably not useful)
+    --depth: number                # Search up to NUM directories deep (Default: 25)
+    --follow(-f)                   # Follow symlinks
+    --fixed-strings(-F)            # Alias for --literal for compatibility with grep
+    --file-search-regex(-G)        # PATTERN Limit search to filenames matching PATTERN
+    --hidden                       # Search hidden files (obeys .*ignore files)
+    --ignore-case(-i)              # Match case insensitively
+    --ignore: string               # Ignore files/directories matching PATTERN
+    --ignore-dir: string            # Alias for --ignore for compatibility with ack.
+    --max-count(-m): number        # Skip the rest of a file after NUM matches (Default: 10,000)
+    --one-device                   # Don't follow links to other devices.
+    --path-to-ignore(-p): string   # Use .ignore file at STRING
+    --literal(-Q)                  # Don't parse PATTERN as a regular expression
+    --case-sensitive(-s)           # Match case sensitively
+    --smart-case(-S)               # Match case insensitively unless PATTERN contains uppercase characters (Enabled by default)
+    --search-binary                # Search binary files for matches
+    --all-text(-t)                 # Search all text files (doesn't include hidden files)
+    --unrestricted(-u)             # Search all files (ignore .ignore, .gitignore, etc.; searches binary and hidden files as well)
+    --skip-vcs-ignores(-U)         # Ignore VCS ignore files (.gitignore, .hgignore; still obey .ignore)
+    --invert-match(-v)             # Invert match
+    --word-regexp(-w)              # Only match whole words
+    --width(-W): number            # Truncate match lines after NUM characters
+    --search-zip(-z)               # Search contents of compressed (e.g., gzip) files
+    --actionscript                 # .as  .mxml
+    --ada                          # .ada  .adb  .ads
+    --asciidoc                     # .adoc  .ad  .asc  .asciidoc
+    --apl                          # .apl
+    --asm                          # .asm  .s
+    --batch                        # .bat  .cmd
+    --bitbake                      # .bb  .bbappend  .bbclass  .inc
+    --bro                          # .bro  .bif
+    --cc                           # .c  .h  .xs
+    --cfmx                         # .cfc  .cfm  .cfml
+    --chpl                         # .chpl
+    --clojure                      # .clj  .cljs  .cljc  .cljx
+    --coffee                       # .coffee  .cjsx
+    --coq                          # .coq  .g  .v
+    --cpp                          # .cpp  .cc  .C  .cxx  .m  .hpp  .hh  .h  .H  .hxx  .tpp
+    --crystal                      # .cr  .ecr
+    --csharp                       # .cs
+    --css                          # .css
+    --cython                       # .pyx  .pxd  .pxi
+    --delphi                       # .pas  .int  .dfm  .nfm  .dof  .dpk  .dpr  .dproj  .groupproj  .bdsgroup  .bdsproj
+    --dlang                        # .d  .di
+    --dot                          # .dot  .gv
+    --dts                          # .dts  .dtsi
+    --ebuild                       # .ebuild  .eclass
+    --elisp                        # .el
+    --elixir                       # .ex  .eex  .exs
+    --elm                          # .elm
+    --erlang                       # .erl  .hrl
+    --factor                       # .factor
+    --fortran                      # .f  .f77  .f90  .f95  .f03  .for  .ftn  .fpp
+    --fsharp                       # .fs  .fsi  .fsx
+    --gettext                      # .po  .pot  .mo
+    --glsl                         # .vert  .tesc  .tese  .geom  .frag  .comp
+    --go                           # .go
+    --groovy                       # .groovy  .gtmpl  .gpp  .grunit  .gradle
+    --haml                         # .haml
+    --handlebars                   # .hbs
+    --haskell                      # .hs  .hsig  .lhs
+    --haxe                         # .hx
+    --hh                           # .h
+    --html                         # .htm  .html  .shtml  .xhtml
+    --idris                        # .idr  .ipkg  .lidr
+    --ini                          # .ini
+    --ipython                      # .ipynb
+    --isabelle                     # .thy
+    --j                            # .ijs
+    --jade                         # .jade
+    --java                         # .java  .properties
+    --jinja2                       # .j2
+    --js                           # .es6  .js  .jsx  .vue
+    --json                         # .json
+    --jsp                          # .jsp  .jspx  .jhtm  .jhtml  .jspf  .tag  .tagf
+    --julia                        # .jl
+    --kotlin                       # .kt
+    --less                         # .less
+    --liquid                       # .liquid
+    --lisp                         # .lisp  .lsp
+    --log                          # .log
+    --lua                          # .lua
+    --m4                           # .m4
+    --make                         # .Makefiles  .mk  .mak
+    --mako                         # .mako
+    --markdown                     # .markdown  .mdown  .mdwn  .mkdn  .mkd  .md
+    --mason                        # .mas  .mhtml  .mpl  .mtxt
+    --matlab                       # .m
+    --mathematica                  # .m  .wl
+    --md                           # .markdown  .mdown  .mdwn  .mkdn  .mkd  .md
+    --mercury                      # .m  .moo
+    --naccess                      # .asa  .rsa
+    --nim                          # .nim
+    --nix                          # .nix
+    --objc                         # .m  .h
+    --objcpp                       # .mm  .h
+    --ocaml                        # .ml  .mli  .mll  .mly
+    --octave                       # .m
+    --org                          # .org
+    --parrot                       # .pir  .pasm  .pmc  .ops  .pod  .pg  .tg
+    --pdb                          # .pdb
+    --perl                         # .pl  .pm  .pm6  .pod  .t
+    --php                          # .php  .phpt  .php3  .php4  .php5  .phtml
+    --pike                         # .pike  .pmod
+    --plist                        # .plist
+    --plone                        # .pt  .cpt  .metadata  .cpy  .py  .xml  .zcml
+    --proto                        # .proto
+    --pug                          # .pug
+    --puppet                       # .pp
+    --python                       # .py
+    --qml                          # .qml
+    --racket                       # .rkt  .ss  .scm
+    --rake                         # .Rakefile
+    --restructuredtext             # .rst
+    --rs                           # .rs
+    --r                            # .r  .R  .Rmd  .Rnw  .Rtex  .Rrst
+    --rdoc                         # .rdoc
+    --ruby                         # .rb  .rhtml  .rjs  .rxml  .erb  .rake  .spec
+    --rust                         # .rs
+    --salt                         # .sls
+    --sass                         # .sass  .scss
+    --scala                        # .scala
+    --scheme                       # .scm  .ss
+    --shell                        # .sh  .bash  .csh  .tcsh  .ksh  .zsh  .fish
+    --smalltalk                    # .st
+    --sml                          # .sml  .fun  .mlb  .sig
+    --sql                          # .sql  .ctl
+    --stata                        # .do  .ado
+    --stylus                       # .styl
+    --swift                        # .swift
+    --tcl                          # .tcl  .itcl  .itk
+    --terraform                    # .tf  .tfvars
+    --tex                          # .tex  .cls  .sty
+    --thrift                       # .thrift
+    --tla                          # .tla
+    --tt                           # .tt  .tt2  .ttml
+    --toml                         # .toml
+    --ts                           # .ts  .tsx
+    --twig                         # .twig
+    --vala                         # .vala  .vapi
+    --vb                           # .bas  .cls  .frm  .ctl  .vb  .resx
+    --velocity                     # .vm  .vtl  .vsl
+    --verilog                      # .v  .vh  .sv
+    --vhdl                         # .vhd  .vhdl
+    --vim                          # .vim
+    --wix                          # .wxi  .wxs
+    --wsdl                         # .wsdl
+    --wadl                         # .wadl
+    --xml                          # .xml  .dtd  .xsl  .xslt  .ent  .tld  .plist
+    --yaml                         # .yaml  .yml
+  ]
+
+}
+
+use completions-ag *
