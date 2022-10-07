@@ -1,4 +1,4 @@
-source "git.nu"
+source "git_wrapper.nu"
 
 source "completions/ag.nu"
 source "completions/cargo.nu"

@@ -1,4 +1,4 @@
-module git {
+module git_wrapper {
   # Parses most of `git status --porcelain=2`
   #
   # This does not parse the `<sub>` field containing the submodule status

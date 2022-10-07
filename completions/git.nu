@@ -2,7 +2,7 @@
 # https://github.com/nushell/nushell/blob/main/crates/nu-utils/src/sample_config/default_config.nu
 # which is covered by the MIT license
 
-use git
+use git_wrapper
 
 module completions_git {
   def branches [] {
@@ -29,8 +29,8 @@ module completions_git {
     ["merge", "diff3", "zdiff3"]
   }
 
-  def status [] {
-    ( git status
+  export def status [] {
+    ( git_wrapper status
     | get name )
   }
 
