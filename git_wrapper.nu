@@ -1,4 +1,8 @@
 module git_wrapper {
+  def match [input, matchers: record] {
+      echo $matchers | get $input | do $in
+  }
+
   # Parses most of `git status --porcelain=2`
   #
   # This does not parse the `<sub>` field containing the submodule status
@@ -8,53 +12,59 @@ module git_wrapper {
     let line = ( $line | split row " " )
     let status = $line.0
 
-    if $status == "?" {
-      ( {}
-      | insert name $line.1
-      | insert status "untracked"
-      )
-    } else if $status == "!" {
-      ( {}
-      | insert name $line.1
-      | insert status "ignored"
-      )
-    } else if $status == "1" {
-      ( {}
-      | insert name $line.8
-      | insert status "changed"
-      | merge { parse_states $line.1 }
-      | insert mode_head $line.3
-      | insert mode_index $line.4
-      | insert mode_worktree $line.5
-      | insert name_head $line.6
-      | insert name_index $line.7
-      )
-    } else if $status == "2" {
-      let paths = parse_rename_path $line.9
-      ( {}
-      | insert status "renamed"
-      | insert name $paths.0
-      | merge { parse_states $line.1 }
-      | insert mode_head $line.3
-      | insert mode_index $line.4
-      | insert mode_worktree $line.5
-      | insert name_head $line.6
-      | insert name_index $line.7
-      | insert original_name $paths.1
-      )
-    } else if $status == "u" {
-      ( {}
-      | insert status "unmerged"
-      | insert name $line.10
-      | merge { parse_states $line.1 }
-      | insert mode_stage_1 $line.3
-      | insert mode_stage_2 $line.4
-      | insert mode_stage_3 $line.5
-      | insert mode_worktree $line.6
-      | insert name_stage_1 $line.7
-      | insert name_stage_2 $line.8
-      | insert name_stage_3 $line.9
-      )
+    match $status {
+      "?": {
+        ( {}
+        | insert name $line.1
+        | insert status "untracked"
+        )
+      },
+      "!": {
+        ( {}
+        | insert name $line.1
+        | insert status "ignored"
+        )
+      },
+      "1": {
+        ( {}
+        | insert name $line.8
+        | insert status "changed"
+        | merge { parse_states $line.1 }
+        | insert mode_head $line.3
+        | insert mode_index $line.4
+        | insert mode_worktree $line.5
+        | insert name_head $line.6
+        | insert name_index $line.7
+        )
+      },
+      "2": {
+        let paths = parse_rename_path $line.9
+        ( {}
+        | insert status "renamed"
+        | insert name $paths.0
+        | merge { parse_states $line.1 }
+        | insert mode_head $line.3
+        | insert mode_index $line.4
+        | insert mode_worktree $line.5
+        | insert name_head $line.6
+        | insert name_index $line.7
+        | insert original_name $paths.1
+        )
+      },
+      "u": {
+        ( {}
+        | insert status "unmerged"
+        | insert name $line.10
+        | merge { parse_states $line.1 }
+        | insert mode_stage_1 $line.3
+        | insert mode_stage_2 $line.4
+        | insert mode_stage_3 $line.5
+        | insert mode_worktree $line.6
+        | insert name_stage_1 $line.7
+        | insert name_stage_2 $line.8
+        | insert name_stage_3 $line.9
+        )
+      }
     }
   }
 
@@ -66,22 +76,15 @@ module git_wrapper {
 
   # State marker
   def parse_state [state: string] {
-    if $state == "." {
-      "unmodified"
-    } else if $state == "M" {
-      "modified"
-    } else if $state == "T" {
-      "type changed"
-    } else if $state == "A" {
-      "added"
-    } else if $state == "D" {
-      "deleted"
-    } else if $state == "R" {
-      "renamed"
-    } else if $state == "C" {
-      "copied"
-    } else if $state == "U" {
-      "updated"
+    match $state {
+      ".": { "unmodified" },
+      "M": { "modified" },
+      "T": { "type changed" },
+      "A": { "added" },
+      "D": { "deleted" },
+      "R": { "renamed" },
+      "C": { "copied" },
+      "U": { "updated" }
     }
   }
 
