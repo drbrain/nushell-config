@@ -466,6 +466,30 @@ module completions_git {
     --help                                # Show help
   ]
 
+  def remote_commands [] {
+    [ "add", "rename", "remove", "set-head", "set-branches", "get-url", "set-url", "prune" ]
+  }
+
+  export extern "git remote" [
+    command?: string@remote_commands # Command to run
+    --verbose(-v)                    # Show URL after name
+    --help                           # Show help
+  ]
+
+  def mirror [] {
+    [ "fetch", "push" ]
+  }
+
+  export extern "git remote add" [
+    name: string
+    url: string
+    -t: string@remotes      # Track only this branch
+    -f                      # Immediately fetch
+    --tags                  # Import tags
+    --no-tags               # Do not import tags
+    --mirror: string@mirror # Create a mirror
+  ]
+
   export extern "git restore" [
     ...pathspec: glob
     --source(-s): string        # Restore the working tree with content from this tree
