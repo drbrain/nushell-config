@@ -40,21 +40,25 @@ def-env c [dir = "": string@cdpath_complete] {
   } else {
     $env.CDPATH
     | path expand
-    | reduce -f "" { |$it, $acc| if $acc == "" {
-      let new_path = ([$it $dir] | path join)
-      if ($new_path | path exists) {
-        $new_path
-      } else {
-        ""
+    | reduce -f "" { |$it, $acc|
+        if $acc == "" {
+          let new_path = ([$it $dir] | path join)
+          if ($new_path | path exists) {
+            $new_path
+          } else {
+            ""
+          }
+        } else {
+          $acc
+        }
       }
-    } else { $acc }}
   }
 
   let complete_dir = if $complete_dir == "" {
     error make {
-      msg: "Entry does not exist under any $env.CDPATH directory",
+      msg: "No such directory under any $env.CDPATH entry",
       label: {
-        text: "This entry",
+        text: "This directory",
         start: $span.start,
         end: $span.end,
       }
