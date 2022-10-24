@@ -3,6 +3,60 @@ module completions-cargo {
     ["auto", "always", "never"]
   }
 
+  def vcs [] {
+    [
+      "git",
+      "hg",
+      "pijul",
+      "fossil",
+      "none",
+    ]
+  }
+
+  def edition [] {
+    [
+      "2015",
+      "2018",
+      "2021",
+    ]
+  }
+
+  export extern "cargo add" [
+    dep: string               # Reference to package to add as a dependency
+    --no-default-features     # Disable the default features
+    --default-features        # Re-enable the default features
+    --features(-F): string    # Comma-separated list of features to activate
+    --optional                # Mark the dependency as optional
+    --no-optional             # Mark the dependency as required
+    --rename: string          # Rename the dependency
+    --dry-run                 # Don't write the manifest
+    --package: string         # Package to modify
+    --manifest-path: string   # Path to Cargo.toml
+
+    --path: path              # Filesystem path to local crate to add
+    --git: string             # Git repository location
+    --branch: string          # Git branch to download crate from
+    --tag: string             # Git tag to download crate from
+    --rev: string             # Git reference to download crate from
+    --registry                # Package registry for this dependency
+
+    --frozen                  # Require Cargo.lock and cache are up to date
+    --locked                  # Require Cargo.lock is up to date
+    --offline                 # Run without accessing the network
+
+    --dev                     # Add package as development dependency
+    --build                   # Add package as build dependency
+    --target: string          # Add packages to this target platform
+
+    --color: string@color     # Set coloring
+    --config-file: string     # Config file [default: workspace-root/.config/nextest.toml]
+    -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+
+    --quiet(-q)               # Do not print cargo log messages
+    --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
+    --help(-h)                # Print help information
+  ]
+
   export extern "cargo build" [
     --all-features            # Activate all available features
     --all-targets             # Build all targets
@@ -43,6 +97,27 @@ module completions-cargo {
     --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
     --workspace               # Build all packages in the workspace
     -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  ]
+
+  export extern "cargo init" [
+    path?: path               # Path to cargo project
+    --bin                     # Use a binary (application) template
+    --lib                     # Use a library template
+    --edition: number@edition # Set crate edition
+    --vcs: string@vcs         # Initialize a VCS repository
+    --registry: string        # Registry to use
+
+    --frozen                  # Require Cargo.lock and cache are up to date
+    --locked                  # Require Cargo.lock is up to date
+    --offline                 # Run without accessing the network
+
+    --color: string@color     # Set coloring
+    --config: string          # Override a configuration value
+    -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+
+    --quiet(-q)               # Do not print cargo log messages
+    --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
+    --help(-h)                # Print help information
   ]
 
   def nextest [] {
