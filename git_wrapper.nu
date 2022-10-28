@@ -1,4 +1,23 @@
 module git_wrapper {
+  def commits_parse_line [line: string] {
+    ( $line
+    | split column "\u0000"
+    | rename ref author date subject
+    )
+  }
+
+  export def commits [] {
+    let args = [
+      "log",
+      "--pretty=format:%H%x00%an%x00%aI%x00%s",
+    ]
+
+    ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+    | lines
+    | par-each { |line| commits_parse_line $line }
+    )
+  }
+
   def match [input, matchers: record] {
       echo $matchers | get $input | do $in
   }

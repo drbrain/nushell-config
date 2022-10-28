@@ -17,6 +17,11 @@ module completions_git {
     ["always", "never", "auto"]
   }
 
+  def commits [] {
+    ( git_wrapper commits
+    | get ref )
+  }
+
   def remotes [] {
     ^git remote | lines | each { |line| $line | str trim }
   }
@@ -193,7 +198,7 @@ module completions_git {
   ]
 
   export extern "git cherry-pick" [
-    ...commits: string            # Commit to cherry-pick
+    ...commits: string@commits    # Commit to cherry-pick
     --edit(-e)                    # Edit the message prior to committing
     --cleanup: string             # Set message cleanup mode
     -x                            # Append "(cherry picked from commit ...)" to message
