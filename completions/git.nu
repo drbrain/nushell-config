@@ -154,7 +154,7 @@ module completions_git {
     --no-merged: string
     --no-track
     --points-at: string
-    --quiet(-q)
+    --quiet(-q)                  # Suppress progress reporting
     --remotes(-r)
     --set-upstream
     --set-upstream-to(-u): string@remotes
@@ -171,29 +171,29 @@ module completions_git {
   ]
 
   export extern "git checkout" [
-    treeish?: string             # tree to checkout from
-    ...pathspec: string@status   # limit paths to checkout
-    -b: string                   # create and checkout a new branch
-    -B: string                   # create/reset and checkout a branch
-    -l                           # create reflog for new branch
-    --guess                      # second guess 'git checkout <no-such-branch>' (default)
-    --overlay                    # use overlay mode (default)
-    --quiet(-q)                  # suppress progress reporting
-    --recurse-submodules: string # control recursive updating of submodules
-    --progress                   # force progress reporting
-    --merge(-m)                  # perform a 3-way merge with the new branch
-    --conflict: string           # conflict style (merge or diff3)
-    --detach(-d)                 # detach HEAD at named commit
-    --track(-t)                  # set upstream info for new branch
-    --force(-f)                  # force checkout (throw away local modifications)
-    --orphan: string             # new unparented branch
-    --overwrite-ignore           # update ignored files (default)
-    --ignore-other-worktrees     # do not check if another worktree is holding the given ref
-    --ours(-2)                   # checkout our version for unmerged files
-    --theirs(-3)                 # checkout their version for unmerged files
+    treeish?: string             # Tree to checkout from
+    ...pathspec: string@status   # Limit paths to checkout
+    -b: string                   # Create and checkout a new branch
+    -B: string                   # Create/reset and checkout a branch
+    -l                           # Create reflog for new branch
+    --guess                      # Second guess 'git checkout <no-such-branch>' (default)
+    --overlay                    # Use overlay mode (default)
+    --quiet(-q)                  # Suppress progress reporting
+    --recurse-submodules: string # Control recursive updating of submodules
+    --progress                   # Force progress reporting
+    --merge(-m)                  # Perform a 3-way merge with the new branch
+    --conflict: string           # Conflict style (merge or diff3)
+    --detach(-d)                 # Detach HEAD at named commit
+    --track(-t)                  # Set upstream info for new branch
+    --force(-f)                  # Force checkout (throw away local modifications)
+    --orphan: string             # New unparented branch
+    --overwrite-ignore           # Update ignored files (default)
+    --ignore-other-worktrees     # Do not check if another worktree is holding the given ref
+    --ours(-2)                   # Checkout our version for unmerged files
+    --theirs(-3)                 # Checkout their version for unmerged files
     --patch(-p)                  # Interactively add hunks of patch between the index and the work tree
-    --ignore-skip-worktree-bits  # do not limit pathspecs to sparse entries only
-    --pathspec-from-file: string # read pathspec from file
+    --ignore-skip-worktree-bits  # Do not limit pathspecs to sparse entries only
+    --pathspec-from-file: string # Read pathspec from file
     --help                       # Show help
   ]
 
@@ -514,7 +514,7 @@ module completions_git {
     --no-recurse-submodules     # Do not update submodules when restoring
     --overlay                   # Do not remove files when restoring
     --no-overlay                # Remove index-deleted tracked files when restoring
-    --pathspec-file-nul         # NUL separator for --path-spec-from-file
+    --pathspec-file-nul         # NUL separator for --pathspec-from-file
     --pathspec-from-file: glob  # Read <pathspec> from this file
     --help                      # Show help
   ]
@@ -588,6 +588,20 @@ module completions_git {
     --skip                        # Skip commit and continue operation
     --quit                        # Forget the in-progress operation
     --abort                       # Cancel the operation
+    --help                        # Show help
+  ]
+
+  export extern "git rm" [
+    ...pathspec: path
+    --force(-f)                   # Override the up-to-date check
+    --dry-run(-n)                 # Don't remove files, just show if they would  be
+    -r                            # Allow recursive removal of directories
+    --cached                      # Unstage and removes paths only from the index
+    --ignore-unmatch              # Exit with zero even if no files were matched
+    --sparse                      # Allow updating index entries outside of the sparse-checkout
+    --quiet(-q)                   # Suppress output
+    --pathspec-from-file: path    # Read paths from file
+    --pathspec-file-nul           # NUL separator for --pathspec-from-file
     --help                        # Show help
   ]
 
