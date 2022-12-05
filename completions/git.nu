@@ -339,7 +339,8 @@ module completions_git {
   ]
 
   export extern "git diff" [
-    path?: glob
+    branch?: string@branches
+    ...pathspec: glob          # Files to diff
     --cached
     --merge-base
     --staged
