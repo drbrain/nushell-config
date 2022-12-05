@@ -1,7 +1,7 @@
 module completions-ag {
   export extern "ag" [
     pattern: string                # Search pattern
-    files?: path                   # Search path
+    ...files: path                 # Search path
     --ackmate                      # Print results in AckMate-parseable format
     --after(-A): number            # Print lines after match (Default: 2)
     --before(-B): number           # Print lines before match (Default: 2)
