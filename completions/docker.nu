@@ -22,6 +22,12 @@ module completions_docker {
     docker_wrapper images
   }
 
+  export extern "docker image rm" [
+    ...images: string@image_tags # Images to remove
+    --force(-f)                  # Force removal
+    --no-prune                   # Do not delete untagged parents
+  ]
+
   export extern "docker tag" [
     source: string@image_tags
     target: string@repositories
