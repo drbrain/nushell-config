@@ -37,6 +37,8 @@ def-env c [dir = "": string@cdpath_complete] {
 
   let complete_dir = if $dir == "" {
     $default
+  } else if $dir == "-" {
+    $env.OLDPWD
   } else {
     $env.CDPATH
     | path expand
