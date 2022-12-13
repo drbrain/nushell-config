@@ -67,5 +67,5 @@ def-env c [dir = "": string@cdpath_complete] {
     $complete_dir
   }
 
-  let-env PWD = $complete_dir
+  cd $complete_dir
 }
