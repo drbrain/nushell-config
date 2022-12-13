@@ -45,10 +45,13 @@ module git_wrapper {
         )
       },
       "1": {
+        let states = parse_states $line.1
+
         ( {}
         | insert name $line.8
         | insert status "changed"
-        | merge { parse_states $line.1 }
+        | insert staged $states.staged
+        | insert unstaged $states.unstaged
         | insert mode_head $line.3
         | insert mode_index $line.4
         | insert mode_worktree $line.5
@@ -58,10 +61,13 @@ module git_wrapper {
       },
       "2": {
         let paths = parse_rename_path $line.9
+        let states = parse_states $line.1
+
         ( {}
         | insert status "renamed"
         | insert name $paths.0
-        | merge { parse_states $line.1 }
+        | insert staged $states.staged
+        | insert unstaged $states.unstaged
         | insert mode_head $line.3
         | insert mode_index $line.4
         | insert mode_worktree $line.5
@@ -71,10 +77,13 @@ module git_wrapper {
         )
       },
       "u": {
+        let states = parse_states $line.1
+
         ( {}
         | insert status "unmerged"
         | insert name $line.10
-        | merge { parse_states $line.1 }
+        | insert staged $states.staged
+        | insert unstaged $states.unstaged
         | insert mode_stage_1 $line.3
         | insert mode_stage_2 $line.4
         | insert mode_stage_3 $line.5
@@ -131,4 +140,3 @@ module git_wrapper {
     )
   }
 }
-
