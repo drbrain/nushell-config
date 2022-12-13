@@ -19,7 +19,10 @@ module git_wrapper {
   }
 
   def match [input, matchers: record] {
-      echo $matchers | get $input | do $in
+      ( echo $matchers
+      | get $input
+      | do $in
+      )
   }
 
   # Parses most of `git status --porcelain=2`
@@ -36,12 +39,16 @@ module git_wrapper {
         ( {}
         | insert name $line.1
         | insert status "untracked"
+        | insert staged "untracked"
+        | insert unstaged "untracked"
         )
       },
       "!": {
         ( {}
         | insert name $line.1
         | insert status "ignored"
+        | insert staged "untracked"
+        | insert unstaged "untracked"
         )
       },
       "1": {
