@@ -1,4 +1,5 @@
 module completions_vimr {
+  # Open files in VimR
   export extern "vimr" [
     ...files: glob
     --help(-h)
