@@ -10,6 +10,7 @@ module docker_wrapper {
     | move CreatedAt --after Size
     | move Repository --before Tag
     | move ID --before Repository
+    | sort-by Repository Tag CreatedAt
     )
   }
 }
