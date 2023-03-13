@@ -37,27 +37,29 @@ def-env c [dir = "": string@cdpath_complete] {
 
   let complete_dir = if $dir == "" {
     $default
-  } else if $dir == "-" {
-    if ( env | any name == OLDPWD ) {
-      $env.OLDPWD
-    } else {
-      $env.HOME
-    }
   } else {
-    $env.CDPATH
-    | path expand
-    | reduce -f "" { |$it, $acc|
-        if $acc == "" {
-          let new_path = ([$it $dir] | path join)
-          if ($new_path | path exists) {
-            $new_path
-          } else {
-            ""
-          }
-        } else {
-          $acc
-        }
+    if $dir == "-" {
+      if ( env | any { |it| $it.name == OLDPWD } ) {
+        $env.OLDPWD
+      } else {
+        $env.HOME
       }
+    } else {
+      $env.CDPATH
+      | path expand
+      | reduce -f "" { |$it, $acc|
+          if $acc == "" {
+            let new_path = ([$it $dir] | path join)
+            if ($new_path | path exists) {
+              $new_path
+            } else {
+              ""
+            }
+          } else {
+            $acc
+          }
+        }
+    }
   }
 
   let complete_dir = if $complete_dir == "" {
