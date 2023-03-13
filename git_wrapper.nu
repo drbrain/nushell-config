@@ -1,7 +1,7 @@
 module git_wrapper {
   def commits_parse_line [line: string] {
     ( $line
-    | split column "\u0000"
+    | split column "\u{0}"
     | rename ref author date subject
     )
   }
