@@ -146,4 +146,30 @@ module git_wrapper {
     | each { |line| parse_line $line }
     )
   }
+
+  def stash_list_parse_line [line: string] {
+    ( $line
+    | split column "\u{0}"
+    | rename date subject
+    | update subject { |r|
+      $r.subject
+      | parse -r "WIP on (?P<branch>.*?): (?P<commit>\\w+) (?P<subject>.*)"
+    }
+    | flatten -a
+    )
+  }
+
+  export def stash_list [] {
+    let args = [
+      "reflog",
+      "stash"
+      "--pretty=format:%aI%x00%s",
+    ]
+
+    ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+    | lines
+    | par-each { |line| stash_list_parse_line $line }
+    )
+  }
+
 }

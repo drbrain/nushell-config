@@ -807,6 +807,14 @@ module completions_git {
     --pathspec-file-null
   ]
 
+  export def "git stash list" () {
+    git_wrapper stash_list |
+    par-each { |row|
+      $row |
+      update date { |d| $d.date | into datetime }
+    }
+  }
+
   #export extern "git status" [
   #  ...pathspec: path             # Paths to get status for
   #  --short(-s)                   # Use short format
