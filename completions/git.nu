@@ -872,6 +872,7 @@ module completions_git {
   export def "git submodule status" (--recursive) {
     ( git_wrapper submodule_status $recursive
     | update SHA { |r| $r.SHA | str substring 0..8 }
+    | sort
     )
   }
 
