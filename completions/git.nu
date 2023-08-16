@@ -846,7 +846,7 @@ module completions_git {
     git_wrapper status $ignored | select name status staged unstaged --ignore-errors
   }
 
-  def submodules [] {
+  def submodule [] {
     [
       "add",
       "status",
@@ -862,12 +862,18 @@ module completions_git {
     ]
   }
 
-  export extern "git submodules" [
-    command: string@submodules
+  export extern "git submodule" [
+    command: string@submodule
     --quiet
     --cached
     --help                       # Show help
   ]
+
+  export def "git submodule status" (--recursive) {
+    ( git_wrapper submodule_status $recursive
+    | update SHA { |r| $r.SHA | str substring 0..8 }
+    )
+  }
 
   export extern "git switch" [
     branch?: string@branches_and_remotes # Branch to switch to

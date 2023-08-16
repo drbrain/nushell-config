@@ -172,4 +172,33 @@ module git_wrapper {
     )
   }
 
+  def submodule_status_parse_line [line: string] {
+    ( $line
+    | parse -r '(?P<status>[ U+-])(?P<SHA>[^ ]+) (?P<path>.*?) \((?P<ref>.*)\)'
+    | move status --after ref
+    | move path --before SHA
+    | move ref --before SHA
+    )
+  }
+
+  export def submodule_status [recursive: bool] {
+    let args = [
+      "submodule",
+      "status"
+    ]
+
+    let args = if $recursive {
+      $args | append "--recursive"
+    } else {
+      $args
+    }
+
+    # TODO: Read .gitmodules and run git -C $submodule rev-parse HEAD to find
+    # commits and be recursive
+    ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+    | lines
+    | par-each { |line| submodule_status_parse_line $line }
+    | flatten
+    )
+  }
 }
