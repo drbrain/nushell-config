@@ -11,7 +11,7 @@ export-env {
     STARSHIP_SHELL: "nu"
     STARSHIP_SESSION_KEY: (random chars -l 16)
     PROMPT_MULTILINE_INDICATOR: (
-      ^/opt/homebrew/bin/starship prompt --continuation
+      ^starship prompt --continuation
     )
 
     # Does not play well with default character module.
@@ -31,7 +31,7 @@ export-env {
       let pre_prompt = $pre_prompt + $"\e]1337;CurrentDir=($env.PWD)\a"
 
       let prompt = (
-        ^/opt/homebrew/bin/starship prompt
+        ^starship prompt
           --cmd-duration $env.CMD_DURATION_MS
           $"--status=($env.LAST_EXIT_CODE)"
           --terminal-width (term size).columns
@@ -41,10 +41,11 @@ export-env {
       let post_prompt = "\e]133;B;\a"
 
       # Mark start of output
-      let output_cr = if $env.TERM_PROGRAM == "iTerm.app" {
-        "\r"
-      } else {
+      let output_cr = if ($env | get -i TERM_PROGRAM) != "iTerm.app" {
         ""
+      } else {
+        # assume iTerm.app
+        "\r"
       }
 
       let post_prompt = $post_prompt + $"\e]133;C;($output_cr)\a"
@@ -61,7 +62,7 @@ export-env {
 
     PROMPT_COMMAND_RIGHT: {||
       (
-        ^/opt/homebrew/bin/starship prompt
+        ^starship prompt
           --right
           --cmd-duration $env.CMD_DURATION_MS
           $"--status=($env.LAST_EXIT_CODE)"
