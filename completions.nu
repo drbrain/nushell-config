@@ -6,8 +6,9 @@ source "completions/cargo.nu"
 source "completions/docker.nu"
 source "completions/git.nu"
 source "completions/ssh.nu"
-source "completions/tmux.nu"
 source "completions/vimr.nu"
+
+use tmux completion *
 
 # https://github.com/nushell/nushell/issues/5959
 # source "completions/mdfind.nu"
