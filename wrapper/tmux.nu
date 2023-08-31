@@ -45,3 +45,12 @@ export def list_sessions [] {
   }
   )
 }
+
+# Update the nushell environment from tmux
+export def update-environment [] {
+  if (has_session) {
+    environment
+    | into record
+    | load-env
+  }
+}

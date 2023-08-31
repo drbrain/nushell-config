@@ -8,7 +8,7 @@ source "completions/git.nu"
 source "completions/ssh.nu"
 source "completions/vimr.nu"
 
-use tmux completion *
+use completion tmux *
 
 # https://github.com/nushell/nushell/issues/5959
 # source "completions/mdfind.nu"

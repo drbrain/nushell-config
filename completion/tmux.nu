@@ -1,4 +1,4 @@
-use wrapper.nu *
+use wrapper tmux *
 
 def commands [] {
   ( list_commands
@@ -9,7 +9,7 @@ def commands [] {
 }
 
 # Terminal multiplexer
-export extern "tmux" [
+export extern main [
   -2         # Force 256 color terminal support
   -C         # Start in control mode, twice disables echo
   -c: string # Execute a shell command using the default shell
