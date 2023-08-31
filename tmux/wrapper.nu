@@ -9,7 +9,7 @@ export def environment [] {
       if ($l | str contains "=") {
         $l | parse "{name}={value}"
       } else {
-        $l | parse "-{name}" | insert value null
+        $l | parse "-{name}"
       }
     }
   | flatten
@@ -26,6 +26,13 @@ export def list_commands [] {
   ( tmux_wrapper "list-commands"
   | lines
   | parse -r "(?<command>[\\w-]+) (?:\\((?<alias>\\w+)\\) )?(?<flags>.*)"
+  )
+}
+
+export def list_buffers [] {
+  ( tmux_wrapper "list-buffers"
+  | lines
+  | parse -r "(?<name>.*?): .*? bytes: \\"(?<data>.*)\\""
   )
 }
 

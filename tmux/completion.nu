@@ -42,3 +42,27 @@ export def "tmux show-environment" () {
   | sort
   )
 }
+
+# buffers
+
+def buffer [] {
+  list_buffers | get name
+}
+
+# Delete a buffer
+export extern "tmux delete-buffer" [
+  -b: string@buffer # Buffer to delete
+]
+
+# List global buffers
+export def "tmux list-buffers" () {
+  ( list_buffers
+  | sort
+  )
+}
+
+# Show a buffer
+export extern "tmux show-buffer" [
+  -b: string@buffer # Buffer to show
+]
+
