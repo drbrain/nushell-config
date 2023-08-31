@@ -36,3 +36,9 @@ export def "tmux list-sessions" () {
   | move attached --after name
   )
 }
+
+export def "tmux show-environment" () {
+  ( environment
+  | sort
+  )
+}
