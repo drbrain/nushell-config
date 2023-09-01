@@ -1,7 +1,7 @@
-source "completions/ag.nu"
 source "completions/cargo.nu"
 source "completions/ssh.nu"
 
+use completion ag *
 use completion docker *
 use completion git *
 use completion tmux *
