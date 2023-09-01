@@ -1,9 +1,8 @@
-source "completions/ssh.nu"
-
 use completion ag *
 use completion cargo *
 use completion docker *
 use completion git *
+use completion ssh *
 use completion tmux *
 use completion vimr *
 
