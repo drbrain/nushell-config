@@ -1,11 +1,9 @@
-source "docker_wrapper.nu"
-
 source "completions/ag.nu"
 source "completions/cargo.nu"
-source "completions/docker.nu"
 source "completions/ssh.nu"
 source "completions/vimr.nu"
 
+use completion docker *
 use completion git *
 use completion tmux *
 
