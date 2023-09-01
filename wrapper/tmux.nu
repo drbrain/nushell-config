@@ -36,6 +36,21 @@ export def list_buffers [] {
   )
 }
 
+export def list-keys [table?: string] {
+  let keys = if $table == null {
+    tmux_wrapper list-keys
+  } else {
+    tmux_wrapper list-keys "-T" $table
+  }
+
+  $keys
+  | lines
+  | parse -r "bind-key (?<repeat>-r)?\\s+-T (?<table>\\S+)\\s+(?<key>\\S+)\\s+(?<command>\\S+)(?: (?<arguments>.*))?"
+  | update repeat { |r| $r.repeat == "-r" }
+  | move table --after arguments
+  | move repeat --after table
+}
+
 export def list_sessions [] {
   ( tmux_wrapper "list-sessions"
   | lines
