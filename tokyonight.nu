@@ -21,7 +21,6 @@ export def-env night () {
   let green1 = "#73daca"
   let green2 = "#41a6b5"
   let magenta = "#bb9af7"
-  let magenta = "#bb9af8"
   let magenta2 = "#ff007c"
   let orange = "#ff9e64"
   let purple = "#9d7cd8"
