@@ -36,7 +36,7 @@ export def list_buffers [] {
   )
 }
 
-export def list-keys [table?: string] {
+export def list_keys [table?: string] {
   let keys = if $table == null {
     tmux_wrapper list-keys
   } else {
