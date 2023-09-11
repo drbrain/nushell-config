@@ -3,6 +3,7 @@ use completion cargo *
 use completion docker *
 use completion git *
 use completion mdfind *
+use completion rg *
 use completion ssh *
 use completion tmux *
 use completion vimr *
