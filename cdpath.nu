@@ -3,26 +3,26 @@
 #
 # You must set $env.CDPATH, try:
 #
-#     let-env CDPATH = [
+#     $env.CDPATH = [
 #       ".",
 #       "~",
 #       "~/path/to/repositories",
 #     ]
 #
-# This will complete:
+# The above $env.CDPATH will complete:
 # * Entries under the current directory ($env.PWD)
 # * Entries in your home directory ($env.HOME)
 # * Entries where you check out repositories
 
 # Completion for `c`
-def cdpath_complete [] {
+def complete [] {
   ( $env.CDPATH
   | path expand
-  | each { |dir|
-      ( ls $dir
+  | filter { || $in | path exists }
+  | par-each { ||
+      ls -a $in
       | where type == "dir"
       | get name
-      )
     }
   | flatten
   | path basename
@@ -31,49 +31,55 @@ def cdpath_complete [] {
   )
 }
 
-def-env c [dir = "": string@cdpath_complete] {
+# Change directory with $env.CDPATH
+def-env c [dir = "": string@complete] {
   let span = (metadata $dir).span
-  let default = $env.HOME
-
-  let complete_dir = if $dir == "" {
-    $default
+  let default = if $nu.os-info.name == "windows" {
+    $env.USERPROFILE
   } else {
-    if $dir == "-" {
-      if ( env | any { |it| $it.name == OLDPWD } ) {
-        $env.OLDPWD
-      } else {
-        $env.HOME
-      }
-    } else {
-      $env.CDPATH
-      | path expand
-      | reduce -f "" { |$it, $acc|
-          if $acc == "" {
-            let new_path = ([$it $dir] | path join)
-            if ($new_path | path exists) {
-              $new_path
-            } else {
-              ""
-            }
-          } else {
-            $acc
-          }
-        }
-    }
+    $env.HOME
   }
 
-  let complete_dir = if $complete_dir == "" {
+  let target_dir = if $dir == "" {
+    $default
+  } else if $dir == "-" {
+    if "OLDPWD" in $env {
+      $env.OLDPWD
+    } else {
+      $default
+    }
+  } else {
+    $env.CDPATH
+    | path expand
+    | filter { || $in | path exists }
+    | reduce -f "" { |$it, $acc|
+        if $acc == "" {
+          let new_path = ([$it $dir] | path join)
+          if ($new_path | path exists) {
+            $new_path
+          } else {
+            ""
+          }
+        } else {
+          $acc
+        }
+      }
+  }
+
+  let target_dir = if $target_dir == "" {
+    let cdpath = $env.CDPATH | str join ", "
+
     error make {
-      msg: "No such directory under any $env.CDPATH entry",
+      msg: $"No such child under: ($cdpath)",
       label: {
-        text: "This directory",
+        text: "Child directory",
         start: $span.start,
         end: $span.end,
       }
     }
   } else {
-    $complete_dir
+    $target_dir
   }
 
-  cd $complete_dir
+  cd $target_dir
 }
