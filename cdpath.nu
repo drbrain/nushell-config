@@ -32,8 +32,8 @@ module cdpath {
       $children | each { |child| { value: $child, description: $path } }
       }
     )
-      | flatten
-      | uniq-by value
+    | flatten
+    | uniq-by value
   }
 
   # Change directory with $env.CDPATH
