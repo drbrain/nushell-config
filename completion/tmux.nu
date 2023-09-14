@@ -20,8 +20,8 @@ export extern main [
   -u         # Force UTF-8
   -v         # Request verbose logging
   -V         # Version
-  command: string@commands
-  command_flags?: list
+  command?: string@commands
+  ...command_flags: string
 ]
 
 # List all tmux commands
