@@ -17,13 +17,36 @@ export def config_files [] {
 
     let new = $found
       | filter {|item|
-          $seen | all {|cf| $cf != $item }
+          $item not-in $seen
         }
 
     $todo = ($todo | append $new)
   }
 
   $config_files
+}
+
+def hosts [] {
+  config_files
+  | par-each {|file|
+      open $file
+      | lines
+      | find -r '^\s*Host(?:name)?\s'
+      | parse -r '^\s*Host(?:name)?\s(?<hosts>.*)'
+      | get hosts
+      | split column ' '
+      | values
+      | flatten
+      | uniq
+      | filter {|host|
+          not (
+            ( $host | str starts-with "!" ) or
+            ( $host =~ '\*|%' )
+          )
+        }
+    }
+  | flatten
+  | uniq
 }
 
 def included [config: path] {
@@ -38,7 +61,7 @@ def included [config: path] {
   | values
   | flatten
   | uniq
-  | each {|include|
+  | par-each {|include|
       let glob = if ( $include | str starts-with '/' ) {
         $include
       } else if ( $include | str starts-with '~' ) {
@@ -56,7 +79,7 @@ def included [config: path] {
   | uniq
 }
 
-export def known_hosts [] {
+def known_hosts [] {
   let files = known_hosts_files
 
   $files
@@ -101,4 +124,18 @@ def known_hosts_files_in [config: path] {
   | filter {||
     $in | path exists
   }
+}
+
+# Hosts listed in SSH config files
+#
+# Includes Host, HostName, GlobalKnownHostsFile and UserKnownHostsFile entries
+# that do not contain wildcards
+export def ssh_hosts [] {
+  let $hosts = hosts
+  let $known_hosts = known_hosts
+
+  $hosts
+  | append $known_hosts
+  | uniq
+  | sort
 }
