@@ -81,7 +81,7 @@ export def known_hosts [] {
 
 def known_hosts_files [] {
   config_files
-  | each {|file|
+  | par-each {|file|
       known_hosts_files_in $file
     }
   | flatten
