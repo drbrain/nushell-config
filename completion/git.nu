@@ -366,17 +366,24 @@ export extern "git diff" [
   --help                     # Show help
 ]
 
-# Create or reinitialize a git repository
-export extern "git init" [
-  directory: path              # Directory to create a git repository in
-  --quiet(-q)                  # Only print error and warning messages
-  --bare                       # Create a bare repository
-  --object-format: string      # Specify the object format
-  --template: path             # Repository template directory
-  --separate-git-dir: path     # Set the repository .git dir to this path
-  --initial-branch(-b): string # The name of the initial branch
-  --shared: string             # Share the git directory
-  --help                       # Show help
+# Verify the connectivity and validity of objects in the database
+export extern "git fsck" [
+  ...object: string   # An object to treat as the head of an unreachability trace
+  --unreachable       # Show objects that exist but are unreachable from the reference nodes
+  --dangling          # Print objects that exist but are never directly used
+  --no-dangling       # Omit dangling objects
+  --root              # Report root nodes
+  --tags              # Report tags
+  --cached            # Consider any object recording in the index as a head node for an unreachability trace
+  --no-reflogs        # Do not consider commits that are referenced only by a reflog entry to be reachable
+  --full              # Check objects found in alternate object pools and packed git archives
+  --connectivity-only # Check only the connectivity of reachable objects
+  --strict            # Enable more strict checking
+  --verbose           # Be verbose
+  --lost-found        # Write dangling objects into the lost-found directory
+  --name-objects      # Display how a named object is reachable
+  --progress          # Report progress status
+  --no-progress       # Do not report progress status
 ]
 
 # Clean and optimize the local repository
@@ -390,6 +397,19 @@ export extern "git gc" [
   --no-prune          # Do not prune loose objects
   --prune: string     # Prune loose objects older than this date
   --quiet             # Suppress output
+]
+
+# Create or reinitialize a git repository
+export extern "git init" [
+  directory: path              # Directory to create a git repository in
+  --quiet(-q)                  # Only print error and warning messages
+  --bare                       # Create a bare repository
+  --object-format: string      # Specify the object format
+  --template: path             # Repository template directory
+  --separate-git-dir: path     # Set the repository .git dir to this path
+  --initial-branch(-b): string # The name of the initial branch
+  --shared: string             # Share the git directory
+  --help                       # Show help
 ]
 
 def decorate () {
