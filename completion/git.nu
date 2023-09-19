@@ -38,6 +38,7 @@ def modified [] {
   | get name
 }
 
+# A revision control system
 export extern main [
   command: string@commands
   args?: list
@@ -66,6 +67,7 @@ export extern main [
   -c: string             # Set a configuration parameter <name>=<value>
 ]
 
+# Add file contents to the index
 export extern "git add" [
   ...pathspecs: string@modified
   --all(-A)                  # Update the index where the working tree has a matching file or index entry
@@ -92,6 +94,7 @@ export extern "git add" [
   --help                     # Show help
 ]
 
+# Show what revision and author last modified lines in a file
 export extern "git blame" [
   file: path
   -b                         # Show blank SHA for boundary commits
@@ -128,6 +131,7 @@ export extern "git blame" [
   --help(-h)                 # Show help
 ]
 
+# List, create, or delete branches
 export extern "git branch" [
   branch?: string@branches_and_remotes
   --abbrev: string
@@ -169,6 +173,7 @@ export extern "git branch" [
   --help                     # Show help
 ]
 
+# Restore working tree files
 export extern "git checkout" [
   treeish?: string             # Tree to checkout from
   ...pathspec: string@modified # Limit paths to checkout
@@ -196,6 +201,7 @@ export extern "git checkout" [
   --help                       # Show help
 ]
 
+# Apply changes introduced by existing commits
 export extern "git cherry-pick" [
   ...commits: string@commits    # Commit to cherry-pick
   --edit(-e)                    # Edit the message prior to committing
@@ -222,6 +228,7 @@ export extern "git cherry-pick" [
   --help                        # Show help
 ]
 
+# Clone a repository into a new directory
 export extern "git clone" [
   --local(-l)                  # Copy HEAD, objects, and refs directories from a local repo
   --no-hardlinks               # Don't use hard links to .git/objects when cloning a local repo
@@ -262,6 +269,7 @@ export extern "git clone" [
   directory?: string           # Directory to clone into
 ]
 
+# Record changes to the repository
 export extern "git commit" [
   ...pathspec: path@modified
   -a
@@ -300,6 +308,7 @@ def config_type [] {
   ["bool", "int", "bool-or-int", "path", "expiry-date", "color"]
 }
 
+# Get and set repository or global options
 export extern "git config" [
   name: string
   value?: any
@@ -337,6 +346,7 @@ export extern "git config" [
   --help                     # Show help
 ]
 
+# Show changes between commits, commit and tree, etc.
 export extern "git diff" [
   branch?: string@branches
   ...pathspec: glob          # Files to diff
@@ -356,6 +366,7 @@ export extern "git diff" [
   --help                     # Show help
 ]
 
+# Create or reinitialize a git repository
 export extern "git init" [
   directory: path              # Directory to create a git repository in
   --quiet(-q)                  # Only print error and warning messages
@@ -403,6 +414,7 @@ export extern "git log" [
   -L: string                   # Trace the evolution of a line range
 ]
 
+# Join two or more branches together
 export extern "git merge" [
   commit?: string
   --commit                      # Merge and commit
@@ -449,6 +461,7 @@ export extern "git merge" [
   --help                        # Show help
 ]
 
+# Move or rename files, directories, or symlinks
 export extern "git mv" [
   ...source: glob
   destination: path
@@ -459,6 +472,7 @@ export extern "git mv" [
   --help        # Show help
 ]
 
+# Update remote refs along with associated objects
 export extern "git push" [
   remote?: string@remotes               # the name of the remote
   refspec?: string@branches_and_remotes # the branch / refspec
@@ -490,6 +504,7 @@ export extern "git push" [
   --help                                # Show help
 ]
 
+# Reapply commits on top of another base tip
 export extern "git rebase" [
   upstream?: string@branches_and_remotes
   branch?: string@branches
@@ -510,6 +525,7 @@ def remote_commands [] {
   [ "add", "rename", "remove", "set-head", "set-branches", "get-url", "set-url", "prune" ]
 }
 
+# Manage set of tracked repositories
 export extern "git remote" [
   command?: string@remote_commands # Command to run
   --verbose(-v)                    # Show URL after name
@@ -520,6 +536,7 @@ def mirror [] {
   [ "fetch", "push" ]
 }
 
+# Add a remote repository
 export extern "git remote add" [
   name: string
   url: string
@@ -530,6 +547,7 @@ export extern "git remote add" [
   --mirror: string@mirror # Create a mirror
 ]
 
+# Restore working tree files
 export extern "git restore" [
   ...pathspec: glob
   --source(-s): string        # Restore the working tree with content from this tree
@@ -554,6 +572,7 @@ export extern "git restore" [
   --help                      # Show help
 ]
 
+# Pick out and massage parameters
 export extern "git rev-parse" [
   --parseopt              # Use git rev-parse option in parsing mode
   --keep-dashdash         # Echo first -- in --parseopt mode
@@ -605,6 +624,7 @@ export extern "git rev-parse" [
   --help                  # Show help
 ]
 
+# Revert some existing commits
 export extern "git revert" [
   commit?: string
   --edit(-e)                    # Edit the revert commit message
@@ -626,6 +646,7 @@ export extern "git revert" [
   --help                        # Show help
 ]
 
+# Remove files from the working tree and index
 export extern "git rm" [
   ...pathspec: path
   --force(-f)                   # Override the up-to-date check
@@ -650,6 +671,7 @@ def diff_algorithm [] {
   ]
 }
 
+# Show various types of objects
 export extern "git show" [
   commit?: string
   ...paths: path
@@ -769,6 +791,7 @@ def stash [] {
   ]
 }
 
+# Stash changes in a dirty working directory
 export extern "git stash" [
   command?: string@stash
   pathspec?: glob
@@ -785,26 +808,44 @@ export extern "git stash" [
   --help                       # Show help
 ]
 
+# Apply a single stashed state without removing it from the stash list
 export extern "git stash apply" [
   --index
   --quiet(-q)
 ]
 
+# Create a stash entry and return its objcet name
 export extern "git stash create" [
   message?: string
 ]
 
+# Clear all stash entries
+export extern "git stash clear" [
+]
+
+# Remove a single stash entry
 export extern "git stash drop" [
   --index
   --quiet(-q)
 ]
 
+# List stash entries
+export def "git stash list" () {
+  stash_list
+  | par-each { |row|
+    $row |
+    update date { |d| $d.date | into datetime }
+  }
+}
+
+# Remove a single stashed state and apply it to the current working tree state
 export extern "git stash pop" [
   stash?: string
   --index
   --quiet(-q)
 ]
 
+# Save local modifications to a new stash entry
 export extern "git stash push" [
   pathspec?: glob
   --patch(-p)                # Interactively add hunks of patch between the index and the work tree
@@ -819,13 +860,12 @@ export extern "git stash push" [
   --pathspec-file-null
 ]
 
-export def "git stash list" () {
-  stash_list
-  | par-each { |row|
-    $row |
-    update date { |d| $d.date | into datetime }
-  }
-}
+# Show changes record in the stash entry as a diff
+export extern "git stash show" [
+  stash: string
+  --include-untracked(-u) # Show untracked files as part of the diff
+  --only-untracked        # Show only the untracked files as part of the diff
+]
 
 #export extern "git status" [
 #  ...pathspec: path             # Paths to get status for
@@ -854,6 +894,7 @@ export def "git stash list" () {
 #  --help                        # Show help
 #]
 
+# Show the working tree status
 export def "git status" (--ignored) {
   let $ignored = $ignored | into string
 
@@ -877,6 +918,7 @@ def submodule [] {
   ]
 }
 
+# Initialize, update, or inspect submodules
 export extern "git submodule" [
   command: string@submodule
   --quiet
@@ -884,12 +926,14 @@ export extern "git submodule" [
   --help                       # Show help
 ]
 
+# Show the status of submodules
 export def "git submodule status" (--recursive) {
   submodule_status $recursive
   | update SHA { |r| $r.SHA | str substring 0..8 }
   | sort
 }
 
+# Switch branches
 export extern "git switch" [
   branch?: string@branches_and_remotes # Branch to switch to
   start_point?: string
@@ -917,6 +961,7 @@ def cleanup_mode [] {
   ["verbatim", "whitespace", "strip"]
 }
 
+# Create, list, delete, or verify a tag object
 export extern "git tag" [
   tagname?: string
   commit?: string
