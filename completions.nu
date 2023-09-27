@@ -7,4 +7,5 @@ use completion rg *
 use completion rsync *
 use completion ssh *
 use completion tmux *
+use completion unix *
 use completion vimr *

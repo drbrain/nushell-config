@@ -15,3 +15,18 @@ export extern chmod [
   -I # Remove all inherited entry from the name files' ACLs
   -N # Removes the ACL from the named files
 ]
+
+# Print sequential or random data
+export extern jot [
+  repetitions?: int # Number of items
+  begin?: string # Lower bound
+  end?: string   # Upper bound
+  s?: string # First argument
+  -r # Generate random data
+  -b: string # Print this string repetitively
+  -w: string # Print this string with generated data appended to it.  May be a printf(3) format
+  -c # Abbreviation for -w %c
+  -s: string # Print data separated by this string
+  -n # Do not print a final newline
+  -p: int # Print this many digits of precision
+]
