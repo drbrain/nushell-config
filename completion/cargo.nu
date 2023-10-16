@@ -1,5 +1,19 @@
+use wrapper cargo *
+
 def color [] {
   ["auto", "always", "never"]
+}
+
+def edition [] {
+  [
+    "2015",
+    "2018",
+    "2021",
+  ]
+}
+
+def timing [] {
+  ["html", "json"]
 }
 
 def vcs [] {
@@ -9,14 +23,6 @@ def vcs [] {
     "pijul",
     "fossil",
     "none",
-  ]
-}
-
-def edition [] {
-  [
-    "2015",
-    "2018",
-    "2021",
   ]
 }
 
@@ -93,7 +99,7 @@ export extern "cargo build" [
   --target: string          # Build for the target triple
   --test: string            # Build only the specified test target
   --tests                   # Build all tests
-  --timings: string         # Timing output formats (unstable) (comma separated): html, json
+  --timings: string@timing  # Timing output formats (unstable, comma separated)
   --unit-graph              # Output build graph in JSON (unstable)
   --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
   --workspace               # Build all packages in the workspace
@@ -120,6 +126,48 @@ export extern "cargo init" [
   --quiet(-q)               # Do not print cargo log messages
   --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
   --help(-h)                # Print help information
+]
+
+# Install a Rust binary
+export extern "cargo install" [
+  ...spec: string          # Crate to install
+  --quiet(-q)              # Do not print cargo log messages
+  --version: string        # Specify a version to install
+  --git: string            # Git URL to install the specified crate from
+  --branch: string         # Branch to use when installing from git
+  --tag: string            # Tag to use when installing from git
+  --rev: string            # Specific commit to use when installing from git
+  --path: string           # Filesystem path to local crate to install
+  --list                   # list all installed packages and their versions
+  --jobs(-j): int          # Number of parallel jobs, defaults to of CPUs.
+  --keep-going             # Do not abort the build as soon as there is an error (unstable)
+  --force(-f)              # Force overwriting existing crates or binaries
+  --no-track               # Do not save tracking information
+  --features(-F): string   # Space or comma separated list of features to activate
+  --all-features           # Activate all available features
+  --no-default-features    # Do not activate the `default` feature
+  --profile: string        # Install artifacts with the specified profile
+  --debug                  # Build in debug mode (with the 'dev' profile) instead of release mode
+  --bin: string            # Install only the specified binary
+  --bins                   # Install all binaries
+  --example: string        # Install only the specified example
+  --examples               # Install all examples
+  --target: string         # Build for the target triple
+  --target-dir: path       # Directory for all generated artifacts
+  --root: path             # Directory to install packages into
+  --index: string          # Registry index to install from
+  --registry: string       # Registry to use
+  --ignore-rust-version    # Ignore `rust-version` specification in packages
+  --message-format: string # Error format
+  --timings: string@timing # Timing output formats (unstable, comma separated)
+  --help(-h)               # Print help
+  --verbose(-v)            # Use verbose output (-vv very verbose/build.rs output)
+  --color: string@color    # Coloring: auto, always, never
+  --frozen                 # Require Cargo.lock and cache are up to date
+  --locked                 # Require Cargo.lock is up to date
+  --offline                # Run without accessing the network
+  --config: string         # Override a configuration value
+  -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 def nextest [] {
@@ -239,3 +287,32 @@ export extern "cargo nextest run" [
   --workspace                # Build all packages in the workspace
   -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
+
+def installed [] {
+  ( list_installed
+  | each {|p|
+    let description = $"($p.package) ($p.version)"
+
+    { value: $p.package, description: $description }
+  }
+  | sort
+  )
+}
+
+# Remove a rust binary
+export extern "cargo uninstall" [
+  ...spec: string@installed # Binary to remove
+  --quiet(-q)               # Do not print cargo log messages
+  --package(-p): string     # Package to uninstall
+  --bin: string             # Only uninstall the binary NAME
+  --root: string            # Directory to uninstall packages from
+  --help(-h)                # Print help
+  --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
+  --color: string@color     # Coloring: auto, always, never
+  --frozen                  # Require Cargo.lock and cache are up to date
+  --locked                  # Require Cargo.lock is up to date
+  --offline                 # Run without accessing the network
+  --config: string          # Override a configuration value
+  -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+]
+
