@@ -54,6 +54,8 @@ module cdpath {
       } else {
         $default
       }
+    } else if ( $dir | str starts-with "~" ) {
+      $dir
     } else {
       $env.CDPATH
         | path expand
