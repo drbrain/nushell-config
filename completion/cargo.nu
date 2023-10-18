@@ -138,7 +138,7 @@ export extern "cargo install" [
   --tag: string            # Tag to use when installing from git
   --rev: string            # Specific commit to use when installing from git
   --path: string           # Filesystem path to local crate to install
-  --list                   # list all installed packages and their versions
+  --list                   # List all installed packages
   --jobs(-j): int          # Number of parallel jobs, defaults to of CPUs.
   --keep-going             # Do not abort the build as soon as there is an error (unstable)
   --force(-f)              # Force overwriting existing crates or binaries
@@ -169,6 +169,13 @@ export extern "cargo install" [
   --config: string         # Override a configuration value
   -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
+
+# List all installed packages
+export def "cargo install --list" [] {
+  ( list_installed
+  | sort-by package version
+  )
+}
 
 def nextest [] {
   ["list", "run"]
