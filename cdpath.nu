@@ -19,6 +19,7 @@ module cdpath {
   def complete [] {
     ( $env.CDPATH
       | path expand
+      | uniq
       | filter { || $in | path exists }
       | each { |path|
       let children = (
