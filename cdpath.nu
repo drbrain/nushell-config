@@ -17,7 +17,11 @@
 #
 # This CDPATH implementation also completes absolute paths to help you use `c`
 # instead of `cd`
-
+#
+# Bugs:
+# * `c` does not complete paths that start with "~".  This should support both
+#   directories ("~/.config/nu"), users ("~notme"), and both combined
+#   ("~notme/.config/nu")
 module cdpath {
   # $env.CDPATH with unique, expanded, existing paths
   def cdpath [] {
