@@ -13,6 +13,10 @@
 # * Entries under the current directory ($env.PWD)
 # * Entries in your home directory ($env.HOME)
 # * Entries where you check out repositories
+# * Children of those entries
+#
+# This CDPATH implementation also completes absolute paths to help you use `c`
+# instead of `cd`
 
 module cdpath {
   # $env.CDPATH with unique, expanded, existing paths
@@ -23,15 +27,22 @@ module cdpath {
     | filter {|| $in | path exists }
   }
 
+  # Children of a path
   def children [path: string] {
     ls -a $path
     | where type == "dir"
     | get name
-    | path basename
-    | sort
   }
 
   # Completion for `c`
+  #
+  # `contains` is used instead of `starts-with` to behave similar to fuzzy
+  # completion behavior.
+  #
+  # During completion of a CDPATH entry the description contains the parent
+  # directory you will complete under.  This allows you to tell which entry in
+  # your CDPATH your are completing to if you have the same directory under
+  # multiple entries.
   def complete [context: string] {
     let context_dir = $context | parse "c {context_dir}" | get context_dir | first
     let path = $context_dir | path split
@@ -40,16 +51,16 @@ module cdpath {
     # completion with no context
     if ( $path | is-empty ) {
       complete_from_cdpath
-    # Chosing an entry directly under CDPATH
+    # Complete an entry in CDPATH
     #
     # This appends a / to allow continuation to the last step
-    } else if (1 == ( $path | length )) and $no_trailing_slash {
+    } else if $no_trailing_slash and (1 == ( $path | length )) {
       let first = $path | first
 
       complete_from_cdpath
       | filter {|| $in.value | str contains $first }
       | upsert value {|| $"($in.value)/" }
-    # Chosing some child under a CDPATH entry
+    # Complete a child of a CDPATH entry
     } else {
       let prefix = if 1 == ($path | length) {
         $path | first
@@ -62,22 +73,30 @@ module cdpath {
       } else {
         $path | last
       }
-      
-      let chosen_path = cdpath
-      | each {||
-        $in | path join $prefix
+
+      let chosen_path = if ( $path | first) == "/" {
+        if $no_trailing_slash {
+          $prefix
+        } else {
+          $context_dir
+        }
+      } else {
+        cdpath
+        | each {||
+          $in | path join $prefix
+        }
+        | filter {||
+          $in | path exists
+        }
+        | first
       }
-      | filter {||
-        $in | path exists
-      }
-      | first
 
       children $chosen_path
       | filter {||
         $in | str contains $last
       }
       | each {|child|
-        $chosen_path | path join $child
+        $"($chosen_path | path join $child)/"
       }
     }
   }
@@ -86,6 +105,8 @@ module cdpath {
     cdpath
     | each { |path|
       children $path
+      | path basename
+      | sort
       | each { |child| { value: $child, description: $path } }
     }
     | flatten
@@ -109,8 +130,6 @@ module cdpath {
       } else {
         $default
       }
-    } else if ( $dir | str starts-with "~" ) {
-      $dir
     } else {
       cdpath
       | reduce -f "" { |$it, $acc|
