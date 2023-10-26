@@ -168,6 +168,7 @@ export def stash_list [] {
   ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
   | lines
   | par-each { |line| stash_list_parse_line $line }
+  | flatten
   )
 }
 
