@@ -4,12 +4,16 @@
 
 use wrapper git *
 
-def branches [] {
-  ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
+def local_branches [] {
+  git_local_branches | get name | uniq | sort
 }
 
-def branches_and_remotes [] {
-  ^git branch -a | lines | each { |line| $line | str replace '[\*\+] ' '' | str replace 'remotes/origin/' '' | str trim } | uniq
+def remote_branches [] {
+  git_remote_branches | get name | uniq | ort
+}
+
+export def branches_and_remotes [] {
+  git_remotes | get name | append (git_local_branches | get name) | uniq | sort
 }
 
 def color [] {
@@ -22,7 +26,7 @@ def commits [] {
 }
 
 def remotes [] {
-  ^git remote | lines | each { |line| $line | str trim }
+  git_remotes | get name | uniq | sort
 }
 
 def commands [] {
@@ -348,8 +352,8 @@ export extern "git config" [
 
 # Show changes between commits, commit and tree, etc.
 export extern "git diff" [
-  branch?: string@branches
-  ...pathspec: glob          # Files to diff
+  branch?: string@local_branches
+  ...pathspec: path          # Files to diff
   --cached
   --merge-base
   --staged
@@ -522,7 +526,7 @@ export extern "git merge" [
   --no-autostash                # Disable autostash
   --allow-unrelated-histories   # Merge commits without a common ancestor
   -m: string                    # Merge message
-  --into-name: string@branches  # Prepare merge message as if merging into this branch
+  --into-name: string@local_branches # Prepare merge message as if merging into this branch
   --file(-F): path              # Read commit message from this file
   --rerere-autoupdate           # Allow rerere to update the index
   --no-rerere-autoupdate        # Disallow rerere updates
@@ -532,6 +536,91 @@ export extern "git merge" [
   --quit                        # Forget about the merge in progress
   --continue                    # Proceed after resolving conflicts
   --help                        # Show help
+]
+
+def rebase [] {
+  [
+    "false",
+    "true",
+    "merges",
+    "interactive"
+  ]
+}
+
+def recurse_submodules [] {
+  [
+    "yes",
+    "on-demand",
+    "no"
+  ]
+}
+
+# Fetch from and integrate with another repository or a local branch
+export extern "git pull" [
+  repository: string@branches_and_remotes         # The remote source repository
+  ...respec: string@remote_branches               # Which refs to fetch and update locally
+  --no-recurse-submodules                         # Do not update submodules when restoring
+  --quiet(-q)                                     # Operate quietly
+  --recurse-submodules: string@recurse_submodules # Update submodules when restoring
+  --verbose(-v)                                   # Be verbose
+  --commit                                        # Merge and commit
+  --no-commit                                     # Merge but do not commit
+  --edit(-e)                                      # Launch EDITOR for merge message
+  --no-edit                                       # Accept auto-generated merge message
+  --cleanup: string                               # Set merge message cleanup
+  --ff                                            # Attempt fast-forward
+  --no-ff                                         # Always create a merge commit
+  --ff-only                                       # Fast-forward or fail to merge
+  --gpg-sign(-S): string                          # GPG-sign the merge commit
+  --no-gpg-sign                                   # Do not GPG-sign the merge commit
+  --log: number                                   # Populate merge message with N commit descriptions
+  --no-log                                        # Do not list commit descriptions
+  --signoff                                       # Add signed-off-by
+  --no-signoff                                    # Omit signed-off-by
+  --stat                                          # Show diffstat
+  --no-stat(-n)                                   # Omit diffstat
+  --squash                                        # Squash merge
+  --no-squash                                     # Do not squash merge
+  --verify                                        # Run pre-merge and commit-msg hooks
+  --no-verify                                     # Skip pre-merge and commit-msg hooks
+  --strategy(-s): string                          # Choose the merge strategy
+  --strategy-option(-X): string                   # Set a merge strategy option
+  --verify-signatures                             # Verify commit signatures
+  --no-verify-signatures                          # Skip signature verification
+  --summary                                       # Output a condensed summary of extended header information
+  --autostash                                     # Stash and unstash around merge
+  --no-autostash                                  # Disable autostash
+  --allow-unrelated-histories                     # Merge commits without a common ancestor
+  --rebase(-r): string@rebase                     # Control rebasing of the current branch
+  --no-rebase                                     # Merge the upstream branch into the current branch
+  --all                                           # Fetch all remotes
+  --append(-a)                                    # Append ref and object names of fetched refs to the existing FETCH_HEAD
+  --atomic                                        # Use an atomic transaction to update local refs
+  --depth: number                                 # Limit fetching to the specified number of commits from the remote tip
+  --deepen: number                                # Limit fetching to the specified number of commits from the current shallow boundary
+  --shallow-since: string                         # Update the history of a shallow repository to include commits after this date
+  --shallow-exclude: string                       # Update the history of a shallow repository to exclude commits reachable from this revision
+  --unshallow                                     # Convert a shallow repository into a complete repository
+  --negotiation-tip: string                       # Report commits reachable from the given tips
+  --negotiate-only                                # Only print ancestors of negotaited tips
+  --dry-run                                       # Do not make changes
+  --porcelain                                     # Porcelain output
+  --force(-f)                                     # Force update local branches
+  --keep(-k)                                      # Keep the downloaded pack
+  --prefetech                                     # Modify the configured refspec to place all refs into refs/prefetch
+  --prune(-p)                                     # Remove any remote-tracking references that no longer exits on the remote before fetching
+  --no-tags(-n)                                   # Do not automatically fetch tags
+  --refmap: string                                # Use this refspec to map refs to remote-tracking branches
+  --tags(-t)                                      # Fetch tags from the remote
+  --jobs(-j): number                              # Number of parallel children to use
+  --set-upstream                                  # Set an upstream tracking reference
+  --upload-pack: string                           # Specify a non-default path for the command run on the remote
+  --progress                                      # Report progress on stderr
+  --server-option(-o): string                     # Transmit the option to the server
+  --show-forced-updates                           # Show if a branch is force-updated
+  --no-show-forced-updates                        # Disable showing forced updates
+  --ipv4(-4)                                      # Use IPv4 only
+  --ipv6(-6)                                      # Use IPv6 only
 ]
 
 # Move or rename files, directories, or symlinks
@@ -547,8 +636,8 @@ export extern "git mv" [
 
 # Update remote refs along with associated objects
 export extern "git push" [
-  remote?: string@remotes               # the name of the remote
-  refspec?: string@branches_and_remotes # the branch / refspec
+  remote?: string@remotes               # The remote to push to
+  refspec?: string@local_branches       # The branch to push
   --verbose(-v)                         # be more verbose
   --quiet(-q)                           # be more quiet
   --repo: string                        # repository
@@ -580,10 +669,10 @@ export extern "git push" [
 # Reapply commits on top of another base tip
 export extern "git rebase" [
   upstream?: string@branches_and_remotes
-  branch?: string@branches
+  branch?: string@local_branches
   --interactive(-i)
   --exec: string
-  --onto: string@branches
+  --onto: string@local_branches
   --keep-base
   --continue
   --skip

@@ -17,6 +17,32 @@ export def commits [] {
   )
 }
 
+def for_each_ref [filter] {
+  run-external --redirect-stdout "git" "for-each-ref" "--format=%(refname:lstrip=2)%00%(objectname)" $filter
+  | lines
+}
+
+# Local branches and commits
+export def git_local_branches [] {
+  for_each_ref "refs/heads/"
+  | parse "{name}\u{00}{commit}"
+}
+
+# Remotes for the current repository
+export def git_remotes [] {
+  run-external --redirect-stdout "git" "remote" "-v"
+  | lines
+  | parse "{name}\t{url} ({type})"
+}
+
+# Local branches and commits
+export def git_remote_branches [] {
+  for_each_ref "refs/remotes/"
+  | lines
+  | parse "{remote}/{name}\u{00}{commit}"
+  | move remote --after name
+}
+
 def match [input, matchers: record] {
     ( echo $matchers
     | get $input
