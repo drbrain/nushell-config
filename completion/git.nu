@@ -557,7 +557,7 @@ def recurse_submodules [] {
 
 # Fetch from and integrate with another repository or a local branch
 export extern "git pull" [
-  repository: string@branches_and_remotes         # The remote source repository
+  repository?: string@branches_and_remotes         # The remote source repository
   ...respec: string@remote_branches               # Which refs to fetch and update locally
   --no-recurse-submodules                         # Do not update submodules when restoring
   --quiet(-q)                                     # Operate quietly
