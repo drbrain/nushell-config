@@ -2,18 +2,21 @@ def commits_parse_line [line: string] {
   ( $line
   | split column "\u{0}"
   | rename ref author date subject
+  | upsert date {|| $in.date | into datetime }
   )
 }
 
-export def commits [] {
+export def git_commits [--hash-format: string = "%h", --max-count: int] {
   let args = [
     "log",
-    "--pretty=format:%H%x00%an%x00%aI%x00%s",
+    $"--pretty=format:($hash_format)%x00%an%x00%aI%x00%s",
+    $"--max-count=($max_count)",
   ]
 
   ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
   | lines
-  | par-each { |line| commits_parse_line $line }
+  | each { |line| commits_parse_line $line }
+  | flatten
   )
 }
 

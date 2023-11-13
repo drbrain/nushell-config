@@ -21,8 +21,8 @@ def color [] {
 }
 
 def commits [] {
-  commits
-  | get ref
+  git_commits --max-count 500
+  | each {|| { value: $in.ref, description: $in.subject } }
 }
 
 def remotes [] {
@@ -455,6 +455,16 @@ export extern "git gc" [
   --prune: string     # Prune loose objects older than this date
   --quiet             # Suppress output
 ]
+
+# Show a simplified view of recent history
+export def "git hist" [
+  --max-count: int = 500 # Number of commits to show
+] {
+  git_commits --max-count $max_count
+  | move author --after subject
+  | move date --after author
+  | explore
+}
 
 # Create or reinitialize a git repository
 export extern "git init" [
