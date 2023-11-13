@@ -9,11 +9,11 @@ def local_branches [] {
 }
 
 def remote_branches [] {
-  git_remote_branches | get name | uniq | ort
+  git_remote_branches | get name | uniq | sort
 }
 
-export def branches_and_remotes [] {
-  git_remotes | get name | append (git_local_branches | get name) | uniq | sort
+def branches_and_remotes [] {
+  git_remotes | get name | append (git_local_branches | get name) | append (git_remote_branches | get name) | uniq | sort
 }
 
 def color [] {
