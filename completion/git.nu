@@ -865,9 +865,15 @@ export extern "git revert" [
   --help                        # Show help
 ]
 
+def deletable [] {
+  git_files
+  | get path
+  | uniq
+}
+
 # Remove files from the working tree and index
 export extern "git rm" [
-  ...pathspec: path
+  ...pathspec: path@deletable   # Files to remove
   --force(-f)                   # Override the up-to-date check
   --dry-run(-n)                 # Don't remove files, just show if they would  be
   -r                            # Allow recursive removal of directories

@@ -20,6 +20,27 @@ export def git_commits [--hash-format: string = "%h", --max-count: int] {
   )
 }
 
+def files_parse_line [line: string] {
+  ( $line
+  | split column "\u{0}"
+  | rename path stage type size object_name
+  )
+}
+
+export def git_files [] {
+  let args = [
+    "ls-files",
+    "--format=%(path)%x00%(stage)%x00%(objecttype)%x00%(objectsize)%x00%(objectname)",
+  ]
+
+  ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+  | lines
+  | each { |line| files_parse_line $line }
+  | flatten
+  )
+
+}
+
 def for_each_ref [filter] {
   run-external --redirect-stdout "git" "for-each-ref" "--format=%(refname:lstrip=2)%00%(objectname)" $filter
   | lines
