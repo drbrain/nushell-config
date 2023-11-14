@@ -251,3 +251,21 @@ export def submodule_status [recursive: bool] {
   | flatten
   )
 }
+
+export def git_tags [] {
+  let args = [
+    "tag",
+    "--list"
+    "--format"
+    "%(refname:strip=2)%00%(contents:subject)"
+  ]
+
+  GIT_PAGER=cat run-external --redirect-stdout "git" $args
+  | lines
+  | each {||
+    $in
+    | split column "\u{0}"
+  }
+  | flatten
+  | rename tag subject
+}
