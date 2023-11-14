@@ -5,41 +5,80 @@
 use wrapper git *
 
 def local_branches [] {
-  git_local_branches | get name | uniq | sort
+  git_local_branches
+  | select name
+  | rename value
+  | uniq
+  | sort
 }
 
 def remote_branches [] {
-  git_remote_branches | get name | uniq | sort
+  git_remote_branches
+  | select name url
+  | rename value description
+  | uniq
+  | sort
 }
 
 def branches_and_remotes [] {
-  git_remotes | get name | append (git_local_branches | get name) | append (git_remote_branches | get name) | uniq | sort
+  git_remotes
+  | select name url
+  | rename value description
+  | append (
+    git_local_branches | select name | rename value
+  )
+  | append (
+    git_remote_branches | select name
+    | rename value
+  )
+  | uniq
+  | sort
 }
 
 def color [] {
-  ["always", "never", "auto"]
+  [
+    { value: "always", description: "Always respect color in output" },
+    { value: "never", description: "Never use color" },
+    { value: "auto", description: "Use colors if the output is a terminal" }
+  ]
 }
 
 def commits [] {
   git_commits --max-count 500
-  | each {|| { value: $in.ref, description: $in.subject } }
+  | select ref subject
+  | rename value description
 }
 
 def remotes [] {
-  git_remotes | get name | uniq | sort
+  git_remotes
+  | select name url
+  | rename value description
+  | uniq
+  | sort
 }
 
 def commands [] {
-  ^git help -a | lines | where $it =~ "^   " | str trim | each { |it| parse -r '(?P<cmd>[\w-]+).*'} | flatten | sort | get cmd
+  ^git help -a
+  | lines
+  | where $it =~ "^   "
+  | str trim
+  | each { |it| parse -r '(?<value>[\w-]+)\s+(?<description>.*)' }
+  | flatten
+  | sort
 }
 
 def conflict_style [] {
-  ["merge", "diff3", "zdiff3"]
+  [
+    { value: "merge", description: "RCS style" },
+    { value: "diff3", description: "RCS style with base hunk" },
+    { value: "zdiff3", description: "diff3 omitting common lines in the conflict" },
+  ]
 }
 
 def modified [] {
   git_status false
-  | get name
+  | select name status
+  | rename value description
 }
 
 # A revision control system
@@ -308,7 +347,14 @@ export extern "git commit" [
 ]
 
 def config_type [] {
-  ["bool", "int", "bool-or-int", "path", "expiry-date", "color"]
+  [
+    { value: "bool", description: "true or false" },
+    { value: "bool-or-int", description: "bool or int" },
+    { value: "color", description: "Expressible as an ANSI color" },
+    { value: "expiry-date", description: "Fixed or relative date" },
+    { value: "int", description: "Decimal number with an optional k, m, g suffix" },
+    { value: "path", description: "Path to a file" },
+  ]
 }
 
 # Get and set repository or global options
@@ -479,7 +525,12 @@ export extern "git init" [
 ]
 
 def decorate () {
-  ["short", "full", "auto", "no"]
+  [
+    { value: "auto", description: "Short ref names for TTY output" },
+    { value: "full", description: "Include ref prefixes" },
+    { value: "no", description: "Don't decorate" },
+    { value: "short", description: "Omit refs/* prefixes" },
+  ]
 }
 
 # Show commit logs
@@ -549,18 +600,18 @@ export extern "git merge" [
 
 def rebase [] {
   [
-    "false",
-    "true",
-    "merges",
-    "interactive"
+    { value: "false", description: "Do not rebase" },
+    { value: "interactive", description: "Interactive rebase" },
+    { value: "merges", description: "Include local merge commits in the rebase" },
+    { value: "true", description: "Rebase atop the upstream branch after fetching" },
   ]
 }
 
 def recurse_submodules [] {
   [
-    "yes",
-    "on-demand",
-    "no"
+    { value: "yes", description: "Recurse into all populated submodules" },
+    { value: "on-demand", description: "Recurse into changed submodules" },
+    { value: "no", description: "Do not recurse into submodules" },
   ]
 }
 
@@ -1183,7 +1234,11 @@ export extern "git switch" [
 ]
 
 def cleanup_mode [] {
-  ["verbatim", "whitespace", "strip"]
+  [
+    { value: "verbatim", description: "Do not change the message" }
+    { value: "whitespace", description: "Remove leading and trailing whitespace lines" }
+    { value: "strip", description: "Remove leading and trailing whitespace and comments" }
+  ]
 }
 
 def _tags [] {
@@ -1191,7 +1246,9 @@ def _tags [] {
 }
 
 # Create, list, delete, or verify a tag object
-export def "git tag" [] {}
+export def "git tag" [] {
+  help git tag
+}
 
 # Create tag
 export def "git tag create" [
