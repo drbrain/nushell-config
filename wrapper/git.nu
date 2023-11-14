@@ -161,7 +161,7 @@ def parse_states [states: string] {
   { staged: $staged, unstaged: $unstaged }
 }
 
-export def _status [ignored: bool] {
+export def git_status [ignored: bool] {
   let args = ["status", "--porcelain=2"]
   let args = if ($ignored | into bool) {
     ($args | append "--ignored")

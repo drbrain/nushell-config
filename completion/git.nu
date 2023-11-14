@@ -38,7 +38,7 @@ def conflict_style [] {
 }
 
 def modified [] {
-  _status false
+  git_status false
   | get name
 }
 
@@ -73,7 +73,7 @@ export extern main [
 
 # Add file contents to the index
 export extern "git add" [
-  ...pathspecs: string@modified
+  ...pathspec: path@modified
   --all(-A)                  # Update the index where the working tree has a matching file or index entry
   --chmod: string            # Override the executable bit of added files
   --dry-run(-n)              # Don't add files, just show if the exist or will be ignored
@@ -179,8 +179,7 @@ export extern "git branch" [
 
 # Restore working tree files
 export extern "git checkout" [
-  treeish?: string             # Tree to checkout from
-  ...pathspec: string@modified # Limit paths to checkout
+  ...pathspec: path@modified   # Limit paths to checkout
   -b: string                   # Create and checkout a new branch
   -B: string                   # Create/reset and checkout a branch
   -l                           # Create reflog for new branch
@@ -353,7 +352,7 @@ export extern "git config" [
 # Show changes between commits, commit and tree, etc.
 export extern "git diff" [
   branch?: string@local_branches
-  ...pathspec: path          # Files to diff
+  ...pathspec: path@modified          # Files to diff
   --cached
   --merge-base
   --staged
@@ -486,7 +485,7 @@ def decorate () {
 # Show commit logs
 export extern "git log" [
   revision_range?: string      # Show commits in this revision range
-  ...pathspec: glob            # Show commits for these files
+  ...pathspec: path            # Show commits for these files
   --follow                     # Follow file renames
   --decorate: string@decorate  # Print ref names of any commits that are shown
   --no-decorate                # Do not print ref names
@@ -769,7 +768,7 @@ export extern "git remote add" [
 
 # Restore working tree files
 export extern "git restore" [
-  ...pathspec: glob
+  ...pathspec: path@modified  # Paths to restore
   --source(-s): string        # Restore the working tree with content from this tree
   --patch(-p)                 # Interactively add hunks of patch between the index and the work tree
   --worktree(-W)              # Restore from worktree
@@ -1118,7 +1117,7 @@ export extern "git stash show" [
 export def "git status" (--ignored) {
   let $ignored = $ignored | into string
 
-  _status $ignored
+  git_status $ignored
   | select name status staged unstaged --ignore-errors
 }
 
