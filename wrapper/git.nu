@@ -1,3 +1,11 @@
+export def git_color_comp [] {
+  [
+    { value: "always", description: "Always respect color in output" },
+    { value: "never", description: "Never use color" },
+    { value: "auto", description: "Use colors if the output is a terminal" }
+  ]
+}
+
 def commits_parse_line [line: string] {
   ( $line
   | split column "\u{0}"
@@ -18,6 +26,13 @@ export def git_commits [--hash-format: string = "%h", --max-count: int] {
   | each { |line| commits_parse_line $line }
   | flatten
   )
+}
+
+# Commits for completion
+export def git_commits_comp [] {
+  git_commits --max-count 500
+  | select ref subject
+  | rename value description
 }
 
 def files_parse_line [line: string] {
