@@ -8,16 +8,12 @@ def comp_empty [] {
   ]
 }
 
-# Reapply commits on top of another base tip
+# Configure and start a rebase
+#
+# A rebase reapplies commits on top of another base tip
 export extern "git rebase" [
   upstream?: string@git_branches_and_remotes # Upstream branch to compare against
   branch?: string@git_comp_local_branches    # working branch (default: HEAD)
-  --continue                                 # Restart rebasing after resolving a conflict
-  --skip                                     # Restart rebasing after skipping the current patch
-  --abort                                    # Abort rebasing and reset HEAD to the original branch
-  --quit                                     # Abort rebasing but HEAD is not reset to the original branch
-  --edit-todo                                # Edit the todo list during interactive rebase
-  --show-current-patch                       # Show the current patch when the rebase is stopped
   --onto: string@git_comp_local_branches     # Starting point for creating new commits
   --keep-base                                # Set the starting point for creating new commits to the merge base of (upstream) and (branch)
   --apply                                    # Use applying strategies to rebase
@@ -65,4 +61,34 @@ export extern "git rebase" [
   --help                                     # Show help
 ]
 
+# Abort rebasing and reset HEAD to the original branch
+export def "git rebase abort" [] {
+  ^git rebase --abort
+}
+
+# Restart the rebasing process after having resolved a merge conflict
+export def "git rebase continue" [] {
+  ^git rebase --continue
+}
+
+# Edit the todo list during interactive rebase
+export def "git rebase edit-todo" [] {
+  ^git rebase --edit-todo
+}
+
+# Show the current patch when the rebase is stopped
+export def "git rebase show-current-patch" [] {
+  ^git rebase --show-current-patch
+}
+
+
+# Restart rebasing after skipping the current patch
+export def "git rebase skip" [] {
+  ^git rebase --skip
+}
+
+# Abort rebasing but HEAD is not reset to the original branch
+export def "git rebase quit" [] {
+  ^git rebase --quit
+}
 
