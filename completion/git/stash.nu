@@ -23,17 +23,17 @@ export extern "git stash apply" [
 
 # Create a stash entry and return its objcet name
 export extern "git stash create" [
-  message?: string
+  message?: string # Stash message
 ]
 
 # Clear all stash entries
-export extern "git stash clear" [
-]
+export extern "git stash clear" []
 
 # Remove a single stash entry
 export extern "git stash drop" [
-  --index     # Try to reinstate the index changes also
-  --quiet(-q) # Suppress feedback
+  stash?: string # Stash commit to drop
+  --index        # Try to reinstate the index changes also
+  --quiet(-q)    # Suppress feedback
 ]
 
 # List stash entries
@@ -47,9 +47,9 @@ export def "git stash list" () {
 
 # Remove a single stashed state and apply it to the current working tree state
 export extern "git stash pop" [
-  stash?: string
-  --index     # Try to reinstate the index changes also
-  --quiet(-q) # Suppress feedback
+  stash?: string # Stash commit to pop
+  --index        # Try to reinstate the index changes also
+  --quiet(-q)    # Suppress feedback
 ]
 
 # Save local modifications to a new stash entry
@@ -69,8 +69,14 @@ export extern "git stash push" [
 
 # Show changes record in the stash entry as a diff
 export extern "git stash show" [
-  stash: string
+  stash?: string          # Stash commit
   --include-untracked(-u) # Show untracked files as part of the diff
   --only-untracked        # Show only the untracked files as part of the diff
 ]
 
+# Store a stash from `git stash create`
+export extern "git stash store" [
+  commit: string        # Stash commit to store
+  --message(-m): string # Stash message
+  --quiet(-q)           # Suppress feedback
+]
