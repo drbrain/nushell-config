@@ -626,7 +626,7 @@ export def "git ls-files" [
       $args
       | append [
           "--format",
-          "%(path)%x00%(stage)%x00%(objecttype)%x00%(objectsize)%x00%(objectname)"
+          "%(path)%x00%(stage)%x00%(objecttype)%x00%(objectsize)"
         ]
       )
   }
@@ -638,11 +638,16 @@ export def "git ls-files" [
   } else if $name_only {
     GIT_PAGER=cat run-external --redirect-stdout "git" "ls-files" $args
     | lines
-    | wrap path
+    | wrap name
   } else {
     GIT_PAGER=cat run-external --redirect-stdout "git" "ls-files" $args
     | lines
-    | each {|line| files_parse_line $line }
+    | each {|line| 
+      $line
+      | split column "\u{0}"
+      | rename name stage type size
+      | upsert size {|| $in.size | into filesize }
+    }
     | flatten
   }
 }
@@ -940,7 +945,7 @@ export extern "git revert" [
 
 def deletable [] {
   git_files
-  | get path
+  | get name
   | uniq
 }
 
