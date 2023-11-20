@@ -5,8 +5,9 @@
 use wrapper git *
 use git option_completion *
 
-export use git tag *
 export use git rebase *
+export use git stash *
+export use git tag *
 
 def remote_branches [] {
   git_remote_branches
@@ -893,97 +894,6 @@ export extern "git show" [
   --ita-invisible-in-index
   --ita-visible-in-index
   --help                              # Show help
-]
-
-def stash [] {
-  [
-    "apply",
-    "branch",
-    "clear",
-    "create",
-    "drop",
-    "list",
-    "pop",
-    "push",
-    "show",
-    "store",
-  ]
-}
-
-# Stash changes in a dirty working directory
-export extern "git stash" [
-  command?: string@stash
-  pathspec?: glob
-  --patch(-p)                # Interactively add hunks of patch between the index and the work tree
-  --staged(-S)
-  -k
-  --no-keep-index
-  --quiet(-q)
-  --include-untracked(-u)
-  --all(-a)
-  --message(-m): string
-  --pathspec-from-file: string
-  --pathspec-file-null
-  --help                       # Show help
-]
-
-# Apply a single stashed state without removing it from the stash list
-export extern "git stash apply" [
-  --index
-  --quiet(-q)
-]
-
-# Create a stash entry and return its objcet name
-export extern "git stash create" [
-  message?: string
-]
-
-# Clear all stash entries
-export extern "git stash clear" [
-]
-
-# Remove a single stash entry
-export extern "git stash drop" [
-  --index
-  --quiet(-q)
-]
-
-# List stash entries
-export def "git stash list" () {
-  stash_list
-  | par-each { |row|
-    $row |
-    update date { |d| $d.date | into datetime }
-  }
-}
-
-# Remove a single stashed state and apply it to the current working tree state
-export extern "git stash pop" [
-  stash?: string
-  --index
-  --quiet(-q)
-]
-
-# Save local modifications to a new stash entry
-export extern "git stash push" [
-  pathspec?: glob
-  --patch(-p)                # Interactively add hunks of patch between the index and the work tree
-  --staged(-S)
-  -k
-  --no-keep-index
-  --quiet(-q)
-  --include-untracked(-u)
-  --all(-a)
-  --message(-m): string
-  --pathspec-from-file: string
-  --pathspec-file-null
-]
-
-# Show changes record in the stash entry as a diff
-export extern "git stash show" [
-  stash: string
-  --include-untracked(-u) # Show untracked files as part of the diff
-  --only-untracked        # Show only the untracked files as part of the diff
 ]
 
 #export extern "git status" [
