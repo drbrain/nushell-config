@@ -59,7 +59,7 @@ export def git_commits_comp [] {
   | rename value description
 }
 
-def files_parse_line [line: string] {
+export def files_parse_line [line: string] {
   ( $line
   | split column "\u{0}"
   | rename path stage type size object_name
@@ -74,7 +74,7 @@ export def git_files [] {
 
   ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
   | lines
-  | each { |line| files_parse_line $line }
+  | each {|line| files_parse_line $line }
   | flatten
   )
 
