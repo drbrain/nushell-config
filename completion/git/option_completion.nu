@@ -28,16 +28,19 @@ export def decorate () {
 
 export def diff_algorithm [] {
   [
-    "default",
-    "histogram",
-    "minimal",
-    "myers",
-    "patience",
+    { value: "default", description: "Basic greedy diff algorithm (myers)" },
+    { value: "histogram", description: "Patience that supports low-occurence common elements" },
+    { value: "minimal", description: "Produce the smallest diff possible" },
+    { value: "myers", description: "Basic greedy diff algorithm" },
+    { value: "patience", description: "Best for generating patches" },
   ]
 }
 
 export def mirror [] {
-  [ "fetch", "push" ]
+  [
+    { value: "fetch", description: "Mirror every ref from the remote repository locally" },
+    { value: "push", description: "Push local refs to the remote repository" },
+  ]
 }
 
 export def rebase_arg [] {
