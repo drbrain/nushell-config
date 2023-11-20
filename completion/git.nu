@@ -3,6 +3,7 @@
 # which is covered by the MIT license
 
 use wrapper git *
+use git option_completion *
 
 export use git tag *
 export use git rebase *
@@ -37,14 +38,6 @@ def commands [] {
   | each { |it| parse -r '(?<value>[\w-]+)\s+(?<description>.*)' }
   | flatten
   | sort
-}
-
-def conflict_style [] {
-  [
-    { value: "merge", description: "RCS style" },
-    { value: "diff3", description: "RCS style with base hunk" },
-    { value: "zdiff3", description: "diff3 omitting common lines in the conflict" },
-  ]
 }
 
 def modified [] {
@@ -318,17 +311,6 @@ export extern "git commit" [
   --help                       # Show help
 ]
 
-def config_type [] {
-  [
-    { value: "bool", description: "true or false" },
-    { value: "bool-or-int", description: "bool or int" },
-    { value: "color", description: "Expressible as an ANSI color" },
-    { value: "expiry-date", description: "Fixed or relative date" },
-    { value: "int", description: "Decimal number with an optional k, m, g suffix" },
-    { value: "path", description: "Path to a file" },
-  ]
-}
-
 # Get and set repository or global options
 export extern "git config" [
   name: string
@@ -496,15 +478,6 @@ export extern "git init" [
   --help                       # Show help
 ]
 
-def decorate () {
-  [
-    { value: "auto", description: "Short ref names for TTY output" },
-    { value: "full", description: "Include ref prefixes" },
-    { value: "no", description: "Don't decorate" },
-    { value: "short", description: "Omit refs/* prefixes" },
-  ]
-}
-
 # Show commit logs
 export extern "git log" [
   revision_range?: string      # Show commits in this revision range
@@ -569,23 +542,6 @@ export extern "git merge" [
   --continue                    # Proceed after resolving conflicts
   --help                        # Show help
 ]
-
-def rebase_arg [] {
-  [
-    { value: "false", description: "Do not rebase" },
-    { value: "interactive", description: "Interactive rebase" },
-    { value: "merges", description: "Include local merge commits in the rebase" },
-    { value: "true", description: "Rebase atop the upstream branch after fetching" },
-  ]
-}
-
-def recurse_submodules [] {
-  [
-    { value: "yes", description: "Recurse into all populated submodules" },
-    { value: "on-demand", description: "Recurse into changed submodules" },
-    { value: "no", description: "Do not recurse into submodules" },
-  ]
-}
 
 # Fetch from and integrate with another repository or a local branch
 export extern "git pull" [
@@ -698,19 +654,9 @@ export extern "git push" [
   --help                                # Show help
 ]
 
-def remote_commands [] {
-  [ "add", "rename", "remove", "set-head", "set-branches", "get-url", "set-url", "prune" ]
-}
-
 # Manage set of tracked repositories
-export extern "git remote" [
-  command?: string@remote_commands # Command to run
-  --verbose(-v)                    # Show URL after name
-  --help                           # Show help
-]
-
-def mirror [] {
-  [ "fetch", "push" ]
+export def "git remote" [] {
+  help git remote
 }
 
 # Add a remote repository
@@ -843,16 +789,6 @@ export extern "git rm" [
   --pathspec-file-nul           # NUL separator for --pathspec-from-file
   --help                        # Show help
 ]
-
-def diff_algorithm [] {
-  [
-    "default",
-    "histogram",
-    "minimal",
-    "myers",
-    "patience",
-  ]
-}
 
 # Show various types of objects
 export extern "git show" [
