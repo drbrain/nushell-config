@@ -1,3 +1,27 @@
+# Completion for branches and remotes
+export def git_branches_and_remotes [] {
+  git_remotes
+  | select name url
+  | rename value description
+  | append (
+    git_local_branches | select name | rename value
+  )
+  | append (
+    git_remote_branches | select name
+    | rename value
+  )
+  | uniq
+  | sort
+}
+
+export def git_comp_local_branches [] {
+  git_local_branches
+  | select name
+  | rename value
+  | uniq
+  | sort
+}
+
 export def git_color_comp [] {
   [
     { value: "always", description: "Always respect color in output" },

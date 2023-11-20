@@ -12,6 +12,11 @@ def cleanup_mode [] {
   ]
 }
 
+# Create, list, delete, or verify a tag object
+export def "git tag" [] {
+  help git tag
+}
+
 # Create tag
 export def "git tag create" [
   tagname: string                  # New tag name
