@@ -969,10 +969,16 @@ export extern "git rm" [
   --help                      # Show help
 ]
 
+def recent [] {
+  git_commits --max-count 100
+  | insert description {|| $"($in.subject) \(($in.author), $(in.date\)" }
+  | select ref description
+  | rename value description
+}
+
 # Show various types of objects
 export extern "git show" [
-  commit?: string
-  ...paths: path
+  ...object: string@recent            # Object to show
   --pretty: string                    # Pretty-print the contents of commit logs
   --format: string                    # Pretty-print the contents of commit logs
   --abbrev-commit                     # Show a prefix that names the object uniquely
