@@ -94,7 +94,7 @@ export extern "git add" [
   --no-warn-embedded-repo    # Do not warn about an embedded repository
   --patch(-p)                # Interactively add hunks of patch between the index and the work tree
   --pathspec-file-nul        # NUL separator for --path-spec-from-file
-  --pathspec-from-file: glob # Read <pathspec> from this file
+  --pathspec-from-file: path # Read <pathspec> from this file
   --refresh                  # Refresh file stat() information in the index
   --renormalize              # Forcibly add tracked files to the index again
   --sparse                   # Allow updating index entries outside of the sparse-checkout cone
