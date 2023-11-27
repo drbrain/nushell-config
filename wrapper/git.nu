@@ -55,7 +55,10 @@ export def git_commits [--hash-format: string = "%h", --max-count: int] {
 # Commits for completion
 export def git_commits_comp [] {
   git_commits --max-count 500
-  | select ref subject
+  | insert description {||
+      $"($in.subject) \(($in.author), ($in.date | date humanize)\)"
+  }
+  | select ref description
   | rename value description
 }
 
