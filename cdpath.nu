@@ -157,8 +157,7 @@ module cdpath {
         msg: $"No such child under: ($cdpath)",
         label: {
           text: "Child directory",
-          start: $span.start,
-          end: $span.end,
+          span: $span,
         }
       }
     } else {
