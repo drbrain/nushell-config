@@ -64,7 +64,7 @@ export def "git branch create" [
 
   $args = ( $args | append $branch_name )
 
-  if $start_point {
+  if $start_point != null {
     $args = ( $args | append $start_point )
   }
 
