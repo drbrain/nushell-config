@@ -5,6 +5,7 @@
 use wrapper git *
 use git option_completion *
 
+export use git branch *
 export use git rebase *
 export use git stash *
 export use git tag *
@@ -138,48 +139,6 @@ export extern "git blame" [
   -w                         # Ignore whitespace
   --abbrev: number           # Abbreviate commit SHA to this many characters
   --help(-h)                 # Show help
-]
-
-# List, create, or delete branches
-export extern "git branch" [
-  branch?: string@git_branches_and_remotes
-  --abbrev: string
-  --all(-a)
-  --color: string@git_color_comp
-  --column: string
-  --contains: string
-  --copy(-c)
-  --create-reflog
-  --delete(-d)
-  --edit-description
-  --force(-f)
-  --format: string
-  --ignore-case(-i)
-  --help
-  --list(-l)
-  --merged: string
-  --move(-m)
-  --no-abbrev
-  --no-color
-  --no-column
-  --no-contains: string
-  --no-merged: string
-  --no-track
-  --points-at: string
-  --quiet(-q)                  # Suppress progress reporting
-  --remotes(-r)
-  --set-upstream
-  --set-upstream-to(-u): string@remotes
-  --show-current
-  --sort: string
-  --track(-t): string
-  --unset-upstream
-  --unset-upstream: string
-  --verbose(-v)
-  -C
-  -D
-  -M
-  --help                     # Show help
 ]
 
 # Restore working tree files

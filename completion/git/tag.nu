@@ -109,6 +109,8 @@ export def "git tag list" [
 ] {
   mut args = []
 
+  echo $"(scope variables | get name)"
+
   if $n != null {
     $args = ( $args | append ["-n" $n] )
   }
