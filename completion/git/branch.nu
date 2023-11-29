@@ -59,7 +59,7 @@ export def "git branch create" [
   }
 
   if $no_track {
-    $args = ( $args | append [ "--no-track" ] )
+    $args = ( $args | append "--no-track" )
   }
 
   $args = ( $args | append $branch_name )
@@ -96,7 +96,7 @@ export def "git branch delete" [
     $args = ( $args | append "--remotes" )
   }
 
-  let args = ( $args | append [ $branches ] )
+  let args = ( $args | append $branches )
 
   run-external "git" "branch" $args
 }
@@ -201,8 +201,6 @@ export def "git branch list" [
 
   let args = ( $args | append $branches )
 
-  echo $args
-
   run-external --redirect-stdout "git" "branch" $args
   | lines
   | each {||
@@ -239,7 +237,7 @@ export def "git branch rename" [
     $args = ( $args | append $from )
   }
 
-  let args = ( $args | append [ $new_branch ] )
+  let args = ( $args | append $new_branch )
 
   run-external "git" "branch" $args
 }
