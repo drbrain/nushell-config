@@ -2,9 +2,12 @@
 # Adapted from bash version by Rob Miller <rob@bigfish.co.uk>
 
 # Delete local (and optionally remote) merged branches
+#
+# Set cleanup-repo.keep locally to a space-separated list of branch patterns to keep
 export def "git cleanup-repo" [
   upstream: string = "origin" # Upstream remote repository
 ] {
+  let current_branch = current_branch
   let default_branch = get_default_branch $"refs/remotes/($upstream)/HEAD"
   let keep = get_keep
 
@@ -46,24 +49,34 @@ export def "git cleanup-repo" [
     }
   }
 
-  switch_branch $default_branch
+  switch_branch $current_branch
 }
 
+# The current branch name
+def current_branch [] {
+  run-external --redirect-stdout "git" "branch" "--show-current"
+  | into string
+  | str trim
+}
+
+# Delete a local branch
 def delete_local [
-  branch: string
+  branch: string # Branch to delete
 ] {
  run-external "git" "branch" "--delete" $branch
 }
 
+# Delete a remote branch
 def delete_remote [
-  upstream: string
-  branch: string
+  upstream: string # Repository to delete from
+  branch: string   # branch to delete
 ] {
   run-external "git" "push" "--quiet" "--delete" $upstream $branch
 }
 
+# Get the default branch
 def get_default_branch [
-  upstream: string
+  upstream: string # Repository to get the upstream branch name from
 ] {
   let args = [
     "--short"
@@ -75,6 +88,7 @@ def get_default_branch [
   | path basename
 }
 
+# Get the local set of branches to always keep
 def get_keep [] {
   let keep = run-external --redirect-stdout "git" "config" "--local" "--get" "cleanup-repo.keep"
 
@@ -92,10 +106,10 @@ def get_keep [] {
 #
 # We use the remote default branch here, just in case our local default branch is out of date.
 def list_merged [
-  --remote
-  upstream: string
-  branch: string
-  keep: list<string>
+  --remote # List remote branches (local default)
+  upstream: string   # Upstream repository
+  branch: string     # Default branch
+  keep: list<string> # Patterns to keep. The default branch and HEAD will be added
 ] {
   mut args = [
     "--list"
@@ -133,6 +147,7 @@ def list_merged [
   }
 }
 
+# Switch to a different branch
 def switch_branch [
   branch: string
 ] {
