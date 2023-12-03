@@ -8,6 +8,7 @@ use git option_completion *
 export use git branch *
 export use git rebase *
 export use git stash *
+export use git symbolic-ref *
 export use git tag *
 
 def remote_branches [] {
@@ -1121,8 +1122,4 @@ export extern "git switch" [
   --track(-t): string        # Set up upstream configuration when creating a branch
   --help                     # Show help
 ]
-
-def _tags [] {
-  git_tags | rename "value" "description"
-}
 
