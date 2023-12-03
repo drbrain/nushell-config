@@ -73,9 +73,11 @@ export def "git branch create" [
   run-external "git" "branch" $args
 }
 
-# Show the current branch name
+# The current branch name
 export def "git branch current" [] {
-  run-external --redirect-stdout "git" "branch" "--show-current" | into string
+  run-external --redirect-stdout "git" "branch" "--show-current"
+  | into string
+  | str trim
 }
 
 # Delete branches
