@@ -133,7 +133,7 @@ export def "git branch list" [
   --sort: string # Sort based on the given key
   ...branches: string@git_branches_and_remotes # Branch patterns to list
 ] {
-  mut args = []
+  mut args = [ "--list" ]
 
   if $abbrev != null {
     $args = ( $args | append [ "--abbrev" $abbrev ] )
