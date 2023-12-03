@@ -8,6 +8,7 @@ use git option_completion *
 export use git cleanup-repo *
 export use git branch *
 export use git rebase *
+export use git remote *
 export use git stash *
 export use git symbolic-ref *
 export use git tag *
@@ -787,22 +788,6 @@ export extern "git push" [
   --ipv4(-4)                            # use IPv4 addresses only
   --ipv6(-6)                            # use IPv6 addresses only
   --help                                # Show help
-]
-
-# Manage set of tracked repositories
-export def "git remote" [] {
-  help git remote
-}
-
-# Add a remote repository
-export extern "git remote add" [
-  name: string
-  url: string
-  -t: string@remotes      # Track only this branch
-  -f                      # Immediately fetch
-  --tags                  # Import tags
-  --no-tags               # Do not import tags
-  --mirror: string@mirror # Create a mirror
 ]
 
 # Restore working tree files
