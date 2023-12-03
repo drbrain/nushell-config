@@ -5,6 +5,7 @@
 use wrapper git *
 use git option_completion *
 
+export use git cleanup-repo *
 export use git branch *
 export use git rebase *
 export use git stash *
