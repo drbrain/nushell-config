@@ -1,11 +1,13 @@
 # Adapted from original by Yorick Sijsling
 # Adapted from bash version by Rob Miller <rob@bigfish.co.uk>
 
+use wrapper git *
+
 # Delete local (and optionally remote) merged branches
 #
 # Set cleanup-repo.keep locally to a space-separated list of branch patterns to keep
 export def "git cleanup-repo" [
-  upstream: string = "origin" # Upstream remote repository
+  upstream: string@remotes = "origin" # Upstream remote repository
 ] {
   let current_branch = current_branch
   let default_branch = get_default_branch $"refs/remotes/($upstream)/HEAD"
@@ -140,11 +142,19 @@ def list_merged [
   run-external --redirect-stdout "git" "branch" $args
   | lines
   | filter {|branch|
-      $keep
-      | all {|pattern|
-        $branch !~ $'\A($pattern)\z'
-      }
+    $keep
+    | all {|pattern|
+      $branch !~ $'\A($pattern)\z'
+    }
   }
+}
+
+def remotes [] {
+  git_remotes
+  | select name url
+  | rename value description
+  | uniq
+  | sort
 }
 
 # Switch to a different branch
