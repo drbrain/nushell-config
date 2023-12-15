@@ -23,10 +23,9 @@ export def has_session [] -> bool {
 }
 
 export def list_commands [] {
-  ( tmux_wrapper "list-commands"
+  tmux_wrapper "list-commands"
   | lines
-  | parse -r "(?<command>[\\w-]+) (?:\\((?<alias>\\w+)\\) )?(?<flags>.*)"
-  )
+  | parse -r '(?<command>[\w-]+) (?:\((?<alias>\w+)\) )?(?<flags>.*)'
 }
 
 export def list_buffers [] {
@@ -49,6 +48,14 @@ export def list_keys [table?: string] {
   | update repeat { |r| $r.repeat == "-r" }
   | move table --after arguments
   | move repeat --after table
+}
+
+export def list_panes [] {
+  let format = '#{session_name} #{window_index} #{pane_index} #{pane_width}x#{pane_height} [#{history_size} #{history_limit} #{history_bytes}]'
+
+  tmux_wrapper "list-panes" "-a" "-F" $format
+  | lines
+  | parse '{session} {window} {pane} {width}x{height} [{history_size} {history_limit} {history_bytes}]'
 }
 
 export def list_sessions [] {

@@ -1,11 +1,31 @@
 use wrapper tmux *
 
 def commands [] {
-  ( list_commands
-  | get command alias
-  | flatten
+  let commands = list_commands
+
+  let aliases = $commands
+  | where alias != ""
+  | select alias command
+  | rename value description
+
+  let names = $commands
+  | select command
+  | rename value
+
+  $names
+  | append $aliases
   | sort
-  )
+}
+
+def panes [] {
+  list_panes
+  | upsert value {|p|
+    $"($p.session):($p.window).($p.pane)"
+  }
+  | upsert description {|p|
+    $"[($p.width)x($p.height)] [history ($p.history_size)/($p.history_limit), ($p.history_bytes)]"
+  }
+  | select value description
 }
 
 # Terminal multiplexer
@@ -24,12 +44,34 @@ export extern main [
   ...command_flags: string
 ]
 
+# Capture the contents of a pane
+export extern "tmux capture-pane" [
+  -a               # Use the alternate screen
+  -e               # Include escape sequences
+  -p               # Output to stdout
+  -P               # Only capture output that is the start of an incomplete escape sequence
+  -q               # Do not return an error
+  -C               # Escape non-printable characters
+  -J               # Preserve trailing whitespace and join wrapped lines
+  -N               # Preserve trailing whitespace
+  -b: string       # Output to a buffer
+  -E: number       # End line number
+  -S: number       # Start line number
+  -t: string@panes # Target pane to capture
+]
+
 # List all tmux commands
 export def "tmux list-commands" () {
-  ( list_commands
+  list_commands
   | get command
   | sort
-  )
+}
+
+# TODO: support arguments
+
+# List all panes
+export def "tmux list-panes" [] {
+  list_panes
 }
 
 # List all sessions managed by the server
