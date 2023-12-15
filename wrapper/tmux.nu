@@ -51,11 +51,11 @@ export def list_keys [table?: string] {
 }
 
 export def list_panes [] {
-  let format = '#{session_name} #{window_index} #{pane_index} #{pane_width}x#{pane_height} [#{history_size} #{history_limit} #{history_bytes}]'
+  let format = '#{session_name}:#{window_index}.#{pane_index}: #{pane_width}x#{pane_height} [#{history_size} #{history_limit} #{history_bytes}]'
 
   tmux_wrapper "list-panes" "-a" "-F" $format
   | lines
-  | parse '{session} {window} {pane} {width}x{height} [{history_size} {history_limit} {history_bytes}]'
+  | parse '{session}:{window}.{pane}: {width}x{height} [{history_size} {history_limit} {history_bytes}]'
 }
 
 export def list_sessions [] {

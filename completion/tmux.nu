@@ -20,7 +20,11 @@ def commands [] {
 def panes [] {
   list_panes
   | upsert value {|p|
-    $"($p.session):($p.window).($p.pane)"
+    if ( $p.session | str contains ' ' ) {
+      $'"($p.session):($p.window).($p.pane)"'
+    } else {
+      $"($p.session):($p.window).($p.pane)"
+    }
   }
   | upsert description {|p|
     $"[($p.width)x($p.height)] [history ($p.history_size)/($p.history_limit), ($p.history_bytes)]"
