@@ -5,3 +5,5 @@ source starship.nu
 
 use nupm/nupm
 
+use ~/Work/git/nu-git git
+
