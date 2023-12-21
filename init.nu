@@ -1,3 +1,7 @@
-source completions.nu
+source atuin.nu
 source cdpath.nu
+source completions.nu
 source starship.nu
+
+use nupm/nupm
+

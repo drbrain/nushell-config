@@ -1,0 +1,3 @@
+[submodule "nupm"]
+	path = nupm
+	url = git@github.com:nushell/nupm.git
