@@ -1,4 +1,5 @@
 use completion ag *
+use completion atuin *
 use completion cargo *
 use completion docker *
 # use completion git *
