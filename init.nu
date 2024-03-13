@@ -1,4 +1,6 @@
-source atuin.nu
+if (which atuin | is-empty) {
+    source atuin.nu
+}
 source cdpath.nu
 source completions.nu
 source starship.nu
