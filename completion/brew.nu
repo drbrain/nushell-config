@@ -1,4 +1,23 @@
-# brew
+# Homebrew
+
+use wrapper brew *
+
+def installable [context: string] {
+  let query = $context | split words | last
+  let all = list_casks | append (list_formulae) | sort
+  let matches = $all | where {|| $in =~ $query }
+
+  if ( $matches | length ) < 10 {
+    $matches
+    | each {|item|
+      let description = description $item | get desc.0
+      
+      { value: $item, description: $description }
+    }
+  } else {
+    $matches
+  }
+}
 
 # The Missing Package Manager for macOS (or Linux)
 export extern main [
@@ -11,9 +30,122 @@ export extern main [
   --version    # Brew version
 ]
 
+# Uninstall formulae that were installed as a dependency and are no longer
+# needed
+export extern "brew autoremove" [
+  --dry-run(-n) # Show what would be removed
+]
+
+# List all locally installable casks
+export extern "brew casks" []
+
+# Remove stale lock files, outdated downloads, old versions
+export extern "brew cleanup" [
+  --dry-run(-n) # Show what would be removed
+  --prune-prefix # Only prune the symlinks and directories from the prefix
+  --prune: string # Remove all cache files older than this many days, or "all"
+  -s # Scribe the cache, including downloads for the latest versions
+]
+
+# Show Homebrew and system configuration
+export extern "brew config" []
+
+# Show dependencies for formulae
+export extern "brew deps" [
+  ...formulae: string@list_installed # Forumlae to show deps for
+  --topological(-n) # Show in topological order
+  --direct(-1) # Show only direct dependencies
+  --union # Show the union of dependencies
+  --full-name # List dependencies by their full name
+  --include-build # Include build dependencies
+  --include-optional # Include optional dependencies
+  --include-test # Include test dependencies
+  --skip-recommended # Skip recommended dependencies
+  --include-requirements # Include requirements in addition to dependencies
+  --tree # Show dependencies as a tree
+  --graph # Show dependencies as a directed graph
+  --dot # Show dependencies in DOT format
+  --annotate # Mark build, test, implicit, optional, or recommended dependencies
+  --installed # List dependencies for formulae that are currently installed
+  --missing # Show only missing dependencies
+  --eval-all # Evaluate all available forumale, installed or not, to list their dependencies
+  --for-each # Debugging mode for --installed and --eval-all
+  --HEAD # Show dependencies for HEAD version
+  --forumla # Treat all arguments as formulae
+  --cask # Treat all arguments as casks
+]
+
+# Display formula's name and one-line description
+export extern "brew desc" [
+  ...search: string # Formulae to show
+  --cask            # Treat all named arguments as casks
+  --casks           # Treat all named arguments as casks
+  --description(-d) # Search only descriptions
+  --eval-all        # Evaluate all available forumale and casks to search their descriptions
+  --formula         # Treat all named arguments as forumlae
+  --formulae        # Treat all named arguments as forumlae
+  --name(-n)        # Search only names
+  --quiet(-q)       # Make some output more quiet
+  --search(-s)      # Search both names and descriptions
+  --verbose(-v)     # Print verification and post-install steps
+]
+
+# Check your system for potential problems
+export extern "brew doctor" [
+  ...check: string@list_checks # check to run
+  --list-checks                # List all audit methods
+  --audit-debug(-D)            # Enable debugging and profiling of audit methods
+
+]
+
+# List all locally installable forumlae
+export extern "brew formulae" []
+
+# Open homepage for a forumlae or casks
+export extern "brew home" [
+  ...formula: string@installable # Formula
+  --cask # Treat all argumest as casks
+  --formula # Treat all arguments as formulae
+]
+
+def info_category [] {
+  [
+    { value: "build-error" }
+    { value: "cask-install" }
+    { value: "install", description: "(default)" }
+    { value: "install-on-request" }
+    { value: "os-version" }
+  ]
+}
+
+def info_days [] {
+  [
+    { value: 30, description: "30 days" }
+    { value: 90, description: "90 days" }
+    { value: 365, description: "365 days" }
+  ]
+}
+
+# Display information about Homebrew and formulae
+export extern "brew info" [
+  ...formula: string@installable   # Formulae to show information for
+  --analytics                      # List global Homebrew analytics or installation and build errors for formulae
+  --days: int@info_days            # How many days of analytics to retrieve
+  --category                       # Retrieve analytics for the install category
+  --category: string@info_category # Category of analytics to retrieve
+  --github                         # Open the GitHub source page for formulae
+  --json                           # Print a JSON representation
+  --installed                      # Print JSON of installed formulae
+  --eval-all                       # Evaluate all available formulae and casks, whether installed or not
+  --variations                     # Include the variations hash for each forumla
+  --verbose(-v)                    # Print verification and post-install steps
+  --formula                        # Treat all named arguments as forumlae
+  --cask                           # Treat all named arguments as casks
+]
+
 # Install a formula
 export extern "brew install" [
-  ...formula: string             # Formulae to install
+  ...formula: string@installable # Formulae to install
   --HEAD                         # Install the HEAD version, if available
   --adopt                        # Adopt existing artifacts in the destination that are identical to those being installed
   --appdir: string               # Target location for Applications
@@ -112,16 +244,23 @@ export extern "brew search" [
 
 # Uninstall a formula
 export extern "brew uninstall" [
-  ...formulae: string   # Formulae to uninstall
-  --cask                # Treat all named arguments as casks
-  --casks               # Treat all named arguments as casks
-  --debug(-d)           # Display any debugging information
-  --force(-f)           # Delete all installed versions of formula
-  --formula             # Treat all named arguments as formulae
-  --formulae            # Treat all named arguments as formulae
-  --ignore-dependencies # Don't fail uninstall, even if formula is a dependency of any installed formulae
-  --quiet(-q)           # Make some output more quiet
-  --verbose(-v)         # Make some output more verbose
-  --zap                 # Remove all files associated with a cask
+  ...formulae: string@list_installed # Formulae to uninstall
+  --cask                             # Treat all named arguments as casks
+  --casks                            # Treat all named arguments as casks
+  --debug(-d)                        # Display any debugging information
+  --force(-f)                        # Delete all installed versions of formula
+  --formula                          # Treat all named arguments as formulae
+  --formulae                         # Treat all named arguments as formulae
+  --ignore-dependencies              # Don't fail uninstall, even if formula is a dependency of any installed formulae
+  --quiet(-q)                        # Make some output more quiet
+  --verbose(-v)                      # Make some output more verbose
+  --zap                              # Remove all files associated with a cask
+]
+
+# Update Homebrew itself
+export extern "brew update" [
+  --merge # Apply updates with `git merge` (default is `git rebase`)
+  --auto-update # Run auto-updates
+  --force(-f) # Run a slower full update check (even if unnecessary)
 ]
 
