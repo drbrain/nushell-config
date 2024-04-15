@@ -1,4 +1,4 @@
-if (which atuin | is-empty) {
+if not (which atuin | get path | is-empty) {
     source atuin.nu
 }
 source cdpath.nu
