@@ -63,6 +63,40 @@ export extern "cargo add" [
   --help(-h)                # Print help information
 ]
 
+def deny [] {
+  [
+    { value: "unmaintained", description: "Depenedency is unmaintained" }
+    { value: "unsound", description: "Dependency is unsound" }
+    { value: "warnings", description: "All deny reasons" }
+    { value: "yanked", description: "Dependency is yanked" }
+  ]
+}
+
+# Audit Cargo.lock files for vulnerable crates
+export extern "cargo audit" [
+  --color(-c): string@color # Color configuration
+  --db(-d): path            # Advisory database git repo path
+  --deny(-D): string@deny   # Exit with an error
+  --file(-f): path          # Cargo lockfile to inspect
+  --ignore: string          # Advisory ID to ignore
+  --ignore-source           # Ignore sources of packages in Cargo.toml
+  --no-fetch(-f)            # Do not perform a git fetch on the advisory database
+  --stale                   # Allow stale database
+  --target-arch: string     # Filter vulnerabilities by CPU
+  --target-os: string       # Filter vulnerabilities by OS
+  --url(-u): string         # URL for advisory database git repository
+  --quiet(-q)               # Do not print cargo log messages
+  --json                    # Output report in JSON format
+  --version(-V)             # Print version
+]
+
+# Automatically upgrade vulnerable dependencies
+export extern "cargo audit fix" [
+  --file(-f): path # Cargo lockfile to inspect
+  --dry-run        # Perform a dry run for the fix
+  --version(-V)    # Print version
+]
+
 # Compile a local package and all of its dependencies
 export extern "cargo build" [
   --all-features            # Activate all available features
@@ -321,5 +355,24 @@ export extern "cargo uninstall" [
   --offline                 # Run without accessing the network
   --config: string          # Override a configuration value
   -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+]
+
+# Update dependencies as recorded in the local lock file
+export extern "cargo update" [
+  ...spec: string@list_dependencies # Packages to update
+  --color: string@color             # Coloring: auto, always, never
+  --config: string                  # Override a configuration value
+  --dry-run                         # Perform a dry run for the fix
+  --frozen                          # Require Cargo.lock and cache are up to date
+  --help(-h)                        # Print help
+  --locked                          # Require Cargo.lock is up to date
+  --manifest-path: string           # Path to Cargo.toml
+  --offline                         # Run without accessing the network
+  --precise: string                 # Update [SPEC] to exactly PRECISE
+  --quiet(-q)                       # Do not print cargo log messages
+  --recursive                       # Force updating all dependencies of [SPEC]... as well
+  --verbose(-v)                     # Use verbose output (-vv very verbose/build.rs output)
+  --workspace                       # Build all packages in the workspace
+  -Z: string                        # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
