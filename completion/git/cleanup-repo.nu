@@ -56,7 +56,7 @@ export def "git cleanup-repo" [
 
 # The current branch name
 def current_branch [] {
-  run-external --redirect-stdout "git" "branch" "--show-current"
+  run-external "git" "branch" "--show-current"
   | into string
   | str trim
 }
@@ -85,14 +85,14 @@ def get_default_branch [
     $upstream
   ]
 
-  run-external --redirect-stdout "git" "symbolic-ref" $args
+  run-external "git" "symbolic-ref" $args
   | str trim
   | path basename
 }
 
 # Get the local set of branches to always keep
 def get_keep [] {
-  let keep = run-external --redirect-stdout "git" "config" "--local" "--get" "cleanup-repo.keep"
+  let keep = run-external "git" "config" "--local" "--get" "cleanup-repo.keep"
 
   if ( $keep | is-empty ) {
     return []
@@ -139,7 +139,7 @@ def list_merged [
     ]
   )
 
-  run-external --redirect-stdout "git" "branch" $args
+  run-external "git" "branch" $args
   | lines
   | filter {|branch|
     $keep

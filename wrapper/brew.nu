@@ -1,5 +1,5 @@
 def brew_wrapper (...args: string) {
-  run-external --redirect-stdout "brew" $args
+  run-external "brew" $args
 }
 
 export def description [formula: string] {

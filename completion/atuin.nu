@@ -26,7 +26,7 @@ export extern "atuin history list" [
   --format(-f): string # Format output
   --human              # Human-friendly output
   --print0             # Terminate output with a null
-  --reverse(-r): bool  # Reverse output order
+  --reverse(-r)        # Reverse output order
   --session(-s)        # Show history for the current session
 ]
 

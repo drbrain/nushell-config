@@ -167,7 +167,7 @@ export def "git tag list" [
 
   let args = ( $args | append $pattern )
 
-  let result = GIT_PAGER=cat run-external --redirect-stdout "git" "tag" "-l" $args
+  let result = GIT_PAGER=cat run-external "git" "tag" "-l" $args
 
   if $format == null {
     $result

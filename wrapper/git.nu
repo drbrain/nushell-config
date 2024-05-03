@@ -45,7 +45,7 @@ export def git_commits [--hash-format: string = "%h", --max-count: int] {
     $"--max-count=($max_count)",
   ]
 
-  ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+  ( GIT_PAGER=cat run-external "git" $args
   | lines
   | each { |line| commits_parse_line $line }
   | flatten
@@ -75,7 +75,7 @@ export def git_files [] {
     "--format=%(path)%x00%(stage)%x00%(objecttype)%x00%(objectsize)%x00%(objectname)",
   ]
 
-  ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+  ( GIT_PAGER=cat run-external "git" $args
   | lines
   | each {|line| ls_files_parse $line }
   | flatten
@@ -84,7 +84,7 @@ export def git_files [] {
 }
 
 def for_each_ref [filter] {
-  run-external --redirect-stdout "git" "for-each-ref" "--format=%(refname:lstrip=2)%00%(objectname)" $filter
+  run-external "git" "for-each-ref" "--format=%(refname:lstrip=2)%00%(objectname)" $filter
   | lines
 }
 
@@ -96,7 +96,7 @@ export def git_local_branches [] {
 
 # Remotes for the current repository
 export def git_remotes [] {
-  run-external --redirect-stdout "git" "remote" "-v"
+  run-external "git" "remote" "-v"
   | lines
   | parse "{name}\t{url} ({type})"
 }
@@ -232,7 +232,7 @@ export def git_status [ignored: bool] {
     $args
   }
 
-  ( run-external --redirect-stdout "git" $args
+  ( run-external "git" $args
   | lines
   | each { |line| parse_line $line }
   )
@@ -257,7 +257,7 @@ export def stash_list [] {
     "--pretty=format:%aI%x00%s",
   ]
 
-  ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+  ( GIT_PAGER=cat run-external "git" $args
   | lines
   | par-each { |line| stash_list_parse_line $line }
   | flatten
@@ -287,7 +287,7 @@ export def submodule_status [recursive: bool] {
 
   # TODO: Read .gitmodules and run git -C $submodule rev-parse HEAD to find
   # commits and be recursive
-  ( GIT_PAGER=cat run-external --redirect-stdout "git" $args
+  ( GIT_PAGER=cat run-external "git" $args
   | lines
   | par-each { |line| submodule_status_parse_line $line }
   | flatten
@@ -302,7 +302,7 @@ export def git_tags [] {
     "%(refname:strip=2)%00%(contents:subject)"
   ]
 
-  GIT_PAGER=cat run-external --redirect-stdout "git" $args
+  GIT_PAGER=cat run-external "git" $args
   | lines
   | each {||
     $in

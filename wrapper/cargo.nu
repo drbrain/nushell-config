@@ -1,5 +1,5 @@
 def cargo_wrapper (...args: string) {
-  run-external --redirect-stdout "cargo" $args
+  run-external "cargo" $args
 }
 
 export def dependencies [] {
@@ -10,7 +10,7 @@ export def dependencies [] {
     return []
   }
 
-  run-external --redirect-stdout "cargo" "deps-list"
+  run-external "cargo" "deps-list"
   | lines
   | where {|| $in !~ "^Total dependencies:|^$" }
   | parse -r '(?<package>.*?) v(?<version>.*?) \{(?<features>.*?)\}'

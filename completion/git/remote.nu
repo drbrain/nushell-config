@@ -25,7 +25,7 @@ export def "git remote" [
     []
   }
 
-  let remotes = run-external --redirect-stdout "git" "remote" $args
+  let remotes = run-external "git" "remote" $args
   | lines
 
   if $verbose {

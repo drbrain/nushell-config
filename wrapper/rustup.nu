@@ -1,9 +1,9 @@
 def rustup_wrapper (...args: string) {
-  run-external --redirect-stdout "rustup" $args
+  run-external "rustup" $args
 }
 
 export def list_toolchains [] {
-  ( run-external --redirect-stdout "rustup" "toolchain" "list" "-v"
+  ( run-external "rustup" "toolchain" "list" "-v"
   | lines
   | each { |l|
     $l | parse -r '(?<toolchain>.*?)(?: \((?:(?<default>default)|(?<override>override))\))?\t(?<path>.*)'
