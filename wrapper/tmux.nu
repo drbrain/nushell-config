@@ -1,5 +1,5 @@
 def tmux_wrapper (...args: string) {
-  run-external "tmux" $args
+  run-external "tmux" ...$args
 }
 
 export def environment [] {
