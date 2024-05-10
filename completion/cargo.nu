@@ -230,7 +230,7 @@ def nextest_ignore [] {
   ["default", "ignored-only", "all"]
 }
 
-def nextest_message_format [] {
+def nextest_list_message_format [] {
   ["human", "json", "json-pretty"]
 }
 
@@ -256,7 +256,7 @@ export extern "cargo nextest list" [
   --lib                    # Test only library unit tests
   --locked                 # Require Cargo.lock is up to date
   --manifest-path: string  # Path to Cargo.toml
-  --message-format(-T): string@nextest_message_format # Output format
+  --message-format(-T): string@nextest_list_message_format # Output format
   --no-default-features    # Do not activate the "default" feature
   --offline                # Run without accessing the network
   --package(-p): string    # Package to test
@@ -273,6 +273,18 @@ export extern "cargo nextest list" [
   -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
+def nextest_run_message_format [] {
+  [
+    { value: "human", description: "Default output format" },
+    { value: "libtest-json", description: "libtest format" },
+    { value: "libtest-json-plus", description: "libtest format with extra metadata" },
+  ]
+}
+
+def nextest_archive_format [] {
+  ["auto", "tar-zst"]
+}
+
 def nextest_output [] {
   ["immediate", "immediate-final", "final", "never"]
 }
@@ -281,51 +293,72 @@ def nextest_status_level [] {
   ["none", "fail", "retry", "slow", "pass", "skip", "all"]
 }
 
+def nextest_timings [] {
+  ["html", "json"]
+}
+
 # Build and run tests
 export extern "cargo nextest run" [
-  filter?: string             # Test name filter
+  filter?: string            # Test name filter
   --all-features             # Activate all available features
   --all-targets              # Test all targets
+  --archive-file: path       # Path to nextest archive
+  --archive-format: string@nextest_archive_format # Archive format
   --bench: string            # Test only the specified bench target
   --benches                  # Test all benches
   --bin: string              # Test only the specified binary
+  --binaries-metadata: path  # Path to binaries-metadata JSON
   --bins                     # Test all binaries
   --build-jobs: number       # Number of jobs to run
+  --cargo-metadata: path     # PAth to cargo metadata JSON
   --cargo-profile: string    # Build artifacts with the specified Cargo profile
-  --color: string@color # When to color output
-  --config-file: string      # Config file [default: workspace-root/.config/nextest.toml]
-  --config: string           # Override a configuration value (unstable)
+  --cargo-quiet              # Do not print  cargo log messages
+  --cargo-verbose            # Use cargo verbose output
+  --color: string@color      # When to color output
+  --config-file: path        # Config file [default: workspace-root/.config/nextest.toml]
+  --config: string           # Override a configuration value
   --exclude: string          # Exclude packages from the build
+  --extract-to: path         # Archive extraction directory
+  --extract-overwrite        # Overwrite when extracting acrhive
   --fail-fast                # Cancel test run on the first failure
   --failure-output: string@nextest_output # Output stdout and stderr on failure
   --features: string         # Space or comma separated list of features to activate
+  --final-status-level: string@nextest_status_level # Test statuses to output at the end of the run
   --frozen                   # Require Cargo.lock and cache are up to date
   --future-incompat-report   # Outputs a future incompatibility report at the end of the build
-  --help(-h)                 # Print help information
+  --hide-progress-bar        # Do not display the progress bar
   --ignore-rust-version      # Ignore "rust-version" specification in packages
   --lib                      # Test only library unit tests
   --locked                   # Require Cargo.lock is up to date
   --manifest-path: string    # Path to Cargo.toml
+  --message-format: string@nextest_run_message_format # Format to use for test results
+  --message-format-version: number # Version of message-format to use
   --no-capture               # Run tests serially and do not capture output
   --no-default-features      # Do not activate the "default" feature
   --no-fail-fast             # Run all tests regardless of failure
   --offline                  # Run without accessing the network
+  --override-version-check   # Override checks for the minimum version in the nextest config
   --package(-p): string      # Package to test
   --partition: string        # Test partition, e.g. hash:1/2 or count:2/3
+  --persist-extract-tempdir  # Persist extracted temporary directory
   --profile(-P): string      # Nextest profile to use
   --release                  # Build artifacts in release mode, with optimizations
   --retries: number          # Number of retries for failing tests
   --run-ignored: string@nextest_ignore # Run ignored tests
-  --status-level: string@nextest_status_level
+  --status-level: string@nextest_status_level # Test statuses to output
   --success-output: string@nextest_output # Output stdout and stderr on success
   --target-dir: string       # Directory for all generated artifacts
+  --target-dir-remap: path   # Remapping for the target directory
   --target: string           # Build for the target triple
   --test-threads(-j): number # Simultaneous threads to run
   --test: string             # Test only the specified test target
   --tests                    # Test all targets
+  --timings: string@nextest_timings # Timing output formats
+  --tool-config-file: string # Tool-specific config files
   --unit-graph               # Output build graph in JSON (unstable)
   --verbose(-v)              # Use verbose output
   --workspace                # Build all packages in the workspace
+  --workspace-remap: path    # Remapping for the workspace root
   -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
