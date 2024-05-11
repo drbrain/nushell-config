@@ -63,7 +63,7 @@ module cdpath {
 
       complete_from_cdpath
       | filter {|| $in.value | str contains $first }
-      | upsert value {|| $"($in.value)/" }
+      | upsert value {|r| $r.value | path join "" }
     # Complete a child of a CDPATH entry
     } else {
       let prefix = if 1 == ($path | length) {
