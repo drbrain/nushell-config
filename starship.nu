@@ -31,6 +31,15 @@ export-env {
       let aid = $nu.pid
       mut pre_prompt = ""
 
+      # Set title
+      let relative_pwd = try {
+        $"~/($env.PWD | path relative-to "~")"
+      } catch {
+        $env.PWD
+      }
+
+      $pre_prompt += $"\e]2;($env.USER)@($env.HOSTNAME):($relative_pwd)\e\\"
+
       if ($env.TERM_PROGRAM == "WezTerm") {
         $pre_prompt += (wezterm_user_var "WEZTERM_HOST" $env.HOSTNAME)
         $pre_prompt += (wezterm_user_var "WEZTERM_PROG" "")
