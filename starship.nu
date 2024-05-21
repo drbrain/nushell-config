@@ -3,6 +3,15 @@
 # - module which can be used with `use starship.nu`
 # - script which can be used with `source starship.nu`
 
+def wezterm_user_var [
+  name: string
+  value: string
+] {
+  let encoded = $value | encode base64
+
+  $"\e]1337;SetUserVar=($name)=($encoded)\a"
+}
+
 # Starship prompt with iTerm2 integration
 #
 # Based on https://iterm2.com/shell_integration/zsh
@@ -19,16 +28,30 @@ export-env {
     PROMPT_INDICATOR: ""
 
     PROMPT_COMMAND: {||
-      let pre_prompt = ""
+      let aid = $nu.pid
+      mut pre_prompt = ""
+
+      if ($env.TERM_PROGRAM == "WezTerm") {
+        $pre_prompt += (wezterm_user_var "WEZTERM_HOST" $env.HOSTNAME)
+        $pre_prompt += (wezterm_user_var "WEZTERM_PROG" "")
+        $pre_prompt += (wezterm_user_var "WEZTERM_USER" $env.USER)
+      }
 
       # Report last exit code
-      let pre_prompt = $pre_prompt + $"\e]133;D;($env.LAST_EXIT_CODE)\a"
-
-      # Mark start of prompt
-      let pre_prompt = $pre_prompt + "\e]133;A;\a"
+      $pre_prompt += $"\e]133;D;($env.LAST_EXIT_CODE);aid=($aid)\a"
 
       # Report Current directory
-      let pre_prompt = $pre_prompt + $"\e]1337;CurrentDir=($env.PWD)\a"
+      if ($env.TERM_PROGRAM == "WezTerm") {
+        $pre_prompt += (wezterm set-working-directory)
+      } else  {
+        $pre_prompt += $"\e]1337;CurrentDir=($env.PWD)\a"
+      }
+
+      # Do a fresh line
+      $pre_prompt += $"\e]133;A;cl=m;aid=($aid)\a"
+
+      # Mark start of prompt
+      $pre_prompt += "\e]133;P;k=i;\a"
 
       let prompt = (
         ^starship prompt
