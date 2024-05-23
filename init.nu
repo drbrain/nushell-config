@@ -3,8 +3,9 @@ if not (which atuin | get path | is-empty) {
 }
 source cdpath.nu
 source completions.nu
-source starship.nu
 source search.nu
+source starship.nu
+source tokyonight.nu
 
 use nupm/nupm
 

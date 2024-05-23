@@ -1,5 +1,5 @@
 # Tokyonight-night theme colors
-export def-env night () {
+export def --env night () {
   let bg = "#1a1b26"
   let bg_dark = "#16161e"
   let bg_highlight = "#292e42"
@@ -41,8 +41,6 @@ export def-env night () {
   let normal = $fg
   let pattern = $blue6
   let record = $blue1
-  let selected = $blue0
-  let selected = $orange
   let string = $green
 
   let night = {
@@ -98,6 +96,12 @@ export def-env night () {
     shape_variable: $magenta
   }
 
+  let menu_style = {
+    text: $blue
+    selected_text: { fg: $bg_dark, bg: $orange } # bg: blue0
+    description_text: $comment
+  }
+
   $env.config.color_config = $night
   $env.config.menus = [
       # Configuration for default nushell menus
@@ -112,11 +116,7 @@ export def-env night () {
             col_width: 20
             col_padding: 2
         }
-        style: {
-            text: $function
-            selected_text: $selected
-            description_text: $yellow
-        }
+        style: $menu_style
       }
       {
         name: history_menu
@@ -126,11 +126,7 @@ export def-env night () {
           layout: list
           page_size: 10
         }
-        style: {
-          text: $function
-          selected_text: $selected
-          description_text: $yellow
-        }
+        style: $menu_style
       }
       {
         name: help_menu
@@ -144,11 +140,7 @@ export def-env night () {
             selection_rows: 4
             description_rows: 10
         }
-        style: {
-            text: $function
-            selected_text: $selected
-            description_text: $yellow
-        }
+        style: $menu_style
       }
       # Example of extra menus created using a nushell source
       # Use the source field to create a list of records that populates
@@ -163,11 +155,7 @@ export def-env night () {
             col_width: 20
             col_padding: 2
         }
-        style: {
-            text: $function
-            selected_text: $selected
-            description_text: $yellow
-        }
+        style: $menu_style
         source: { |buffer, position|
             $nu.scope.commands
             | where command =~ $buffer
@@ -182,11 +170,7 @@ export def-env night () {
             layout: list
             page_size: 10
         }
-        style: {
-            text: $function
-            selected_text: $selected
-            description_text: $yellow
-        }
+        style: $menu_style
         source: { |name, position|
             scope variables
             | where name =~ $name
@@ -206,11 +190,7 @@ export def-env night () {
             selection_rows: 4
             description_rows: 10
         }
-        style: {
-            text: $function
-            selected_text: $selected
-            description_text: $yellow
-        }
+        style: $menu_style
         source: { |command, position|
             scope commands
             | where command =~ $command
@@ -219,3 +199,5 @@ export def-env night () {
       }
     ]
 }
+
+night
