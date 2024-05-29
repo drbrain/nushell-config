@@ -30,6 +30,8 @@
 I don't update to the latest nushell consistently so things may be broken or
 out of date.
 
+This repository is updated to at least nushell 0.94.0
+
 # Commands
 
 For commands I use frequently I've created enhanced completions and wrappers
