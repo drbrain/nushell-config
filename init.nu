@@ -7,9 +7,9 @@ source search.nu
 source starship.nu
 source tokyonight.nu
 
-if ("../nu_plugin_prometheus/config.nu" | path exists) {
+try {
   source ../nu_plugin_prometheus/config.nu
-}
+} catch {}
 
 use nupm/nupm
 
