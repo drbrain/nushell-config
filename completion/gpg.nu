@@ -1,6 +1,20 @@
 # GNU Privacy Guard
 export extern main []
 
+# Export GPG keys
+export def "export" [
+  ...names: string # Names of keys to export
+  --armor(-a) # Create ASCII armored output
+] {
+  let args = if $armor {
+    [ "--armor" ]
+  } else {
+    []
+  }
+
+  run-external "gpg" "--export" ...$args ...$names
+}
+
 # List GPG keys
 export def "list-keys" [
   ...names: string # Names of keys to list
