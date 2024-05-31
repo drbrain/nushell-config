@@ -3,6 +3,7 @@ use completion/atuin.nu
 use completion/brew.nu
 use completion/cargo.nu
 use completion/docker.nu
+use completion/gpg.nu
 use completion/mdfind.nu
 use completion/neovide.nu
 use completion/rg.nu
