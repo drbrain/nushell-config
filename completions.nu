@@ -1,14 +1,14 @@
-use completion ag *
-use completion atuin *
-use completion brew *
-use completion cargo *
-use completion docker *
-# use completion git *
-use completion mdfind *
-use completion rg *
-use completion rsync *
-use completion rustup *
-use completion ssh *
-use completion tmux *
-use completion unix *
-use completion vimr *
+use completion/ag.nu
+use completion/atuin.nu
+use completion/brew.nu
+use completion/cargo.nu
+use completion/docker.nu
+use completion/mdfind.nu
+use completion/neovide.nu
+use completion/rg.nu
+use completion/rsync.nu
+use completion/rustup.nu
+use completion/ssh.nu
+use completion/tmux.nu
+use completion/unix.nu
+use completion/vimr.nu
