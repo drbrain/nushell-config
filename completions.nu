@@ -13,3 +13,4 @@ use completion/ssh.nu
 use completion/tmux.nu
 use completion/unix.nu
 use completion/vimr.nu
+use completion/wezterm.nu
