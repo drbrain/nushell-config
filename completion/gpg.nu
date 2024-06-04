@@ -1,6 +1,11 @@
 # GNU Privacy Guard
 export extern main []
 
+# Decrypt a GPG message from input or the given file
+export def "decrypt" [] {
+  run-external "gpg" "--decrypt"
+}
+
 # Export GPG keys
 export def "export" [
   ...names: string # Names of keys to export
@@ -13,6 +18,11 @@ export def "export" [
   }
 
   run-external "gpg" "--export" ...$args ...$names
+}
+
+# Import GPG keys from input
+export def "import" [] {
+  run-external "gpg" "--import"
 }
 
 # List GPG keys
