@@ -37,10 +37,10 @@ def wezterm_user_var [
       $env.PWD
     }
 
-    $pre_prompt += $"\e]2;($env.USER)@($env.HOSTNAME):($relative_pwd)\e\\"
+    $pre_prompt += $"\e]2;($env.USER)@($env.PROMPT_HOSTNAME):($relative_pwd)\e\\"
 
     if ($env.TERM_PROGRAM == "WezTerm") {
-      $pre_prompt += (wezterm_user_var "WEZTERM_HOST" $env.HOSTNAME)
+      $pre_prompt += (wezterm_user_var "WEZTERM_HOST" $env.PROMPT_HOSTNAME)
       $pre_prompt += (wezterm_user_var "WEZTERM_PROG" "")
       $pre_prompt += (wezterm_user_var "WEZTERM_USER" $env.USER)
     }
