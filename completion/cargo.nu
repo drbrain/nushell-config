@@ -27,7 +27,7 @@ def vcs [] {
 }
 
 # Add dependencies to a Cargo.toml manifest file
-export extern "cargo add" [
+export extern add [
   dep: string               # Reference to package to add as a dependency
   --no-default-features     # Disable the default features
   --default-features        # Re-enable the default features
@@ -73,7 +73,7 @@ def deny [] {
 }
 
 # Audit Cargo.lock files for vulnerable crates
-export extern "cargo audit" [
+export extern audit [
   --color(-c): string@color # Color configuration
   --db(-d): path            # Advisory database git repo path
   --deny(-D): string@deny   # Exit with an error
@@ -91,14 +91,14 @@ export extern "cargo audit" [
 ]
 
 # Automatically upgrade vulnerable dependencies
-export extern "cargo audit fix" [
+export extern "audit fix" [
   --file(-f): path # Cargo lockfile to inspect
   --dry-run        # Perform a dry run for the fix
   --version(-V)    # Print version
 ]
 
 # Compile a local package and all of its dependencies
-export extern "cargo build" [
+export extern build [
   --all-features            # Activate all available features
   --all-targets             # Build all targets
   --bench: string           # Build only the specified bench target
@@ -140,8 +140,27 @@ export extern "cargo build" [
   -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
+export extern clean [
+  --color: string@color   # When to color output
+  --config: string        # Override a configuration value (unstable)
+  --doc                   # Clean just the documentation directory
+  --dry-run               # Display what would be cleaned without deleting anything
+  --frozen                # Require Cargo.lock and cache are up to date
+  --locked                # Require Cargo.lock is up to date
+  --manifest-path: string # Path to Cargo.toml
+  --offline               # Run without accessing the network
+  --package(-p): string   # Package to build (see `cargo help pkgid`)
+  --profile: string       # Build artifacts with the specified profile
+  --quiet(-q)             # Do not print cargo log messages
+  --release(-r)           # Build artifacts in release mode, with optimizations
+  --target-dir: string    # Directory for all generated artifacts
+  --target: string        # Build for the target triple
+  --verbose(-v)           # Use verbose output (-vv very verbose/build.rs output)
+  -Z: string              # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+]
+
 # Create a new cargo package in an existing directory
-export extern "cargo init" [
+export extern init [
   path?: path               # Path to cargo project
   --bin                     # Use a binary (application) template
   --lib                     # Use a library template
@@ -163,7 +182,7 @@ export extern "cargo init" [
 ]
 
 # Install a Rust binary
-export extern "cargo install" [
+export extern install [
   ...spec: string          # Crate to install
   --quiet(-q)              # Do not print cargo log messages
   --version: string        # Specify a version to install
@@ -205,19 +224,14 @@ export extern "cargo install" [
 ]
 
 # List all installed packages
-export def "cargo install --list" [] {
+export def "install --list" [] {
   ( list_installed
   | sort-by package version
   )
 }
 
-def nextest [] {
-  ["list", "run"]
-}
-
 # A next-generation test runner
-export extern "cargo nextest" [
-  command?: string@nextest # Command to run
+export extern nextest [
   --color: string@color    # When to color output
   --config-file: string    # Config file [default: workspace-root/.config/nextest.toml]
   --help(-h)               # Print help information
@@ -235,7 +249,7 @@ def nextest_list_message_format [] {
 }
 
 # List tests in the workspace
-export extern "cargo nextest list" [
+export extern "nextest list" [
   --all-features           # Activate all available features
   --all-targets            # Test all targets
   --bench: string          # Test only the specified bench target
@@ -298,7 +312,7 @@ def nextest_timings [] {
 }
 
 # Build and run tests
-export extern "cargo nextest run" [
+export extern "nextest run" [
   filter?: string            # Test name filter
   --all-features             # Activate all available features
   --all-targets              # Test all targets
@@ -362,6 +376,26 @@ export extern "cargo nextest run" [
   -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
+# Show information about nextest's configuration in this workspace
+export extern "nextest show-config" [
+  --color: string@color      # When to color output
+  --config-file: string      # Config file [default: workspace-root/.config/nextest.toml]
+  --manifest-path: string    # Path to Cargo.toml
+  --override-version-check   # Override checks for the minimum version in nextest's config
+  --tool-config-file: string # Tool-specific config files
+  --verbose(-v)              # Use verbose output
+]
+
+# Show version-related configuration
+export extern "nextest show-config version" [
+  --color: string@color      # When to color output
+  --config-file: string      # Config file [default: workspace-root/.config/nextest.toml]
+  --manifest-path: string    # Path to Cargo.toml
+  --override-version-check   # Override checks for the minimum version in nextest's config
+  --tool-config-file: string # Tool-specific config files
+  --verbose(-v)              # Use verbose output
+]
+
 def installed [] {
   ( list_installed
   | each {|p|
@@ -374,7 +408,7 @@ def installed [] {
 }
 
 # Remove a rust binary
-export extern "cargo uninstall" [
+export extern uninstall [
   ...spec: string@installed # Binary to remove
   --quiet(-q)               # Do not print cargo log messages
   --package(-p): string     # Package to uninstall
@@ -391,7 +425,7 @@ export extern "cargo uninstall" [
 ]
 
 # Update dependencies as recorded in the local lock file
-export extern "cargo update" [
+export extern update [
   ...spec: string@list_dependencies # Packages to update
   --color: string@color             # Coloring: auto, always, never
   --config: string                  # Override a configuration value
