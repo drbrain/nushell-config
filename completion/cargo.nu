@@ -407,6 +407,100 @@ def installed [] {
   )
 }
 
+# Information about project dependency versions
+export def outdated [
+  --aggressive(-a)          # Ignore channels for latest updates
+  --depth(-d): number       # How deep in the dependency chain to search
+  --exclude(-e): string     # comma-separated list of dependencies to exclude from building
+  --exit-code: number       # Exit code to return when new versions are found
+  --features: string        # Space-separated list of features
+  --ignore(-i): string      # comma-separated list of dependencies to ignore
+  --ignore-external-rel(-e) # Ignore relative dependencies external to the workspace and check root dependencies only
+  --manifest-path: string   # Path to Cargo.toml
+  --offline(-o)             # Run without accessing the network
+  --packages(-p): string    # Package to inspect for updates
+  --root(-r): string        # Package to treat as the root package
+  --root-deps-only(-R)      # Only check root dependencies
+  --quiet(-q)               # Do not print cargo log messages
+  --verbose(-v)             # Use verbose output
+  --version(-V)             # Print version
+  --workspace(-w)           # Check updates for all workspace members
+] {
+  if $version {
+    let version = run-external "cargo" "outdated" "--version"
+
+    return $version
+  }
+
+  mut args = []
+
+  if $aggressive {
+    $args = ( $args | append "--aggressive" )
+  }
+
+  if $depth != null {
+    $args = ( $args | append [ "--depth" $depth ] )
+  }
+
+  if $exclude != null {
+    $args = ( $args | append [ "--exclude" $exclude ] )
+  }
+
+  if $exit_code != null {
+    $args = ( $args | append [ "--exit-code" $exit_code ] )
+  }
+
+  if $features != null {
+    $args = ( $args | append [ "--features" $features ] )
+  }
+
+  if $ignore != null {
+    $args = ( $args | append [ "--ignore" $ignore ] )
+  }
+
+  if $ignore_external_rel {
+    $args = ( $args | append "--ignore-external-rel" )
+  }
+
+  if $manifest_path != null {
+    $args = ( $args | append [ "--manifest-path" $manifest_path ] )
+  }
+
+  if $offline {
+    $args = ( $args | append "--offline" )
+  }
+
+  if $packages != null {
+    $args = ( $args | append [ "--packages" $packages ] )
+  }
+
+  if $root != null {
+    $args = ( $args | append [ "--root" $root ] )
+  }
+
+  if $root_deps_only {
+    $args = ( $args | append "--root-deps-only" )
+  }
+
+  if $quiet {
+    $args = ( $args | append "--quiet" )
+  }
+
+  if $verbose {
+    $args = ( $args | append "--verbose" )
+  }
+
+  if $workspace {
+    $args = ( $args | append "--workspace" )
+  }
+
+  run-external "cargo" "outdated" "--format" "json" ...$args
+  | lines
+  | each {|l|
+    $l | from json
+  }
+}
+
 # Remove a rust binary
 export extern uninstall [
   ...spec: string@installed # Binary to remove
