@@ -5,22 +5,22 @@ export extern main [] {
 }
 
 # Manipulate shell history
-export extern "atuin history" []
+export extern history []
 
 # Begins a new command in the history
-export extern "atuin history start" [
+export extern "history start" [
   command: string # Command to add
 ]
 
 # Finishes a new command in the history (adds time, exit code)
-export extern "atuin history end" [
+export extern "history end" [
   --exit(-e): int     # Exit code
   --duration(-d): int # Command duration
   id: int             # Command start ID
 ]
 
 # List all items in history
-export extern "atuin history list" [
+export extern "history list" [
   --cmd-only           # Show only the text of the command
   --cwd(-c)            # Show history for the current directory
   --format(-f): string # Format output
@@ -31,66 +31,73 @@ export extern "atuin history list" [
 ]
 
 # Get the last command ran
-export extern "atuin history last" [
+export extern "history last" [
   --cmd-only           # Show only the text of the command
   --format(-f): string # Format output
   --human              # Human-friendly output
 ]
 
+# Delete history entries matching exclusion filters
+export extern "history prune" [
+  --dry-run # List matching history lines without deleting
+]
+
 # Import shell history from file
-export extern "atuin import" []
+export extern import []
 
 # Import history for the current shell
-export extern "atuin import auto" []
+export extern "import auto" []
 
 # Import history from the zsh history file
-export extern "atuin import zsh" []
+export extern "import zsh" []
 
 # Import history from the zsh history file
-export extern "atuin import zsh-hist-db" []
+export extern "import zsh-hist-db" []
 
 # Import history from the bash history file
-export extern "atuin import bash" []
+export extern "import bash" []
 
 # Import history from the resh history file
-export extern "atuin import resh" []
+export extern "import resh" []
 
 # Import history from the fish history file
-export extern "atuin import fish" []
+export extern "import fish" []
 
 # Import history from the nu history file
-export extern "atuin import nu" []
+export extern "import nu" []
 
 # Import history from the nu history file
-export extern "atuin import nu-hist-db" []
+export extern "import nu-hist-db" []
 
 # Calculate statistics for your history
-export extern "atuin stats" [
+export extern stats [
   --count: int   # Number of top commands
   period?: string # Statistics period
 ]
 
 def filter_mode [] {
   [
-    { value: "directory", description: "History from the current directory" }
-    { value: "global", description: "Global history" }
-    { value: "host", description: "History from the current host" }
-    { value: "session", description: "History for the current session" }
-    { value: "workspace", description: "History for the current workspace" }
+    [ value description ];
+    [ directory "History from the current directory" ]
+    [ global "Global history" ]
+    [ host "History from the current host" ]
+    [ session "History for the current session" ]
+    [ workspace "History for the current workspace" ]
   ]
 }
 
 def search_mode [] {
   [
-    { value: "prefix", description: "Prefix search" }
-    { value: "full-text", description: "Full-text search" }
-    { value: "fuzzy", description: "Fuzzy search" }
-    { value: "skim", description: "Skim search" }
+    [ value description ];
+    [ prefix "Prefix search" ]
+    [ full-text "Full-text search" ]
+    [ fuzzy "Fuzzy search" ]
+    [ skim "Skim search" ]
   ]
 }
 
 # Interactive history search
-export extern "atuin search" [
+export extern search [
   --after: datetime                 # Only includes results after this date
   --before(-b): datetime            # Only include results added before this date
   --cmd-only                        # Show only the text of the command
@@ -112,55 +119,55 @@ export extern "atuin search" [
 ]
 
 # Sync with the configured server
-export extern "atuin sync" [
+export extern sync [
   --force(-f) # Force re-download everything
 ]
 
 # Login to the configured server
-export extern "atuin login" [
+export extern login [
   --username(-u): string # Username
   --password(-p): string # Password
   --key(-k): string      # Account encryption key
 ]
 
 # Log out
-export extern "atuin logout" []
+export extern logout []
 
 # Register with the configured server
-export extern "atuin register" [
+export extern register [
   --username(-u): string # Username
   --password(-p): string # Password
   --email(-e): string    # Email
 ]
 
 # Print the synchronization encryption key
-export extern "atuin key" [
+export extern key [
   --base64 # Base64 encode output
 ]
 
-# Print atuin status
-export extern "atuin status" [
+# Print status
+export extern status [
 ]
 
-export extern "atuin account" []
+export extern account []
 
-export extern "atuin kv" []
+export extern kv []
 
 # Print example configuration
-export extern "atuin default-config" []
+export extern default-config []
 
-# Start an atuin server
-export extern "atuin server" []
+# Start an server
+export extern server []
 
 # Output shell setup
-export extern "atuin init" []
+export extern init []
 
 # Generate a UUID
-export extern "atuin uuid" []
+export extern uuid []
 
 # List contributors
-export extern "atuin contributors" []
+export extern contributors []
 
 # Generate shell completions
-export extern "atuin gen-completions" []
+export extern gen-completions []
 
