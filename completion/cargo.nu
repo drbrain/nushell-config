@@ -6,9 +6,10 @@ def color [] {
 
 def edition [] {
   [
-    "2015",
-    "2018",
-    "2021",
+    2015
+    2018
+    2021
+    2024
   ]
 }
 
@@ -18,13 +19,15 @@ def timing [] {
 
 def vcs [] {
   [
-    "git",
-    "hg",
-    "pijul",
-    "fossil",
-    "none",
+    [ value description];
+    [ fossil "Fossil SCM" ]
+    [ git "git distributed VCS" ]
+    [ hg "Mercurial SCM" ]
+    [ none "default"]
+    [ pijul "Pijul distributed VCS" ]
   ]
 }
+
 
 # Add dependencies to a Cargo.toml manifest file
 export extern add [
@@ -229,6 +232,25 @@ export def "install --list" [] {
   | sort-by package version
   )
 }
+
+# Create a new cargo package
+export extern new [
+  path: path               # Location of the new package
+  --bin                    # Use a binary (application) template [default]
+  --color: string@color    # When to color output
+  --config: string         # Override a configuration value
+  --edition string@edition # Edition to use for the crate generated
+  --frozen                 # Require Cargo.lock and cache are up to date
+  --lib                    # Use a library template
+  --locked                 # Require Cargo.lock is up to date
+  --name string            # Package name
+  --offline                # Run without accessing the network
+  --quiet                  # Do not print cargo log messages
+  --registry string        # Registry to use
+  --vcs: string@vcs        # Initialize repository for this version control system
+  --verbose(-v)            # Use verbose output
+  -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+]
 
 # A next-generation test runner
 export extern nextest [
