@@ -143,6 +143,45 @@ export extern build [
   -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
+# Check a local package and its dependencies for errors
+export extern check [
+  --ignore-rust-version    # Ignore `rust-version` specification in packages
+  --future-incompat-report # Outputs a future incompatibility report at the end of the build
+  --message-format: string # Error format
+  --verbose(-v)            # Use verbose output
+  --quiet(-q)              # Do not print cargo log messages
+  --color: string@color    # Coloring: auto, always, never
+  --config: string         # Override a configuration value
+  -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --package: string        # Package to modify
+  --workspace              # Build all packages in the workspace
+  --exclude: string        # Exclude packages from the build
+  --lib                    # Check only this package's library
+  --bins                   # Check all binaries
+  --bin: string            # Check only the specified binary
+  --examples               # Check all examples
+  --example: string        # Check only the specified example
+  --tests                  # Check all test targets
+  --test: string           # Check only the specified test targets
+  --benches                # Check all bench targets
+  --bench: string          # Check only the specified bench targets
+  --all-targets            # Check all targets
+  --features: string       # Space or comma separated list of features to activate
+  --all-features           # Activate all available features
+  --no-default-features    # Do not activate the `default` feature
+  --jobs(-j): int          # Number of parallel jobs, defaults to of CPUs.
+  --keep-going             # Do not abort the build as soon as there is an error (unstable)
+  --profile: string        # Install artifacts with the specified profile
+  --target: string         # Build for the target triple
+  --target-dir: path       # Directory for all generated artifacts
+  --unit-graph             # Output build graph in JSON (unstable)
+  --timings: string@timing # Timing output formats (unstable, comma separated)
+  --manifest-path: string  # Path to Cargo.toml
+  --locked                 # Require Cargo.lock is up to date
+  --frozen                 # Require Cargo.lock and cache are up to date
+  --offline                # Run without accessing the network
+]
+
 export extern clean [
   --color: string@color   # When to color output
   --config: string        # Override a configuration value (unstable)
@@ -160,6 +199,50 @@ export extern clean [
   --target: string        # Build for the target triple
   --verbose(-v)           # Use verbose output (-vv very verbose/build.rs output)
   -Z: string              # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+]
+
+# Checks a package to catch common mistakes and improve your Rust code
+export extern clippy [
+  --all-features           # Activate all available features
+  --all-targets            # Check all targets
+  --bench: string          # Check only the specified bench targets
+  --benches                # Check all bench targets
+  --bin: string            # Check only the specified binary
+  --bins                   # Check all binaries
+  --color: string@color    # Coloring: auto, always, never
+  --config: string         # Override a configuration value
+  --example: string        # Check only the specified example
+  --examples               # Check all examples
+  --exclude: string        # Exclude packages from the build
+  --explain         # Print the documentation for a lint
+  --explain: string # Print the documentation for the given lint
+  --features: string       # Space or comma separated list of features to activate
+  --fix # Automatically apply lint suggestions
+  --frozen                 # Require Cargo.lock and cache are up to date
+  --future-incompat-report # Outputs a future incompatibility report at the end of the build
+  --ignore-rust-version    # Ignore `rust-version` specification in packages
+  --jobs(-j): int          # Number of parallel jobs, defaults to of CPUs.
+  --keep-going             # Do not abort the build as soon as there is an error (unstable)
+  --lib                    # Check only this package's library
+  --locked                 # Require Cargo.lock is up to date
+  --manifest-path: string  # Path to Cargo.toml
+  --message-format: string # Error format
+  --no-default-features    # Do not activate the `default` feature
+  --no-deps # Run clippy only on the given crate
+  --offline                # Run without accessing the network
+  --package: string        # Package to modify
+  --profile: string        # Install artifacts with the specified profile
+  --quiet(-q)              # Do not print cargo log messages
+  --target-dir: path       # Directory for all generated artifacts
+  --target: string         # Build for the target triple
+  --test: string           # Check only the specified test targets
+  --tests                  # Check all test targets
+  --timings: string@timing # Timing output formats (unstable, comma separated)
+  --unit-graph             # Output build graph in JSON (unstable)
+  --verbose(-v)            # Use verbose output
+  --version(-V)            # Print version information
+  --workspace              # Build all packages in the workspace
+  -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 # Create a new cargo package in an existing directory
