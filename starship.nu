@@ -7,7 +7,7 @@ def wezterm_user_var [
   name: string
   value: string
 ] {
-  let encoded = $value | encode new-base64
+  let encoded = $value | encode base64
 
   $"\e]1337;SetUserVar=($name)=($encoded)\a"
 }
