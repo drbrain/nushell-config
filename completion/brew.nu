@@ -198,6 +198,16 @@ export extern "brew install" [
   --zap                          # Remove all files associated with a cask
 ]
 
+# List installed formulae that are not dependencdies of another installed
+# formula
+export extern "brew leaves" [
+  --installed-on-request(-r)    # Only list leaves that were manually installed.
+  --installed-as-dependency(-p) # Only list leaves that were installed as dependencies.
+  --debug(-d)                   # Display any debugging information
+  --quiet(-q)                   # Make some output more quiet
+  --verbose(-v)                 # Make some output more verbose
+]
+
 # List all installed formulae
 export extern "brew list" [
   ...formulae: string
