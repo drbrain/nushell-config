@@ -32,15 +32,15 @@ export extern main [
 
 # Uninstall formulae that were installed as a dependency and are no longer
 # needed
-export extern "brew autoremove" [
+export extern autoremove [
   --dry-run(-n) # Show what would be removed
 ]
 
 # List all locally installable casks
-export extern "brew casks" []
+export extern casks []
 
 # Remove stale lock files, outdated downloads, old versions
-export extern "brew cleanup" [
+export extern cleanup [
   --dry-run(-n) # Show what would be removed
   --prune-prefix # Only prune the symlinks and directories from the prefix
   --prune: string # Remove all cache files older than this many days, or "all"
@@ -48,10 +48,10 @@ export extern "brew cleanup" [
 ]
 
 # Show Homebrew and system configuration
-export extern "brew config" []
+export extern config []
 
 # Show dependencies for formulae
-export extern "brew deps" [
+export extern deps [
   ...formulae: string@list_installed # Forumlae to show deps for
   --topological(-n) # Show in topological order
   --direct(-1) # Show only direct dependencies
@@ -76,7 +76,7 @@ export extern "brew deps" [
 ]
 
 # Display formula's name and one-line description
-export extern "brew desc" [
+export extern desc [
   ...search: string # Formulae to show
   --cask            # Treat all named arguments as casks
   --casks           # Treat all named arguments as casks
@@ -91,7 +91,7 @@ export extern "brew desc" [
 ]
 
 # Check your system for potential problems
-export extern "brew doctor" [
+export extern doctor [
   ...check: string@list_checks # check to run
   --list-checks                # List all audit methods
   --audit-debug(-D)            # Enable debugging and profiling of audit methods
@@ -99,10 +99,10 @@ export extern "brew doctor" [
 ]
 
 # List all locally installable forumlae
-export extern "brew formulae" []
+export extern formulae []
 
 # Open homepage for a forumlae or casks
-export extern "brew home" [
+export extern home [
   ...formula: string@installable # Formula
   --cask # Treat all argumest as casks
   --formula # Treat all arguments as formulae
@@ -127,7 +127,7 @@ def info_days [] {
 }
 
 # Display information about Homebrew and formulae
-export extern "brew info" [
+export extern info [
   ...formula: string@installable   # Formulae to show information for
   --analytics                      # List global Homebrew analytics or installation and build errors for formulae
   --days: int@info_days            # How many days of analytics to retrieve
@@ -144,7 +144,7 @@ export extern "brew info" [
 ]
 
 # Install a formula
-export extern "brew install" [
+export extern install [
   ...formula: string@installable # Formulae to install
   --HEAD                         # Install the HEAD version, if available
   --adopt                        # Adopt existing artifacts in the destination that are identical to those being installed
@@ -200,7 +200,7 @@ export extern "brew install" [
 
 # List installed formulae that are not dependencdies of another installed
 # formula
-export extern "brew leaves" [
+export extern leaves [
   --installed-on-request(-r)    # Only list leaves that were manually installed.
   --installed-as-dependency(-p) # Only list leaves that were installed as dependencies.
   --debug(-d)                   # Display any debugging information
@@ -209,7 +209,7 @@ export extern "brew leaves" [
 ]
 
 # List all installed formulae
-export extern "brew list" [
+export extern list [
   ...formulae: string
   --cask        # Treat all named arguments as casks
   --casks       # Treat all named arguments as casks
@@ -228,7 +228,7 @@ export extern "brew list" [
   -t            # Order formulae by modified time
 ]
 
-export extern "brew search" [
+export extern search [
   ...substring: string # Substring to search for
   --archlinux          # Search for text in ArchLinux
   --cask               # Search for casks
@@ -253,7 +253,7 @@ export extern "brew search" [
 ]
 
 # Uninstall a formula
-export extern "brew uninstall" [
+export extern uninstall [
   ...formulae: string@list_installed # Formulae to uninstall
   --cask                             # Treat all named arguments as casks
   --casks                            # Treat all named arguments as casks
@@ -268,7 +268,7 @@ export extern "brew uninstall" [
 ]
 
 # Update Homebrew itself
-export extern "brew update" [
+export extern update [
   --merge # Apply updates with `git merge` (default is `git rebase`)
   --auto-update # Run auto-updates
   --force(-f) # Run a slower full update check (even if unnecessary)

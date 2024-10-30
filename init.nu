@@ -1,11 +1,13 @@
 if not (which atuin | get path | is-empty) {
     source atuin.nu
 }
+
 source cdpath.nu
-source completions.nu
 source search.nu
 source starship.nu
 source tokyonight.nu
+
+use completion *
 
 try {
   source ../nu_plugin_prometheus/config.nu
