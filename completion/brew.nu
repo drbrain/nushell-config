@@ -228,6 +228,22 @@ export extern list [
   -t            # Order formulae by modified time
 ]
 
+# List installed casks and formulae that have an updated version available
+export extern outdated [
+  ...formulae: string@list_installed # Formulae to check
+  --cask                # Treat all named arguments as casks
+  --casks               # Treat all named arguments as casks
+  --fetch-HEAD          # Fetch the upstream repository to see if the HEAD installation is outdated
+  --formula             # Treat all named arguments as forumlae
+  --formulae            # Treat all named arguments as forumlae
+  --greedy(-g)          # Include outdated casks with "auto_udpates true" or "version :latest"
+  --greedy-auto-updates # Include outdated casks with "auto_updates true"
+  --greedy-latest       # Include outdated casks with "version :latest"
+  --json                # Print a JSON representation
+  --quiet(-q)           # List only the names of outdated keys
+  --verbose(-v)         # Include all detailed information
+]
+
 export extern search [
   ...substring: string # Substring to search for
   --archlinux          # Search for text in ArchLinux
@@ -274,3 +290,49 @@ export extern update [
   --force(-f) # Run a slower full update check (even if unnecessary)
 ]
 
+# Update outdated casks and unpinned formulae
+export extern upgrade [
+  ...formulae: string@list_outdated # Formulae to upgrade
+  --appdir: string                  # Target location for Applications
+  --audio-unit-plugindir: string    # Target location for Audio Unit Plugins
+  --binaries                        # Enable linking of helper executables (default)
+  --build-from-source(-s)           # Compile formula from source even if a bottle is available
+  --cask                            # Treat all named arguments as casks
+  --casks                           # Treat all named arguments as casks
+  --colorpickerdir: string          # Target location for Color Pickers
+  --debug(-d)                       # Open an interactive debugging session upon failures
+  --debug-symbols                   # Generate debug symbols on build
+  --dictionarydir: string           # Target location for Dictionaries
+  --display-times                   # Print install times for each package
+  --dry-run(-n)                     # Show what would be upgraded, but do not actually upgrade anything
+  --fetch-HEAD                      # Fetch the upstream repository to see if the HEAD installation is outdated
+  --fontdir: string                 # Target location for Fonts
+  --force(-f)                       # Install formulae without checking for previously installed keg-only or non-migrated versions
+  --force-bottle                    # Install from a bottle if it exists for the current or newest version of macOS, even if it would not normally be used for installation
+  --formula                         # Treat all named arguments as formulae
+  --formulae                        # Treat all named arguments as formulae
+  --greedy(-g)                      # Include outdated casks with "auto_udpates true" or "version :latest"
+  --greedy-auto-updates             # Include outdated casks with "auto_updates true"
+  --greedy-latest                   # Include outdated casks with "version :latest"
+  --input-methoddir: string         # Target location for Input Methods
+  --interactive(-x)                 # Download and patch formula, then open a shell
+  --internet-plugindir: string      # Target location for Internet Plugins
+  --keep-tmp                        # Retain the temporary files created during installation
+  --keyboard-layoutdir: string      # Target location for Keyboard Layouts
+  --language: string                # Comma-separated list of language codes to prefer
+  --mdimporterdir: string           # Target location for Spotlight Plugins
+  --no-binaries                     # Disable linking of helper executables
+  --no-quarantine                   # Disable quarantining of downloads
+  --overwrite                       # Delete files that already exist in the prefix while linking
+  --prefpanedir: string             # Target location for Preference Panes
+  --qlplugindir: string             # Target location for Quick Look Plugins
+  --quarantine                      # Enable quarantining of downloads (default)
+  --quiet                           # Make some output more quiet
+  --require-sha                     # Require all casks to have a checksum.
+  --screen-saverdir: string         # Target location for Screen Savers
+  --servicedir: string              # Target location for Services
+  --skip-cask-deps                  # Skip installing cask dependencies
+  --verbose(-v)                     # Print the verification and post-install steps
+  --vst-plugindir: string           # Target location for VST Plugins
+  --vst3-plugindir: string          # Target location for VST3 Plugins
+]
