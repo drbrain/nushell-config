@@ -50,7 +50,9 @@ def wezterm_user_var [
 
     # Report Current directory
     if ($env.TERM_PROGRAM == "WezTerm") {
-      $pre_prompt += (wezterm set-working-directory)
+      # this is very slow
+      # $pre_prompt += (wezterm set-working-directory)
+      $pre_prompt += $"\e]7;file:/($env.PWD)\e\\"
     } else  {
       $pre_prompt += $"\e]1337;CurrentDir=($env.PWD)\a"
     }
