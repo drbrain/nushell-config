@@ -316,6 +316,27 @@ export def "install --list" [] {
   )
 }
 
+# Profile a binary with Xcode Instruments
+export extern "instruments" [
+  --all-features          # Activate all available features
+  --bench: string         # Check only the specified bench targets
+  --bin: string           # Check only the specified binary
+  --example: string       # Check only the specified example
+  --features: string      # Space or comma separated list of features to activate
+  --list-templates(-l)    # List available templates
+  --manifest-path: string # Path to Cargo.toml
+  --no-default-features   # Do not activate the `default` feature
+  --no-open               # Do not open the trace file in Instruments
+  --output(-o): path      # Trace file output location
+  --package(-p): string   # Package to build (see `cargo help pkgid`)
+  --profile: string       # Build artifacts with the specified profile
+  --release               # Build artifacts in release mode, with optimizations
+  --template(-t): string  # The template to run
+  --time-limit: int       # Limit recording time to this many milliseconds
+  --version(-V)           # Print version
+  ...args: string         # Arguments passed to the target binary
+]
+
 # Create a new cargo package
 export extern new [
   path: path               # Location of the new package
