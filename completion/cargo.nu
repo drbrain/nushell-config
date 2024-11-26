@@ -31,39 +31,39 @@ def vcs [] {
 
 # Add dependencies to a Cargo.toml manifest file
 export extern add [
-  dep: string               # Reference to package to add as a dependency
-  --no-default-features     # Disable the default features
-  --default-features        # Re-enable the default features
-  --features(-F): string    # Comma-separated list of features to activate
-  --optional                # Mark the dependency as optional
-  --no-optional             # Mark the dependency as required
-  --rename: string          # Rename the dependency
-  --dry-run                 # Don't write the manifest
-  --package: string         # Package to modify
-  --manifest-path: string   # Path to Cargo.toml
+  dep: string                # Reference to package to add as a dependency
+  --no-default-features      # Disable the default features
+  --default-features         # Re-enable the default features
+  --features(-F): string     # Comma-separated list of features to activate
+  --optional                 # Mark the dependency as optional
+  --no-optional              # Mark the dependency as required
+  --rename: string           # Rename the dependency
+  --dry-run                  # Don't write the manifest
+  --package: string@packages # Package to modify
+  --manifest-path: string    # Path to Cargo.toml
 
-  --path: path              # Filesystem path to local crate to add
-  --git: string             # Git repository location
-  --branch: string          # Git branch to download crate from
-  --tag: string             # Git tag to download crate from
-  --rev: string             # Git reference to download crate from
-  --registry                # Package registry for this dependency
+  --path: path               # Filesystem path to local crate to add
+  --git: string              # Git repository location
+  --branch: string           # Git branch to download crate from
+  --tag: string              # Git tag to download crate from
+  --rev: string              # Git reference to download crate from
+  --registry                 # Package registry for this dependency
 
-  --frozen                  # Require Cargo.lock and cache are up to date
-  --locked                  # Require Cargo.lock is up to date
-  --offline                 # Run without accessing the network
+  --frozen                   # Require Cargo.lock and cache are up to date
+  --locked                   # Require Cargo.lock is up to date
+  --offline                  # Run without accessing the network
 
-  --dev                     # Add package as development dependency
-  --build                   # Add package as build dependency
-  --target: string          # Add packages to this target platform
+  --dev                      # Add package as development dependency
+  --build                    # Add package as build dependency
+  --target: string           # Add packages to this target platform
 
-  --color: string@color     # Set coloring
-  --config-file: string     # Config file [default: workspace-root/.config/nextest.toml]
-  -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --color: string@color      # Set coloring
+  --config-file: string      # Config file [default: workspace-root/.config/nextest.toml]
+  -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 
-  --quiet(-q)               # Do not print cargo log messages
-  --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
-  --help(-h)                # Print help information
+  --quiet(-q)                # Do not print cargo log messages
+  --verbose(-v)              # Use verbose output (-vv very verbose/build.rs output)
+  --help(-h)                 # Print help information
 ]
 
 def deny [] {
@@ -102,147 +102,147 @@ export extern "audit fix" [
 
 # Compile a local package and all of its dependencies
 export extern build [
-  --all-features            # Activate all available features
-  --all-targets             # Build all targets
-  --bench: string           # Build only the specified bench target
-  --benches                 # Build all benches
-  --bin: string             # Build only the specified binary
-  --bins                    # Build all binaries
-  --build-plan              # Output the build plan in JSON (unstable)
-  --color: string@color     # When to color output
-  --config: string          # Override a configuration value (unstable)
-  --example: string         # Build only the specified example
-  --examples                # Build all examples
-  --exclude: string         # Exclude packages from the build
-  --features: string        # Space or comma separated list of features to activate
-  --frozen                  # Require Cargo.lock and cache are up to date
-  --future-incompat-report  # Outputs a future incompatibility report at the end of the build
-  --help(-h)                # Print help information
-  --ignore-rust-version     # Ignore `rust-version` specification in packages
-  --jobs(-j): number        # Number of parallel jobs, defaults to # of CPUs
-  --keep-going              # Do not abort the build as soon as there is an error (unstable)
-  --lib                     # Build only this package's library
-  --locked                  # Require Cargo.lock is up to date
-  --manifest-path: string   # Path to Cargo.toml
-  --message-format: string  # Error format
-  --no-default-features     # Do not activate the `default` feature
-  --offline                 # Run without accessing the network
-  --out-dir: string         # Copy final artifacts to this directory (unstable)
-  --package(-p): string     # Package to build (see `cargo help pkgid`)
-  --profile: string         # Build artifacts with the specified profile
-  --quiet(-q)               # Do not print cargo log messages
-  --release(-r)             # Build artifacts in release mode, with optimizations
-  --target-dir: string      # Directory for all generated artifacts
-  --target: string          # Build for the target triple
-  --test: string            # Build only the specified test target
-  --tests                   # Build all tests
-  --timings: string@timing  # Timing output formats (unstable, comma separated)
-  --unit-graph              # Output build graph in JSON (unstable)
-  --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
-  --workspace               # Build all packages in the workspace
-  -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --all-features                 # Activate all available features
+  --all-targets                  # Build all targets
+  --bench: string                # Build only the specified bench target
+  --benches                      # Build all benches
+  --bin: string                  # Build only the specified binary
+  --bins                         # Build all binaries
+  --build-plan                   # Output the build plan in JSON (unstable)
+  --color: string@color          # When to color output
+  --config: string               # Override a configuration value (unstable)
+  --example: string              # Build only the specified example
+  --examples                     # Build all examples
+  --exclude: string              # Exclude packages from the build
+  --features: string             # Space or comma separated list of features to activate
+  --frozen                       # Require Cargo.lock and cache are up to date
+  --future-incompat-report       # Outputs a future incompatibility report at the end of the build
+  --help(-h)                     # Print help information
+  --ignore-rust-version          # Ignore `rust-version` specification in packages
+  --jobs(-j): number             # Number of parallel jobs, defaults to                                    # of CPUs
+  --keep-going                   # Do not abort the build as soon as there is an error (unstable)
+  --lib                          # Build only this package's library
+  --locked                       # Require Cargo.lock is up to date
+  --manifest-path: string        # Path to Cargo.toml
+  --message-format: string       # Error format
+  --no-default-features          # Do not activate the `default` feature
+  --offline                      # Run without accessing the network
+  --out-dir: string              # Copy final artifacts to this directory (unstable)
+  --package(-p): string@packages # Package to build (see `cargo help pkgid`)
+  --profile: string              # Build artifacts with the specified profile
+  --quiet(-q)                    # Do not print cargo log messages
+  --release(-r)                  # Build artifacts in release mode, with optimizations
+  --target-dir: string           # Directory for all generated artifacts
+  --target: string               # Build for the target triple
+  --test: string                 # Build only the specified test target
+  --tests                        # Build all tests
+  --timings: string@timing       # Timing output formats (unstable, comma separated)
+  --unit-graph                   # Output build graph in JSON (unstable)
+  --verbose(-v)                  # Use verbose output (-vv very verbose/build.rs output)
+  --workspace                    # Build all packages in the workspace
+  -Z: string                     # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 # Check a local package and its dependencies for errors
 export extern check [
-  --ignore-rust-version    # Ignore `rust-version` specification in packages
-  --future-incompat-report # Outputs a future incompatibility report at the end of the build
-  --message-format: string # Error format
-  --verbose(-v)            # Use verbose output
-  --quiet(-q)              # Do not print cargo log messages
-  --color: string@color    # Coloring: auto, always, never
-  --config: string         # Override a configuration value
-  -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
-  --package: string        # Package to modify
-  --workspace              # Build all packages in the workspace
-  --exclude: string        # Exclude packages from the build
-  --lib                    # Check only this package's library
-  --bins                   # Check all binaries
-  --bin: string            # Check only the specified binary
-  --examples               # Check all examples
-  --example: string        # Check only the specified example
-  --tests                  # Check all test targets
-  --test: string           # Check only the specified test targets
-  --benches                # Check all bench targets
-  --bench: string          # Check only the specified bench targets
-  --all-targets            # Check all targets
-  --features: string       # Space or comma separated list of features to activate
-  --all-features           # Activate all available features
-  --no-default-features    # Do not activate the `default` feature
-  --jobs(-j): int          # Number of parallel jobs, defaults to of CPUs.
-  --keep-going             # Do not abort the build as soon as there is an error (unstable)
-  --profile: string        # Install artifacts with the specified profile
-  --target: string         # Build for the target triple
-  --target-dir: path       # Directory for all generated artifacts
-  --unit-graph             # Output build graph in JSON (unstable)
-  --timings: string@timing # Timing output formats (unstable, comma separated)
-  --manifest-path: string  # Path to Cargo.toml
-  --locked                 # Require Cargo.lock is up to date
-  --frozen                 # Require Cargo.lock and cache are up to date
-  --offline                # Run without accessing the network
+  --ignore-rust-version      # Ignore `rust-version` specification in packages
+  --future-incompat-report   # Outputs a future incompatibility report at the end of the build
+  --message-format: string   # Error format
+  --verbose(-v)              # Use verbose output
+  --quiet(-q)                # Do not print cargo log messages
+  --color: string@color      # Coloring: auto, always, never
+  --config: string           # Override a configuration value
+  -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --package: string@packages # Package to modify
+  --workspace                # Build all packages in the workspace
+  --exclude: string          # Exclude packages from the build
+  --lib                      # Check only this package's library
+  --bins                     # Check all binaries
+  --bin: string              # Check only the specified binary
+  --examples                 # Check all examples
+  --example: string          # Check only the specified example
+  --tests                    # Check all test targets
+  --test: string             # Check only the specified test targets
+  --benches                  # Check all bench targets
+  --bench: string            # Check only the specified bench targets
+  --all-targets              # Check all targets
+  --features: string         # Space or comma separated list of features to activate
+  --all-features             # Activate all available features
+  --no-default-features      # Do not activate the `default` feature
+  --jobs(-j): int            # Number of parallel jobs, defaults to of CPUs.
+  --keep-going               # Do not abort the build as soon as there is an error (unstable)
+  --profile: string          # Install artifacts with the specified profile
+  --target: string           # Build for the target triple
+  --target-dir: path         # Directory for all generated artifacts
+  --unit-graph               # Output build graph in JSON (unstable)
+  --timings: string@timing   # Timing output formats (unstable, comma separated)
+  --manifest-path: string    # Path to Cargo.toml
+  --locked                   # Require Cargo.lock is up to date
+  --frozen                   # Require Cargo.lock and cache are up to date
+  --offline                  # Run without accessing the network
 ]
 
 export extern clean [
-  --color: string@color   # When to color output
-  --config: string        # Override a configuration value (unstable)
-  --doc                   # Clean just the documentation directory
-  --dry-run               # Display what would be cleaned without deleting anything
-  --frozen                # Require Cargo.lock and cache are up to date
-  --locked                # Require Cargo.lock is up to date
-  --manifest-path: string # Path to Cargo.toml
-  --offline               # Run without accessing the network
-  --package(-p): string   # Package to build (see `cargo help pkgid`)
-  --profile: string       # Build artifacts with the specified profile
-  --quiet(-q)             # Do not print cargo log messages
-  --release(-r)           # Build artifacts in release mode, with optimizations
-  --target-dir: string    # Directory for all generated artifacts
-  --target: string        # Build for the target triple
-  --verbose(-v)           # Use verbose output (-vv very verbose/build.rs output)
-  -Z: string              # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --color: string@color          # When to color output
+  --config: string               # Override a configuration value (unstable)
+  --doc                          # Clean just the documentation directory
+  --dry-run                      # Display what would be cleaned without deleting anything
+  --frozen                       # Require Cargo.lock and cache are up to date
+  --locked                       # Require Cargo.lock is up to date
+  --manifest-path: string        # Path to Cargo.toml
+  --offline                      # Run without accessing the network
+  --package(-p): string@packages # Package to build (see `cargo help pkgid`)
+  --profile: string              # Build artifacts with the specified profile
+  --quiet(-q)                    # Do not print cargo log messages
+  --release(-r)                  # Build artifacts in release mode, with optimizations
+  --target-dir: string           # Directory for all generated artifacts
+  --target: string               # Build for the target triple
+  --verbose(-v)                  # Use verbose output (-vv very verbose/build.rs output)
+  -Z: string                     # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 # Checks a package to catch common mistakes and improve your Rust code
 export extern clippy [
-  --all-features           # Activate all available features
-  --all-targets            # Check all targets
-  --bench: string          # Check only the specified bench targets
-  --benches                # Check all bench targets
-  --bin: string            # Check only the specified binary
-  --bins                   # Check all binaries
-  --color: string@color    # Coloring: auto, always, never
-  --config: string         # Override a configuration value
-  --example: string        # Check only the specified example
-  --examples               # Check all examples
-  --exclude: string        # Exclude packages from the build
-  --explain         # Print the documentation for a lint
-  --explain: string # Print the documentation for the given lint
-  --features: string       # Space or comma separated list of features to activate
-  --fix # Automatically apply lint suggestions
-  --frozen                 # Require Cargo.lock and cache are up to date
-  --future-incompat-report # Outputs a future incompatibility report at the end of the build
-  --ignore-rust-version    # Ignore `rust-version` specification in packages
-  --jobs(-j): int          # Number of parallel jobs, defaults to of CPUs.
-  --keep-going             # Do not abort the build as soon as there is an error (unstable)
-  --lib                    # Check only this package's library
-  --locked                 # Require Cargo.lock is up to date
-  --manifest-path: string  # Path to Cargo.toml
-  --message-format: string # Error format
-  --no-default-features    # Do not activate the `default` feature
-  --no-deps # Run clippy only on the given crate
-  --offline                # Run without accessing the network
-  --package: string        # Package to modify
-  --profile: string        # Install artifacts with the specified profile
-  --quiet(-q)              # Do not print cargo log messages
-  --target-dir: path       # Directory for all generated artifacts
-  --target: string         # Build for the target triple
-  --test: string           # Check only the specified test targets
-  --tests                  # Check all test targets
-  --timings: string@timing # Timing output formats (unstable, comma separated)
-  --unit-graph             # Output build graph in JSON (unstable)
-  --verbose(-v)            # Use verbose output
-  --version(-V)            # Print version information
-  --workspace              # Build all packages in the workspace
-  -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --all-features             # Activate all available features
+  --all-targets              # Check all targets
+  --bench: string            # Check only the specified bench targets
+  --benches                  # Check all bench targets
+  --bin: string              # Check only the specified binary
+  --bins                     # Check all binaries
+  --color: string@color      # Coloring: auto, always, never
+  --config: string           # Override a configuration value
+  --example: string          # Check only the specified example
+  --examples                 # Check all examples
+  --exclude: string          # Exclude packages from the build
+  --explain                  # Print the documentation for a lint
+  --explain: string          # Print the documentation for the given lint
+  --features: string         # Space or comma separated list of features to activate
+  --fix                      # Automatically apply lint suggestions
+  --frozen                   # Require Cargo.lock and cache are up to date
+  --future-incompat-report   # Outputs a future incompatibility report at the end of the build
+  --ignore-rust-version      # Ignore `rust-version` specification in packages
+  --jobs(-j): int            # Number of parallel jobs, defaults to of CPUs.
+  --keep-going               # Do not abort the build as soon as there is an error (unstable)
+  --lib                      # Check only this package's library
+  --locked                   # Require Cargo.lock is up to date
+  --manifest-path: string    # Path to Cargo.toml
+  --message-format: string   # Error format
+  --no-default-features      # Do not activate the `default` feature
+  --no-deps                  # Run clippy only on the given crate
+  --offline                  # Run without accessing the network
+  --package: string@packages # Package to modify
+  --profile: string          # Install artifacts with the specified profile
+  --quiet(-q)                # Do not print cargo log messages
+  --target-dir: path         # Directory for all generated artifacts
+  --target: string           # Build for the target triple
+  --test: string             # Check only the specified test targets
+  --tests                    # Check all test targets
+  --timings: string@timing   # Timing output formats (unstable, comma separated)
+  --unit-graph               # Output build graph in JSON (unstable)
+  --verbose(-v)              # Use verbose output
+  --version(-V)              # Print version information
+  --workspace                # Build all packages in the workspace
+  -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 # Create a new cargo package in an existing directory
@@ -318,23 +318,23 @@ export def "install --list" [] {
 
 # Profile a binary with Xcode Instruments
 export extern "instruments" [
-  --all-features          # Activate all available features
-  --bench: string         # Check only the specified bench targets
-  --bin: string           # Check only the specified binary
-  --example: string       # Check only the specified example
-  --features: string      # Space or comma separated list of features to activate
-  --list-templates(-l)    # List available templates
-  --manifest-path: string # Path to Cargo.toml
-  --no-default-features   # Do not activate the `default` feature
-  --no-open               # Do not open the trace file in Instruments
-  --output(-o): path      # Trace file output location
-  --package(-p): string   # Package to build (see `cargo help pkgid`)
-  --profile: string       # Build artifacts with the specified profile
-  --release               # Build artifacts in release mode, with optimizations
-  --template(-t): string  # The template to run
-  --time-limit: int       # Limit recording time to this many milliseconds
-  --version(-V)           # Print version
-  ...args: string         # Arguments passed to the target binary
+  --all-features                 # Activate all available features
+  --bench: string                # Check only the specified bench targets
+  --bin: string                  # Check only the specified binary
+  --example: string              # Check only the specified example
+  --features: string             # Space or comma separated list of features to activate
+  --list-templates(-l)           # List available templates
+  --manifest-path: string        # Path to Cargo.toml
+  --no-default-features          # Do not activate the `default` feature
+  --no-open                      # Do not open the trace file in Instruments
+  --output(-o): path             # Trace file output location
+  --package(-p): string@packages # Package to build (see `cargo help pkgid`)
+  --profile: string              # Build artifacts with the specified profile
+  --release                      # Build artifacts in release mode, with optimizations
+  --template(-t): string         # The template to run
+  --time-limit: int              # Limit recording time to this many milliseconds
+  --version(-V)                  # Print version
+  ...args: string                # Arguments passed to the target binary
 ]
 
 # Create a new cargo package
@@ -376,41 +376,41 @@ def nextest_list_message_format [] {
 
 # List tests in the workspace
 export extern "nextest list" [
-  --all-features           # Activate all available features
-  --all-targets            # Test all targets
-  --bench: string          # Test only the specified bench target
-  --benches                # Test all benches
-  --bin: string            # Test only the specified binary
-  --bins                   # Test all binaries
-  --build-jobs: number     # Number of jobs to run
-  --cargo-profile: string  # Build artifacts with the specified Cargo profile
-  --color: string@color    # When to color output
-  --config-file: string    # Config file [default: workspace-root/.config/nextest.toml]
-  --config: string         # Override a configuration value (unstable)
-  --exclude: string        # Exclude packages from the build
-  --features: string       # Space or comma separated list of features to activate
-  --frozen                 # Require Cargo.lock and cache are up to date
-  --future-incompat-report # Outputs a future incompatibility report at the end of the build
-  --help(-h)               # Print help information
-  --ignore-rust-version    # Ignore "rust-version" specification in packages
-  --lib                    # Test only library unit tests
-  --locked                 # Require Cargo.lock is up to date
-  --manifest-path: string  # Path to Cargo.toml
+  --all-features                 # Activate all available features
+  --all-targets                  # Test all targets
+  --bench: string                # Test only the specified bench target
+  --benches                      # Test all benches
+  --bin: string                  # Test only the specified binary
+  --bins                         # Test all binaries
+  --build-jobs: number           # Number of jobs to run
+  --cargo-profile: string        # Build artifacts with the specified Cargo profile
+  --color: string@color          # When to color output
+  --config-file: string          # Config file [default: workspace-root/.config/nextest.toml]
+  --config: string               # Override a configuration value (unstable)
+  --exclude: string              # Exclude packages from the build
+  --features: string             # Space or comma separated list of features to activate
+  --frozen                       # Require Cargo.lock and cache are up to date
+  --future-incompat-report       # Outputs a future incompatibility report at the end of the build
+  --help(-h)                     # Print help information
+  --ignore-rust-version          # Ignore "rust-version" specification in packages
+  --lib                          # Test only library unit tests
+  --locked                       # Require Cargo.lock is up to date
+  --manifest-path: string        # Path to Cargo.toml
   --message-format(-T): string@nextest_list_message_format # Output format
-  --no-default-features    # Do not activate the "default" feature
-  --offline                # Run without accessing the network
-  --package(-p): string    # Package to test
-  --partition: string      # Test partition, e.g. hash:1/2 or count:2/3
-  --release                # Build artifacts in release mode, with optimizations
+  --no-default-features          # Do not activate the "default" feature
+  --offline                      # Run without accessing the network
+  --package(-p): string@packages # Package to test
+  --partition: string            # Test partition, e.g. hash:1/2 or count:2/3
+  --release                      # Build artifacts in release mode, with optimizations
   --run-ignored: string@nextest_ignore # Run ignored tests
-  --target-dir: string     # Directory for all generated artifacts
-  --target: string         # Build for the target triple
-  --test: string           # Test only the specified test target
-  --tests                  # Test all targets
-  --unit-graph             # Output build graph in JSON (unstable)
-  --verbose(-v)            # Use verbose output
-  --workspace              # Build all packages in the workspace
-  -Z: string               # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --target-dir: string           # Directory for all generated artifacts
+  --target: string               # Build for the target triple
+  --test: string                 # Test only the specified test target
+  --tests                        # Test all targets
+  --unit-graph                   # Output build graph in JSON (unstable)
+  --verbose(-v)                  # Use verbose output
+  --workspace                    # Build all packages in the workspace
+  -Z: string                     # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 def nextest_run_message_format [] {
@@ -439,67 +439,67 @@ def nextest_timings [] {
 
 # Build and run tests
 export extern "nextest run" [
-  filter?: string            # Test name filter
-  --all-features             # Activate all available features
-  --all-targets              # Test all targets
-  --archive-file: path       # Path to nextest archive
+  filter?: string                   # Test name filter
+  --all-features                    # Activate all available features
+  --all-targets                     # Test all targets
+  --archive-file: path              # Path to nextest archive
   --archive-format: string@nextest_archive_format # Archive format
-  --bench: string            # Test only the specified bench target
-  --benches                  # Test all benches
-  --bin: string              # Test only the specified binary
-  --binaries-metadata: path  # Path to binaries-metadata JSON
-  --bins                     # Test all binaries
-  --build-jobs: number       # Number of jobs to run
-  --cargo-metadata: path     # PAth to cargo metadata JSON
-  --cargo-profile: string    # Build artifacts with the specified Cargo profile
-  --cargo-quiet              # Do not print  cargo log messages
-  --cargo-verbose            # Use cargo verbose output
-  --color: string@color      # When to color output
-  --config-file: path        # Config file [default: workspace-root/.config/nextest.toml]
-  --config: string           # Override a configuration value
-  --exclude: string          # Exclude packages from the build
-  --extract-to: path         # Archive extraction directory
-  --extract-overwrite        # Overwrite when extracting acrhive
-  --fail-fast                # Cancel test run on the first failure
+  --bench: string                   # Test only the specified bench target
+  --benches                         # Test all benches
+  --bin: string                     # Test only the specified binary
+  --binaries-metadata: path         # Path to binaries-metadata JSON
+  --bins                            # Test all binaries
+  --build-jobs: number              # Number of jobs to run
+  --cargo-metadata: path            # PAth to cargo metadata JSON
+  --cargo-profile: string           # Build artifacts with the specified Cargo profile
+  --cargo-quiet                     # Do not print  cargo log messages
+  --cargo-verbose                   # Use cargo verbose output
+  --color: string@color             # When to color output
+  --config-file: path               # Config file [default: workspace-root/.config/nextest.toml]
+  --config: string                  # Override a configuration value
+  --exclude: string                 # Exclude packages from the build
+  --extract-to: path                # Archive extraction directory
+  --extract-overwrite               # Overwrite when extracting acrhive
+  --fail-fast                       # Cancel test run on the first failure
   --failure-output: string@nextest_output # Output stdout and stderr on failure
-  --features: string         # Space or comma separated list of features to activate
+  --features: string                # Space or comma separated list of features to activate
   --final-status-level: string@nextest_status_level # Test statuses to output at the end of the run
-  --frozen                   # Require Cargo.lock and cache are up to date
-  --future-incompat-report   # Outputs a future incompatibility report at the end of the build
-  --hide-progress-bar        # Do not display the progress bar
-  --ignore-rust-version      # Ignore "rust-version" specification in packages
-  --lib                      # Test only library unit tests
-  --locked                   # Require Cargo.lock is up to date
-  --manifest-path: string    # Path to Cargo.toml
+  --frozen                          # Require Cargo.lock and cache are up to date
+  --future-incompat-report          # Outputs a future incompatibility report at the end of the build
+  --hide-progress-bar               # Do not display the progress bar
+  --ignore-rust-version             # Ignore "rust-version" specification in packages
+  --lib                             # Test only library unit tests
+  --locked                          # Require Cargo.lock is up to date
+  --manifest-path: string           # Path to Cargo.toml
   --message-format: string@nextest_run_message_format # Format to use for test results
-  --message-format-version: number # Version of message-format to use
-  --no-capture               # Run tests serially and do not capture output
-  --no-default-features      # Do not activate the "default" feature
-  --no-fail-fast             # Run all tests regardless of failure
-  --offline                  # Run without accessing the network
-  --override-version-check   # Override checks for the minimum version in the nextest config
-  --package(-p): string      # Package to test
-  --partition: string        # Test partition, e.g. hash:1/2 or count:2/3
-  --persist-extract-tempdir  # Persist extracted temporary directory
-  --profile(-P): string      # Nextest profile to use
-  --release                  # Build artifacts in release mode, with optimizations
-  --retries: number          # Number of retries for failing tests
+  --message-format-version: number  # Version of message-format to use
+  --no-capture                      # Run tests serially and do not capture output
+  --no-default-features             # Do not activate the "default" feature
+  --no-fail-fast                    # Run all tests regardless of failure
+  --offline                         # Run without accessing the network
+  --override-version-check          # Override checks for the minimum version in the nextest config
+  --package(-p): string@packages    # Package to test
+  --partition: string               # Test partition, e.g. hash:1/2 or count:2/3
+  --persist-extract-tempdir         # Persist extracted temporary directory
+  --profile(-P): string             # Nextest profile to use
+  --release                         # Build artifacts in release mode, with optimizations
+  --retries: number                 # Number of retries for failing tests
   --run-ignored: string@nextest_ignore # Run ignored tests
   --status-level: string@nextest_status_level # Test statuses to output
   --success-output: string@nextest_output # Output stdout and stderr on success
-  --target-dir: string       # Directory for all generated artifacts
-  --target-dir-remap: path   # Remapping for the target directory
-  --target: string           # Build for the target triple
-  --test-threads(-j): number # Simultaneous threads to run
-  --test: string             # Test only the specified test target
-  --tests                    # Test all targets
+  --target-dir: string              # Directory for all generated artifacts
+  --target-dir-remap: path          # Remapping for the target directory
+  --target: string                  # Build for the target triple
+  --test-threads(-j): number        # Simultaneous threads to run
+  --test: string                    # Test only the specified test target
+  --tests                           # Test all targets
   --timings: string@nextest_timings # Timing output formats
-  --tool-config-file: string # Tool-specific config files
-  --unit-graph               # Output build graph in JSON (unstable)
-  --verbose(-v)              # Use verbose output
-  --workspace                # Build all packages in the workspace
-  --workspace-remap: path    # Remapping for the workspace root
-  -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --tool-config-file: string        # Tool-specific config files
+  --unit-graph                      # Output build graph in JSON (unstable)
+  --verbose(-v)                     # Use verbose output
+  --workspace                       # Build all packages in the workspace
+  --workspace-remap: path           # Remapping for the workspace root
+  -Z: string                        # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 # Show information about nextest's configuration in this workspace
@@ -535,22 +535,22 @@ def installed [] {
 
 # Information about project dependency versions
 export def outdated [
-  --aggressive(-a)          # Ignore channels for latest updates
-  --depth(-d): number       # How deep in the dependency chain to search
-  --exclude(-e): string     # comma-separated list of dependencies to exclude from building
-  --exit-code: number       # Exit code to return when new versions are found
-  --features: string        # Space-separated list of features
-  --ignore(-i): string      # comma-separated list of dependencies to ignore
-  --ignore-external-rel(-e) # Ignore relative dependencies external to the workspace and check root dependencies only
-  --manifest-path: string   # Path to Cargo.toml
-  --offline(-o)             # Run without accessing the network
-  --packages(-p): string    # Package to inspect for updates
-  --root(-r): string        # Package to treat as the root package
-  --root-deps-only(-R)      # Only check root dependencies
-  --quiet(-q)               # Do not print cargo log messages
-  --verbose(-v)             # Use verbose output
-  --version(-V)             # Print version
-  --workspace(-w)           # Check updates for all workspace members
+  --aggressive(-a)                # Ignore channels for latest updates
+  --depth(-d): number             # How deep in the dependency chain to search
+  --exclude(-e): string           # comma-separated list of dependencies to exclude from building
+  --exit-code: number             # Exit code to return when new versions are found
+  --features: string              # Space-separated list of features
+  --ignore(-i): string            # comma-separated list of dependencies to ignore
+  --ignore-external-rel(-e)       # Ignore relative dependencies external to the workspace and check root dependencies only
+  --manifest-path: string         # Path to Cargo.toml
+  --offline(-o)                   # Run without accessing the network
+  --packages(-p): string@packages # Package to inspect for updates
+  --root(-r): string              # Package to treat as the root package
+  --root-deps-only(-R)            # Only check root dependencies
+  --quiet(-q)                     # Do not print cargo log messages
+  --verbose(-v)                   # Use verbose output
+  --version(-V)                   # Print version
+  --workspace(-w)                 # Check updates for all workspace members
 ] {
   if $version {
     let version = run-external "cargo" "outdated" "--version"
@@ -629,19 +629,19 @@ export def outdated [
 
 # Remove a rust binary
 export extern uninstall [
-  ...spec: string@installed # Binary to remove
-  --quiet(-q)               # Do not print cargo log messages
-  --package(-p): string     # Package to uninstall
-  --bin: string             # Only uninstall the binary NAME
-  --root: string            # Directory to uninstall packages from
-  --help(-h)                # Print help
-  --verbose(-v)             # Use verbose output (-vv very verbose/build.rs output)
-  --color: string@color     # Coloring: auto, always, never
-  --frozen                  # Require Cargo.lock and cache are up to date
-  --locked                  # Require Cargo.lock is up to date
-  --offline                 # Run without accessing the network
-  --config: string          # Override a configuration value
-  -Z: string                # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  ...spec: string@installed      # Binary to remove
+  --quiet(-q)                    # Do not print cargo log messages
+  --package(-p): string@packages # Package to uninstall
+  --bin: string                  # Only uninstall the binary NAME
+  --root: string                 # Directory to uninstall packages from
+  --help(-h)                     # Print help
+  --verbose(-v)                  # Use verbose output (-vv very verbose/build.rs output)
+  --color: string@color          # Coloring: auto, always, never
+  --frozen                       # Require Cargo.lock and cache are up to date
+  --locked                       # Require Cargo.lock is up to date
+  --offline                      # Run without accessing the network
+  --config: string               # Override a configuration value
+  -Z: string                     # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
 # Update dependencies as recorded in the local lock file

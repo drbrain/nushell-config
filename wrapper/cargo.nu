@@ -1,5 +1,5 @@
 def cargo_wrapper (...args: string) {
-  run-external "cargo" $args
+  run-external "cargo" ...$args
 }
 
 export def dependencies [] {
@@ -33,4 +33,25 @@ export def list_installed [] {
   | lines
   | where {|l| $l !~ '^\s' }
   | parse -r '(?<package>.*?) (?<version>v[^: ]+)(?: \((?<path>.*?)\))?:'
+}
+
+export def packages [] {
+  let metadata = cargo_wrapper "metadata" "--format-version" "1"
+  | from json
+
+  let workspace_root = $metadata
+  | get workspace_root | $"path+file://($in)"
+
+  $metadata
+  | get packages
+  | filter {|| $in.id | str starts-with $workspace_root }
+  | upsert description {|r|
+    if $r.description != null {
+      $"($r.description) \(($r.version)\)"
+    } else {
+      $r.version
+    }
+  }
+  | select name description
+  | rename value description
 }
