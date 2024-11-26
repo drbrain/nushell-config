@@ -40,7 +40,7 @@ export extern add [
   --rename: string           # Rename the dependency
   --dry-run                  # Don't write the manifest
   --package: string@packages # Package to modify
-  --manifest-path: string    # Path to Cargo.toml
+  --manifest-path: path      # Path to Cargo.toml
 
   --path: path               # Filesystem path to local crate to add
   --git: string              # Git repository location
@@ -58,7 +58,7 @@ export extern add [
   --target: string           # Add packages to this target platform
 
   --color: string@color      # Set coloring
-  --config-file: string      # Config file [default: workspace-root/.config/nextest.toml]
+  --config-file: path        # Config file [default: workspace-root/.config/nextest.toml]
   -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 
   --quiet(-q)                # Do not print cargo log messages
@@ -123,16 +123,16 @@ export extern build [
   --keep-going                   # Do not abort the build as soon as there is an error (unstable)
   --lib                          # Build only this package's library
   --locked                       # Require Cargo.lock is up to date
-  --manifest-path: string        # Path to Cargo.toml
+  --manifest-path: path          # Path to Cargo.toml
   --message-format: string       # Error format
   --no-default-features          # Do not activate the `default` feature
   --offline                      # Run without accessing the network
-  --out-dir: string              # Copy final artifacts to this directory (unstable)
+  --out-dir: path                # Copy final artifacts to this directory (unstable)
   --package(-p): string@packages # Package to build (see `cargo help pkgid`)
   --profile: string              # Build artifacts with the specified profile
   --quiet(-q)                    # Do not print cargo log messages
   --release(-r)                  # Build artifacts in release mode, with optimizations
-  --target-dir: string           # Directory for all generated artifacts
+  --target-dir: path             # Directory for all generated artifacts
   --target: string               # Build for the target triple
   --test: string                 # Build only the specified test target
   --tests                        # Build all tests
@@ -176,7 +176,7 @@ export extern check [
   --target-dir: path         # Directory for all generated artifacts
   --unit-graph               # Output build graph in JSON (unstable)
   --timings: string@timing   # Timing output formats (unstable, comma separated)
-  --manifest-path: string    # Path to Cargo.toml
+  --manifest-path: path      # Path to Cargo.toml
   --locked                   # Require Cargo.lock is up to date
   --frozen                   # Require Cargo.lock and cache are up to date
   --offline                  # Run without accessing the network
@@ -189,13 +189,13 @@ export extern clean [
   --dry-run                      # Display what would be cleaned without deleting anything
   --frozen                       # Require Cargo.lock and cache are up to date
   --locked                       # Require Cargo.lock is up to date
-  --manifest-path: string        # Path to Cargo.toml
+  --manifest-path: path          # Path to Cargo.toml
   --offline                      # Run without accessing the network
   --package(-p): string@packages # Package to build (see `cargo help pkgid`)
   --profile: string              # Build artifacts with the specified profile
   --quiet(-q)                    # Do not print cargo log messages
   --release(-r)                  # Build artifacts in release mode, with optimizations
-  --target-dir: string           # Directory for all generated artifacts
+  --target-dir: path             # Directory for all generated artifacts
   --target: string               # Build for the target triple
   --verbose(-v)                  # Use verbose output (-vv very verbose/build.rs output)
   -Z: string                     # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
@@ -225,7 +225,7 @@ export extern clippy [
   --keep-going               # Do not abort the build as soon as there is an error (unstable)
   --lib                      # Check only this package's library
   --locked                   # Require Cargo.lock is up to date
-  --manifest-path: string    # Path to Cargo.toml
+  --manifest-path: path      # Path to Cargo.toml
   --message-format: string   # Error format
   --no-default-features      # Do not activate the `default` feature
   --no-deps                  # Run clippy only on the given crate
@@ -276,7 +276,7 @@ export extern install [
   --branch: string         # Branch to use when installing from git
   --tag: string            # Tag to use when installing from git
   --rev: string            # Specific commit to use when installing from git
-  --path: string           # Filesystem path to local crate to install
+  --path: path             # Filesystem path to local crate to install
   --list                   # List all installed packages
   --jobs(-j): int          # Number of parallel jobs, defaults to of CPUs.
   --keep-going             # Do not abort the build as soon as there is an error (unstable)
@@ -324,7 +324,7 @@ export extern "instruments" [
   --example: string              # Check only the specified example
   --features: string             # Space or comma separated list of features to activate
   --list-templates(-l)           # List available templates
-  --manifest-path: string        # Path to Cargo.toml
+  --manifest-path: path          # Path to Cargo.toml
   --no-default-features          # Do not activate the `default` feature
   --no-open                      # Do not open the trace file in Instruments
   --output(-o): path             # Trace file output location
@@ -359,9 +359,9 @@ export extern new [
 # A next-generation test runner
 export extern nextest [
   --color: string@color    # When to color output
-  --config-file: string    # Config file [default: workspace-root/.config/nextest.toml]
+  --config-file: path      # Config file [default: workspace-root/.config/nextest.toml]
   --help(-h)               # Print help information
-  --manifest-path: string  # Path to Cargo.toml
+  --manifest-path: path    # Path to Cargo.toml
   --verbose(-v)            # Use verbose output
   --version(-V)            # Print version information
 ]
@@ -385,7 +385,7 @@ export extern "nextest list" [
   --build-jobs: number           # Number of jobs to run
   --cargo-profile: string        # Build artifacts with the specified Cargo profile
   --color: string@color          # When to color output
-  --config-file: string          # Config file [default: workspace-root/.config/nextest.toml]
+  --config-file: path            # Config file [default: workspace-root/.config/nextest.toml]
   --config: string               # Override a configuration value (unstable)
   --exclude: string              # Exclude packages from the build
   --features: string             # Space or comma separated list of features to activate
@@ -395,7 +395,7 @@ export extern "nextest list" [
   --ignore-rust-version          # Ignore "rust-version" specification in packages
   --lib                          # Test only library unit tests
   --locked                       # Require Cargo.lock is up to date
-  --manifest-path: string        # Path to Cargo.toml
+  --manifest-path: path          # Path to Cargo.toml
   --message-format(-T): string@nextest_list_message_format # Output format
   --no-default-features          # Do not activate the "default" feature
   --offline                      # Run without accessing the network
@@ -403,7 +403,7 @@ export extern "nextest list" [
   --partition: string            # Test partition, e.g. hash:1/2 or count:2/3
   --release                      # Build artifacts in release mode, with optimizations
   --run-ignored: string@nextest_ignore # Run ignored tests
-  --target-dir: string           # Directory for all generated artifacts
+  --target-dir: path             # Directory for all generated artifacts
   --target: string               # Build for the target triple
   --test: string                 # Test only the specified test target
   --tests                        # Test all targets
@@ -470,7 +470,7 @@ export extern "nextest run" [
   --ignore-rust-version             # Ignore "rust-version" specification in packages
   --lib                             # Test only library unit tests
   --locked                          # Require Cargo.lock is up to date
-  --manifest-path: string           # Path to Cargo.toml
+  --manifest-path: path             # Path to Cargo.toml
   --message-format: string@nextest_run_message_format # Format to use for test results
   --message-format-version: number  # Version of message-format to use
   --no-capture                      # Run tests serially and do not capture output
@@ -487,14 +487,14 @@ export extern "nextest run" [
   --run-ignored: string@nextest_ignore # Run ignored tests
   --status-level: string@nextest_status_level # Test statuses to output
   --success-output: string@nextest_output # Output stdout and stderr on success
-  --target-dir: string              # Directory for all generated artifacts
+  --target-dir: path                # Directory for all generated artifacts
   --target-dir-remap: path          # Remapping for the target directory
   --target: string                  # Build for the target triple
   --test-threads(-j): number        # Simultaneous threads to run
   --test: string                    # Test only the specified test target
   --tests                           # Test all targets
   --timings: string@nextest_timings # Timing output formats
-  --tool-config-file: string        # Tool-specific config files
+  --tool-config-file: path          # Tool-specific config files
   --unit-graph                      # Output build graph in JSON (unstable)
   --verbose(-v)                     # Use verbose output
   --workspace                       # Build all packages in the workspace
@@ -505,20 +505,20 @@ export extern "nextest run" [
 # Show information about nextest's configuration in this workspace
 export extern "nextest show-config" [
   --color: string@color      # When to color output
-  --config-file: string      # Config file [default: workspace-root/.config/nextest.toml]
-  --manifest-path: string    # Path to Cargo.toml
+  --config-file: path        # Config file [default: workspace-root/.config/nextest.toml]
+  --manifest-path: path      # Path to Cargo.toml
   --override-version-check   # Override checks for the minimum version in nextest's config
-  --tool-config-file: string # Tool-specific config files
+  --tool-config-file: path   # Tool-specific config files
   --verbose(-v)              # Use verbose output
 ]
 
 # Show version-related configuration
 export extern "nextest show-config version" [
   --color: string@color      # When to color output
-  --config-file: string      # Config file [default: workspace-root/.config/nextest.toml]
-  --manifest-path: string    # Path to Cargo.toml
+  --config-file: path        # Config file [default: workspace-root/.config/nextest.toml]
+  --manifest-path: path      # Path to Cargo.toml
   --override-version-check   # Override checks for the minimum version in nextest's config
-  --tool-config-file: string # Tool-specific config files
+  --tool-config-file: path   # Tool-specific config files
   --verbose(-v)              # Use verbose output
 ]
 
@@ -542,10 +542,10 @@ export def outdated [
   --features: string              # Space-separated list of features
   --ignore(-i): string            # comma-separated list of dependencies to ignore
   --ignore-external-rel(-e)       # Ignore relative dependencies external to the workspace and check root dependencies only
-  --manifest-path: string         # Path to Cargo.toml
+  --manifest-path: path           # Path to Cargo.toml
   --offline(-o)                   # Run without accessing the network
   --packages(-p): string@packages # Package to inspect for updates
-  --root(-r): string              # Package to treat as the root package
+  --root(-r): path                # Package to treat as the root package
   --root-deps-only(-R)            # Only check root dependencies
   --quiet(-q)                     # Do not print cargo log messages
   --verbose(-v)                   # Use verbose output
@@ -633,7 +633,7 @@ export extern uninstall [
   --quiet(-q)                    # Do not print cargo log messages
   --package(-p): string@packages # Package to uninstall
   --bin: string                  # Only uninstall the binary NAME
-  --root: string                 # Directory to uninstall packages from
+  --root: path                   # Directory to uninstall packages from
   --help(-h)                     # Print help
   --verbose(-v)                  # Use verbose output (-vv very verbose/build.rs output)
   --color: string@color          # Coloring: auto, always, never
@@ -653,7 +653,7 @@ export extern update [
   --frozen                          # Require Cargo.lock and cache are up to date
   --help(-h)                        # Print help
   --locked                          # Require Cargo.lock is up to date
-  --manifest-path: string           # Path to Cargo.toml
+  --manifest-path: path             # Path to Cargo.toml
   --offline                         # Run without accessing the network
   --precise: string                 # Update [SPEC] to exactly PRECISE
   --quiet(-q)                       # Do not print cargo log messages
