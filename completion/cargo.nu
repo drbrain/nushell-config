@@ -337,6 +337,16 @@ export extern "instruments" [
   ...args: string                # Arguments passed to the target binary
 ]
 
+# Find unused dependencies
+export extern machete [
+  --fix             # Rewrite Cargo.toml to remove unused dependencies
+  --no-ignore       # Also search ignored files
+  --skip-target-dir # Don't examine target/ directories
+  --version         # Print version
+  --with-metadata   # Use cargo-metadata to figure out dependency names
+  ...paths: path    # Crates to examine
+]
+
 # Create a new cargo package
 export extern new [
   path: path               # Location of the new package
