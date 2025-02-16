@@ -16,7 +16,7 @@ export def environment [] {
   )
 }
 
-export def has_session [] -> bool {
+export def has_session []: nothing -> bool {
   let exit_code = do { ^tmux has-session } | complete | get exit_code
 
   $exit_code == 0
