@@ -70,7 +70,7 @@ def included [config: path] {
         $base | path join $include
       }
 
-      do -s {
+      do -i {
         ls $glob
         | get name
       }
