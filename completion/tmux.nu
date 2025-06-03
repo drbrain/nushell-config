@@ -49,7 +49,7 @@ export extern main [
 ]
 
 # Capture the contents of a pane
-export extern "tmux capture-pane" [
+export extern capture-pane [
   -a               # Use the alternate screen
   -e               # Include escape sequences
   -p               # Output to stdout
@@ -99,26 +99,26 @@ def buffer [] {
 }
 
 # Delete a buffer
-export extern "tmux delete-buffer" [
+export extern delete-buffer [
   -b: string@buffer # Buffer to delete
 ]
 
 # List global buffers
-export def "tmux list-buffers" () {
+export def list-buffers () {
   ( list_buffers
   | sort
   )
 }
 
 # Show a buffer
-export extern "tmux show-buffer" [
+export extern show-buffer [
   -b: string@buffer # Buffer to show
 ]
 
 # keys
 
 # Bind a key to a command
-export extern "tmux bind-key" [
+export extern bind-key [
   -n                       # Bind in the root table
   -r                       # Allow repeat
   -T: string               # Bind key in a table
@@ -128,7 +128,7 @@ export extern "tmux bind-key" [
 ]
 
 # List bound keys
-export def "tmux list-keys" (-T: string) {
+export def list-keys (-T: string) {
   let table = if $T == null {
     "prefix"
   } else {
@@ -140,7 +140,7 @@ export def "tmux list-keys" (-T: string) {
 }
 
 # Send a key or keys to a window
-export extern "tmux send-keys" [
+export extern send-keys [
   -H         # Key is hexadecimal
   -l         # Key is literal
   -M         # Pass through mouse event
@@ -152,13 +152,13 @@ export extern "tmux send-keys" [
 ]
 
 # Send the prefix key
-export extern "tmux send-prefix" [
+export extern send-prefix [
   -2         # Send the secondary key prefix
   -t: string # Send prefix to a pane
 ]
 
 # Unbind a key
-export extern "tmux unbind-key" [
+export extern unbind-key [
   -a          # Remove all bindings
   -n          # Unbind key in the root table
   -t: string  # Unbind key in a table
