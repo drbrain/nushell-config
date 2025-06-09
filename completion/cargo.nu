@@ -245,6 +245,40 @@ export extern clippy [
   -Z: string                 # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
 ]
 
+# Build a package's documentation
+export extern doc [
+  --open                         # Opens the docs in a browser after the operation
+  --no-deps                      # Don't build documentation for dependencies
+  --document-private-items       # Document private items
+  --message-format: string       # Error format
+  --verbose(-v)                  # Use verbose output (-vv very verbose/build.rs output)
+  --quiet(-q)                    # Do not print cargo log messages
+  --color: string@color          # When to color output
+  --config: string               # Override a configuration value
+  --package(-p): string@packages # Package to document
+  --workspace                    # Build all packages in the workspace
+  --exclude: string              # Exclude packages from build
+  --lib                          # Document only this package's library
+  --bins                         # Document all binaries
+  --bin: string                  # Document only the specified binary
+  --examples                     # Document all examples
+  --example: string              # Document only the specified example
+  --jobs(-j): int                # Number of parallel jobs, defaults to of CPUs.
+  --keep-going                   # Do not abort the build as soon as there is an error
+  --release(-r)                  # Build artifacts in release mode, with optimizations
+  --profile: string              # Build artifacts with the specified profile
+  --target-dir: path             # Directory for all generated artifacts
+  --target: string               # Build for the target triple
+  --unit-graph                   # Output build graph in JSON (unstable)
+  --timings: string@timing       # Timing output formats (unstable, comma separated)
+  --manifest-path: path          # Path to Cargo.toml
+  --lockfile-path: path          # Path to Cargo.lock
+  --ignore-rust-version          # Ignore `rust-version` specification in packages
+  --locked                       # Assert that `Cargo.lock` will remain unchanged
+  --offline                      # Run without accessing the network
+  --frozen                       # Equivalent to both --locked and --offline
+]
+
 # Create a new cargo package in an existing directory
 export extern init [
   path?: path               # Path to cargo project
