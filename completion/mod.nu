@@ -4,6 +4,7 @@ export module tmux.nu
 export module brew.nu
 export module cargo.nu
 export module docker.nu
+export module fastly.nu
 export module gpg.nu
 export module mdfind.nu
 export module neovide.nu
