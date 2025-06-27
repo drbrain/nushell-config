@@ -17,6 +17,8 @@ export extern "update" [
   --verbose(-v)         # Verbose logging
 ]
 
+export extern "compute" []
+
 export extern "compute build" [
   --dir(-C): path                   # Project directory
   --env: string                     # The manifest environment config to use
@@ -40,8 +42,6 @@ export extern "compute build" [
 
 export extern "compute deploy" [
   --service-id(-s): string    # Service ID
-  --service-id(-s): string    # Service ID
-  --service-name: string      # Service name
   --service-name: string      # Service name
   --version: string           # Fastly service version, 'active', 'latest'
   --comment: string           # Deployment comment
@@ -116,6 +116,31 @@ export extern "compute update" [
   --service-name: string   # Service name
   --autoclone              # If the service is not editable clone it and use the clone
   --package(-p): path      # Path to a package tar.gz
+
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
+def log-tail-stream [] {
+  [ stdout stderr both ]
+}
+
+export extern "log-tail" [
+  --service-id(-s): string    # Service ID
+  --service-name: string      # Service name
+  --from: int     # Start time in epoch seconds
+  --to: int     # End time in epoch seconds
+  --sort-buffer: string # Duration of sort buffer for received logs
+  --search-padding: string # Time beyond from/to for searching
+  --stream: string@log-tail-stream # Output
+  --timestamps # Print timestamps
 
   --accept-defaults(-d) # Accept default options except yes/no confirmations
   --auto-yes(-d)        # Answer yes to everything
