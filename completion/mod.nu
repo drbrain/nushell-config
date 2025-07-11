@@ -8,6 +8,7 @@ export module fastly.nu
 export module gpg.nu
 export module mdfind.nu
 export module neovide.nu
+export module otel-desktop-viewer.nu
 export module rg.nu
 export module rsync.nu
 export module rustup.nu
