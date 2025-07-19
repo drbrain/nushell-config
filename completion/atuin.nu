@@ -1,8 +1,7 @@
 # atuin
 
 # Magical shell history
-export extern main [] {
-}
+export extern main []
 
 # Manipulate shell history
 export extern history []
