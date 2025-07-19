@@ -119,3 +119,8 @@ export def "ssh-add -l" () {
   | move type --before bits
   )
 }
+
+# ssh known hosts
+export def ssh-known-hosts [] {
+  ssh_hosts
+}
