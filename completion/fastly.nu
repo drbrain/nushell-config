@@ -81,6 +81,39 @@ export extern "compute init" [
   --verbose(-v)         # Verbose logging
 ]
 
+# Build and deploy a Compute package to a Fastly service
+export extern "compute publish" [
+  --comment: string                 # Deployment comment
+  --dir(-C): path                   # Project directory
+  --domain: string                  # Domain associated with the package
+  --env: string                     # The manifest environment config to use
+  --include-source                  # Include source in built package
+  --language: string                # Language type
+  --metadata-disable                # Disable Wasm binary metadata annotations
+  --metadata-filter-envvars: string # Redact specified environment variables
+  --metadata-show                   # Inspect Wasm binary metadata
+  --package(-p): path               # Path to a package tar.gz
+  --package-name: string            # Package name
+  --service-id(-s): string          # Service ID
+  --service-name: string            # Service name
+  --status-check-code: string       # Set the expected status response for the availability check
+  --status-check-off                # Disable the service availability check
+  --status-check-path: string       # URL for the service availability check
+  --status-check-timeout: int       # Timeout for the service availability check (seconds)
+  --version: string                 # Fastly service version, 'active', 'latest'
+  --timeout: int                    # Timeout for build compilation (seconds)
+
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
 export extern "compute serve" [
   --addr: string                    # IP address and port to listen on
   --dir(-C): path                   # Project directory
