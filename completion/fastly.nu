@@ -2,6 +2,24 @@
 #
 # https://www.fastly.com/documentation/reference/cli/
 
+use wrapper fastly *
+
+def services [] {
+  list_services | 
+  upsert description {|s|
+    let active = $s.versions | where active == true
+    let version = if not ($active | is-empty) {
+      $"v($active.number.0)"
+    } else {
+      "inactive"
+    }
+
+    $"($s.name) ($version)"
+  }
+  | select id description
+  | rename value description
+}
+
 # A tool to interact with the fastly API
 export extern main []
 
@@ -41,17 +59,17 @@ export extern "compute build" [
 ]
 
 export extern "compute deploy" [
-  --service-id(-s): string    # Service ID
-  --service-name: string      # Service name
-  --version: string           # Fastly service version, 'active', 'latest'
-  --comment: string           # Deployment comment
-  --dir(-C): path             # Project directory
-  --domain: string            # Domain associated with the package
-  --package(-p): path         # Path to a package tar.gz
-  --status-check-code: string # Set the expected status response for the availability check
-  --status-check-path: string # URL for the service availability check
-  --status-check-timeout: int # Timeout for the service availability check (seconds)
-  --env: string               # The manifest environment config to use
+  --service-id(-s): string@services # Service ID
+  --service-name: string            # Service name
+  --version: string                 # Fastly service version, 'active', 'latest'
+  --comment: string                 # Deployment comment
+  --dir(-C): path                   # Project directory
+  --domain: string                  # Domain associated with the package
+  --package(-p): path               # Path to a package tar.gz
+  --status-check-code: string       # Set the expected status response for the availability check
+  --status-check-path: string       # URL for the service availability check
+  --status-check-timeout: int       # Timeout for the service availability check (seconds)
+  --env: string                     # The manifest environment config to use
 
   --accept-defaults(-d) # Accept default options except yes/no confirmations
   --auto-yes(-d)        # Answer yes to everything
@@ -94,7 +112,7 @@ export extern "compute publish" [
   --metadata-show                   # Inspect Wasm binary metadata
   --package(-p): path               # Path to a package tar.gz
   --package-name: string            # Package name
-  --service-id(-s): string          # Service ID
+  --service-id(-s): string@services # Service ID
   --service-name: string            # Service name
   --status-check-code: string       # Set the expected status response for the availability check
   --status-check-off                # Disable the service availability check
@@ -145,10 +163,10 @@ export extern "compute serve" [
 ]
 
 export extern "compute update" [
-  --service-id(-s): string # Service ID
-  --service-name: string   # Service name
-  --autoclone              # If the service is not editable clone it and use the clone
-  --package(-p): path      # Path to a package tar.gz
+  --service-id(-s): string@services # Service ID
+  --service-name: string            # Service name
+  --autoclone                       # If the service is not editable clone it and use the clone
+  --package(-p): path               # Path to a package tar.gz
 
   --accept-defaults(-d) # Accept default options except yes/no confirmations
   --auto-yes(-d)        # Answer yes to everything
@@ -166,14 +184,14 @@ def log-tail-stream [] {
 }
 
 export extern "log-tail" [
-  --service-id(-s): string    # Service ID
-  --service-name: string      # Service name
-  --from: int     # Start time in epoch seconds
-  --to: int     # End time in epoch seconds
-  --sort-buffer: string # Duration of sort buffer for received logs
-  --search-padding: string # Time beyond from/to for searching
-  --stream: string@log-tail-stream # Output
-  --timestamps # Print timestamps
+  --service-id(-s): string@services # Service ID
+  --service-name: string            # Service name
+  --from: int                       # Start time in epoch seconds
+  --to: int                         # End time in epoch seconds
+  --sort-buffer: string             # Duration of sort buffer for received logs
+  --search-padding: string          # Time beyond from/to for searching
+  --stream: string@log-tail-stream  # Output
+  --timestamps                      # Print timestamps
 
   --accept-defaults(-d) # Accept default options except yes/no confirmations
   --auto-yes(-d)        # Answer yes to everything
