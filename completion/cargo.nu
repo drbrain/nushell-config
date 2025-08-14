@@ -13,6 +13,17 @@ def edition [] {
   ]
 }
 
+def installed [] {
+  ( list_installed
+  | each {|p|
+    let description = $"($p.package) ($p.version)"
+
+    { value: $p.package, description: $description }
+  }
+  | sort
+  )
+}
+
 def timing [] {
   ["html", "json"]
 }
@@ -566,16 +577,61 @@ export extern "nextest show-config version" [
   --verbose(-v)              # Use verbose output
 ]
 
-def installed [] {
-  ( list_installed
-  | each {|p|
-    let description = $"($p.package) ($p.version)"
-
-    { value: $p.package, description: $description }
-  }
-  | sort
-  )
+def charset [] {
+  [ ascii utf8 ]
 }
+
+def kinds [] {
+  [
+    [ value description ];
+    [ all "All edge kinds" ]
+    [ build "Build dependencies" ]
+    [ dev "Development dependencies" ]
+    [ no-build "Exclude build dependencies" ]
+    [ no-dev "Exclude development dependencies" ]
+    [ no-normal "Exclude normal dependencies" ]
+    [ no-proc-macro "Exclude procedural macro dependencies" ]
+    [ normal "Normal dependencies" ]
+  ]
+}
+
+def prefix [] {
+  [
+    [ value description ];
+    [ depth "" ]
+    [ indent "" ]
+    [ none "" ]
+  ]
+}
+
+# Display a tree visualization of a dependency graph
+export extern tree [
+  --edges(-e): string@kinds      # Kinds of dependencies to display, comma-separated
+  --invert(-i): string           # Invert the tree direction and focus on the given package
+  --depth: int                   # Maximum tree display depth
+  --prefix: string@prefix        # Change the prefix of how each entry is displayed
+  --no-dedupe                    # Do not de-duplicate (repeat shared dependencies)
+  --duplicates(-d)               # Show only dependencies which come in multiple versions
+  --charset: string@charset      # Output character set
+  --format(-f): string           # Format string used for printing dependencies
+  --verbose(-v)                  # Use verbose output
+  --quiet(-q)                    # Do not print cargo log messages
+  --color: string@color          # Coloring: auto, always, never
+  --config: string               # Override a configuration value
+  -Z: string                     # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+  --package(-p): string@packages # Package to be used as the root of the tree
+  --workspace                    # Display the tree for all packages in the workspace
+  --exclude: string              # Exclude specific workspace members
+  --features(-F): string         # Space or comma separated list of features to activate
+  --all-features                 # Activate all available features
+  --no-default-features          # Do not activate the `default` feature
+  --target: string               # Feature dependencies matching the target-triple
+  --manifest-path: path          # Path to Cargo.toml
+  --lockfile-path: path          # Path to Cargo.lock
+  --locked                       # Require Cargo.lock is up to date
+  --frozen                       # Require Cargo.lock and cache are up to date
+  --offline                      # Run without accessing the network
+]
 
 # Information about project dependency versions
 export def outdated [
