@@ -3,14 +3,14 @@ def rustup_wrapper (...args: string) {
 }
 
 export def list_toolchains [] {
-  ( run-external "rustup" "toolchain" "list" "-v"
+  run-external "rustup" "toolchain" "list" "-v"
   | lines
-  | each { |l|
-    $l | parse -r '(?<toolchain>.*?)(?: \((?:(?<default>default)|(?<override>override))\))?\t(?<path>.*)'
+  | each {
+    parse -r '(?<toolchain>.*?)(?: \((?<attributes>[^)]+)\))? (?<path>.*)'
   }
   | flatten
-  | upsert override { |i| $i.override == "override" }
-  | upsert default { |i| $i.default == "default" }
-  )
+  | upsert active { |l| $l.attributes =~ "active" }
+  | upsert default { |l| $l.attributes =~ "default" }
+  | select toolchain path active default
 }
 

@@ -2,64 +2,69 @@ use wrapper rustup *
 
 def commands [] {
   [
-    { value: "check", description: "Check for updates to Rust toolchains and rustup" },
-    { value: "completions", description: "Generate completion scripts for your shell" },
-    { value: "component", description: "Modify a toolchain's installed components" },
-    { value: "default", description: "Set the default toolchain" },
-    { value: "doc", description: "Open the documentation for the current toolchain" },
-    { value: "help", description: "Print this message or the help of the given subcommand" },
-    { value: "man", description: "View the man page for the given command" },
-    { value: "override", description: "Modify directory toolchain overrides" },
-    { value: "run", description: "Run a command with an environment configured for the given toolchain" },
-    { value: "self", description: "Modify the rustup installation" },
-    { value: "set", description: "Alter rustup settings" },
-    { value: "show", description: "Show the active and installed toolchains or profiles" },
-    { value: "target", description: "Modify a toolchain's supported targets" },
-    { value: "toolchain", description: "Modify or query the installed toolchains" },
-    { value: "update", description: "Update rust toolchains and rustup" },
-    { value: "which", description: "Dusplay which binary will be run for a given command" },
+    [ value description ];
+    [ check "Check for updates to Rust toolchains and rustup" ]
+    [ completions "Generate completion scripts for your shell" ]
+    [ component "Modify a toolchain's installed components" ]
+    [ default "Set the default toolchain" ]
+    [ doc "Open the documentation for the current toolchain" ]
+    [ man "View the man page for the given command" ]
+    [ override "Modify directory toolchain overrides" ]
+    [ run "Run a command with an environment configured for the given toolchain" ]
+    [ self "Modify the rustup installation" ]
+    [ set "Alter rustup settings" ]
+    [ show "Show the active and installed toolchains or profiles" ]
+    [ target "Modify a toolchain's supported targets" ]
+    [ toolchain "Modify or query the installed toolchains" ]
+    [ update "Update rust toolchains and rustup" ]
+    [ which "Display which binary will be run for a given command" ]
   ]
 }
 
+# Rustup toolchain installed
 export extern main [
   --verbose(-v) # Enable verbose output
   --quiet(-q)   # Disable progress output
-  --help(-h)    # Print help information
   --version(-V) # Print version information
   subcommand: string@commands
 ]
 
-def toolchain [] {
-  ( list_toolchains
+def installed [] {
+  list_toolchains
   | get toolchain
   | flatten
-  )
+  | append beta
+  | append nightly
+  | append stable
+  | sort
 }
 
 def toolchain-command [] {
   [
-    { value: "help", description: "Print this message or the help of the given subcommand" },
-    { value: "install", description: "Install or update a given toolchain" },
-    { value: "link", description: "Create a custom toolchain by symlinking a directory" },
-    { value: "list", description: "List installed toolchains" },
-    { value: "uninstall", description: "Uninstall a toolchain" },
+    [ value description ];
+    [ install "Install or update a given toolchain" ]
+    [ link "Create a custom toolchain by symlinking a directory" ]
+    [ list "List installed toolchains" ]
+    [ uninstall "Uninstall a toolchain" ]
   ]
 }
 
-export extern "rustup toolchain" [
-  --help(-h) # Print help information
+# Install, uninstall, list toolchains
+export extern toolchain [
   subcommand: string@toolchain-command
 ]
 
 def profile [] {
   [
-    { value: "minimal", description: "Minimal components for a working compiler (rustc, rust-std, cargo)" },
-    { value: "default", description: "Default components (rustc, rust-std, rust-docs, cargo, rustfmt, clippy)" },
-    { value: "complete", description: "All components" },
+    [ value description ];
+    [ minimal "Minimal components for a working compiler (rustc, rust-std, cargo)" ]
+    [ default "Default components (rustc, rust-std, rust-docs, cargo, rustfmt, clippy)" ]
+    [ complete "All components" ]
   ]
 }
 
-export extern "rustup toolchain install" [
+# Install or update toolchains
+export extern "toolchain install" [
   --profile: string@profile # Component group to install
   --component(-c): string   # Add specific components on installation
   --target(-t): string      # Add specific targets on installation
@@ -67,24 +72,31 @@ export extern "rustup toolchain install" [
   --force                   # Force an update, even if some components are missing
   --allow-downgrade         # Allow rustup to downgrade the toolchain to satisfy your component choice
   --force-non-host          # Install toolchains that require an emulator. See https://github.com/rust-lang/rustup/wiki/Non-host-toolchains
-  --help(-h)                # Print help information
   ...toolchain: string      # Toolchain to install
 ]
 
-export extern "rustup toolchain link" [
-  --help(-h)           # Print help information
+# Create a custom toolchain
+export extern "toolchain link" [
   toolchain: string    # Custom toolchain name
   path: string         # Path to toolchain directory
 ]
 
-export extern "rustup toolchain uninstall" [
-  --help(-h)                  # Print help information
-  toolchain: string@toolchain # Toolchain to uninstall
+# Uninstall the given toolchain
+export extern "toolchain uninstall" [
+  toolchain: string@installed # Toolchain to uninstall
 ]
 
-export def "rustup toolchain list" [
+# List installed toolchains
+export def "toolchain list" [
   --verbose(-v) # Enable verbose output (always enabled)
-  --help(-h)    # Print help information
 ] {
   list_toolchains
 }
+
+# Update Rust toolchains and rustup
+export extern "update" [
+  --no-self-update            # Don't perform a self update
+  --force                     # Force an update, even if some components are missing
+  --force-non-host            # Install toolchains that require an emulator
+  toolchain: string@installed # Toolchain to uninstall
+]
