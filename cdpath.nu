@@ -28,7 +28,7 @@ module cdpath {
     $env.CDPATH
     | path expand
     | uniq
-    | filter {|| $in | path exists }
+    | where {|| $in | path exists }
   }
 
   # Children of a path
@@ -62,7 +62,7 @@ module cdpath {
       let first = $path | first
 
       complete_from_cdpath
-      | filter {|| $in.value | str contains $first }
+      | where {|| $in.value | str contains $first }
       | upsert value {|r| $r.value | path join "" }
     # Complete a child of a CDPATH entry
     } else {
@@ -89,14 +89,14 @@ module cdpath {
         | each {||
           $in | path join $prefix
         }
-        | filter {||
+        | where {||
           $in | path exists
         }
         | first
       }
 
       children $chosen_path
-      | filter {||
+      | where {||
         $in | str contains $last
       }
       | each {|child|

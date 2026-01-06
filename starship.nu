@@ -75,7 +75,7 @@ def wezterm_user_var [
     let post_prompt = "\e]133;B;\a"
 
     # Mark start of output
-    let output_cr = if ($env | get -i TERM_PROGRAM) != "iTerm.app" {
+    let output_cr = if ($env | get -o TERM_PROGRAM) != "iTerm.app" {
       ""
     } else {
       # assume iTerm.app

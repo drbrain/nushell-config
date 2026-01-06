@@ -16,7 +16,7 @@ export def config_files [] {
     let found = included $next
 
     let new = $found
-      | filter {|item|
+      | where {|item|
           $item not-in $seen
         }
 
@@ -38,7 +38,7 @@ def hosts [] {
       | values
       | flatten
       | uniq
-      | filter {|host|
+      | where {|host|
           not (
             ( $host | str starts-with "!" ) or
             ( $host =~ '\*|%' )
@@ -121,7 +121,7 @@ def known_hosts_files_in [config: path] {
   | values
   | flatten
   | uniq
-  | filter {||
+  | where {||
     $in | path exists
   }
 }

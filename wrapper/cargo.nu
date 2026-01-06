@@ -44,7 +44,7 @@ export def packages [] {
 
   $metadata
   | get packages
-  | filter {|| $in.id | str starts-with $workspace_root }
+  | where {|| $in.id | str starts-with $workspace_root }
   | upsert description {|r|
     if $r.description != null {
       $"($r.description) \(($r.version)\)"
