@@ -15,10 +15,7 @@ export def config_files [] {
     let seen = $config_files
     let found = included $next
 
-    let new = $found
-      | where {|item|
-          $item not-in $seen
-        }
+    let new = $found | where { not-in $seen }
 
     $todo = ($todo | append $new)
   }
@@ -28,23 +25,23 @@ export def config_files [] {
 
 def hosts [] {
   config_files
-  | par-each {|file|
-      open $file
-      | lines
-      | find -r '^\s*Host(?:name)?\s'
-      | parse -r '^\s*Host(?:name)?\s(?<hosts>.*)'
-      | get hosts
-      | split column ' '
-      | values
-      | flatten
-      | uniq
-      | where {|host|
-          not (
-            ( $host | str starts-with "!" ) or
-            ( $host =~ '\*|%' )
-          )
-        }
+  | par-each {
+    open
+    | lines
+    | find -r '^\s*Host(?:name)?\s'
+    | parse -r '^\s*Host(?:name)?\s(?<hosts>.*)'
+    | get hosts
+    | split column ' '
+    | values
+    | flatten
+    | uniq
+    | where {|host|
+      not (
+        ( $host | str starts-with "!" ) or
+        ( $host =~ '\*|%' )
+      )
     }
+  }
   | flatten
   | uniq
 }
@@ -62,43 +59,33 @@ def included [config: path] {
   | flatten
   | uniq
   | par-each {|include|
-      let glob = if ( $include | str starts-with '/' ) {
-        $include
-      } else if ( $include | str starts-with '~' ) {
-        $include | path expand
-      } else {
-        $base | path join $include
-      }
+    let glob = if ( $include | str starts-with '/' ) {
+      $include
+    } else if ( $include | str starts-with '~' ) {
+      $include | path expand
+    } else {
+      $base | path join $include
+    }
 
-      do -i {
-        ls $glob
-        | get name
-      }
+    do -i {
+      ls $glob
+      | get name
+    }
   }
   | flatten
   | uniq
 }
 
 def known_hosts [] {
-  let files = known_hosts_files
-
-  $files
-  | par-each {|file|
-      $file
-      | open
-      | lines
-      | find -v -r '@|#|\|'
-      | split column ' '
-      | flatten
-      | get column1
-      | split column ','
-      | flatten
-      | values
-      | flatten
-      | uniq
-    }
-    | flatten
-    | uniq
+  known_hosts_files
+  | par-each {
+    open
+    | lines
+    | find -v -r '@|#|\|'
+    | parse -r '^(?<hosts>.*?)\s'
+    | get hosts
+    | split row ','
+  }
   | flatten
 }
 
@@ -114,16 +101,11 @@ def known_hosts_files [] {
 def known_hosts_files_in [config: path] {
   open $config
   | lines
-  | find -r '^\s*(?:User|Global)KnownHostsFile\s'
   | parse -r '^\s*(?:User|Global)KnownHostsFile\s+(?<files>.*)'
   | get files
-  | split column ' '
-  | values
-  | flatten
+  | split row ' '
   | uniq
-  | where {||
-    $in | path exists
-  }
+  | where { path exists }
 }
 
 # Hosts listed in SSH config files
