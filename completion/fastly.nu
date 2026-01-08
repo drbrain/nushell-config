@@ -179,6 +179,112 @@ export extern "compute update" [
   --verbose(-v)         # Verbose logging
 ]
 
+# Manipulate Fastly Config Stores
+export extern "config-store" [
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
+export extern "config-store list" [
+  --json # Render output as JSON
+
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
+export extern "config-store update" [
+  --name(-n)             # New name for the config store
+  --store-id(-s): string # Store ID
+  --json                 # Render output as JSON
+
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
+# Manipulate Fastly Config Store items
+export extern "config-store-entry" [
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
+export extern "config-store-entry describe" [
+  --key(-k): string   # Item name
+  --store-id(-s): string # Store ID
+  --json(-j)             # Render output as JSON
+
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
+export extern "config-store-entry list" [
+  --store-id(-s): string # Store ID
+  --json(-j)             # Render output as JSON
+
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
+export extern "config-store-entry update" [
+  --key(-k): string   # Item name
+  --store-id(-s): string # Store ID
+  --stdin                # Read item value from STDIN. If set, --value will be ignored
+  --value: string        # Item value. Required unless --stdin is set
+  --json(-j)             # Render output as JSON
+  --upsert(-u)           # If true, insert or update an entry in a config store
+
+  --accept-defaults(-d) # Accept default options except yes/no confirmations
+  --auto-yes(-d)        # Answer yes to everything
+  --debug-mode          # Print API request/response details
+  --enable-sso          # Enable SSO
+  --non-interactive(-i) # Do not prompt for user input
+  --profile(-o): string # Switch account profile
+  --quiet(-q)           # Silence all output except interactive prompts
+  --token(-t): string   # Fastly API token
+  --verbose(-v)         # Verbose logging
+]
+
 def log-tail-stream [] {
   [ stdout stderr both ]
 }
