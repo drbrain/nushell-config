@@ -17,3 +17,7 @@ use nupm/nupm
 
 use ~/Work/git/nu-git git
 
+use std/clip
+
+alias "clip copy" = clip copy52
+alias "clip paste" = clip paste52
