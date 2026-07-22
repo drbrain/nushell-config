@@ -39,6 +39,48 @@ def installed [] {
   | sort
 }
 
+def component-command [] {
+  [
+    [ value description ];
+    [ list "List installed and available components" ]
+    [ add "Add a component to a Rust toolchain" ]
+    [ remove "Remove a component from a Rust toolchain" ]
+  ]
+}
+
+# Modify a toolchain's installed components
+export extern component [
+  subcommand: string@component-command
+]
+
+def components [] {
+  list_components
+  | get component
+}
+
+def components_installed [] {
+  list_components
+  | where installed == true
+  | get component
+}
+
+export extern "component add" [
+  --toolchain: string@installed # Toolchain name
+  --target: string
+  ...component: string@components # Component to install
+]
+
+# List installed components
+export def "component list" [] {
+  list_components
+}
+
+export extern "component remove" [
+  --toolchain: string@installed # Toolchain name
+  --target: string
+  ...component: string@components_installed # Component to install
+]
+
 def toolchain-command [] {
   [
     [ value description ];
