@@ -2,12 +2,12 @@
 export extern main []
 
 # Decrypt a GPG message from input or the given file
-export def "decrypt" [] {
+export def "gpg decrypt" [] {
   run-external "gpg" "--decrypt"
 }
 
 # Export GPG keys
-export def "export" [
+export def "gpg export" [
   ...names: string # Names of keys to export
   --armor(-a) # Create ASCII armored output
 ] {
@@ -21,12 +21,12 @@ export def "export" [
 }
 
 # Import GPG keys from input
-export def "import" [] {
+export def "gpg import" [] {
   run-external "gpg" "--import"
 }
 
 # List GPG keys
-export def "list-keys" [
+export def "gpg list-keys" [
   ...names: string # Names of keys to list
 ] {
   run-external "gpg" "--with-colons" "--list-keys" ...$names

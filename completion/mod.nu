@@ -5,7 +5,7 @@ export module brew.nu
 export module cargo.nu
 export module docker.nu
 export module fastly.nu
-export module gpg.nu
+export use gpg.nu *
 export module mdfind.nu
 export module neovide.nu
 export module openssl.nu
