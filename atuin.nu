@@ -126,7 +126,7 @@ $env.config = (
             name: "Atuin search"
             modifier: control
             keycode: char_r
-            mode: [emacs, vi_normal, vi_insert]
+            mode: [emacs, helix_normal, helix_insert, vi_normal, vi_insert]
             event: { send: executehostcommand cmd: (_atuin_search_cmd) }
         }
     )
@@ -138,7 +138,7 @@ $env.config = (
             name: "Atuin up"
             modifier: none
             keycode: up
-            mode: [emacs, vi_normal, vi_insert]
+            mode: [emacs, helix_normal, helix_insert, vi_normal, vi_insert]
             event: {
                 until: [
                     {send: menuup}
