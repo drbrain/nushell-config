@@ -14,6 +14,7 @@ export module rg.nu
 export module rsync.nu
 export module rustup.nu
 export module ssh.nu
+export module ssh-add.nu
 export module unix.nu
 export module vimr.nu
 export module wezterm.nu
